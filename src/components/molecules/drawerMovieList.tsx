@@ -30,7 +30,12 @@ const DrawerMovieList: FC = () => {
   ];
 
   return (
-    <List sx={{ height: "70%", overflowY: "auto", scrollbarWidth: "none" }}>
+    <List
+      sx={{
+        height: "70%",
+        overflowY: "auto",
+      }}
+    >
       {data.map(({ text, id }) => (
         <ListItem button key={id} component={Link} href={`/movie/${id}`}>
           <ListItemText primary={text} />
