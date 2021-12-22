@@ -1,6 +1,6 @@
 import { FC } from 'react'
-import { AuthTitle } from '../atoms/titles'
-import { RegisterForm } from '../organisms/registerForm'
+import { AuthTitle } from 'components/atoms/titles'
+import { RegisterForm } from 'components/organisms/registerForm'
 
 const RegisterTemplate: FC = () => {
   return (

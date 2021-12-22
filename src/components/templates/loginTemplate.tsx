@@ -1,6 +1,6 @@
 import { FC } from 'react'
-import { AuthTitle } from '../atoms/titles'
-import { LogInForm } from '../organisms/logInForm'
+import { AuthTitle } from 'components/atoms/titles'
+import { LogInForm } from 'components/organisms/logInForm'
 
 const LoginTemplate: FC = () => {
   return (
