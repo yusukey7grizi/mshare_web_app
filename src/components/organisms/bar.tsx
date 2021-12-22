@@ -1,10 +1,10 @@
 import { FC } from 'react'
 import { Drawer, Box, Divider, Toolbar, AppBar } from '@mui/material'
-import { DrawerLinkList, DrawerMovieList } from '../molecules'
-import { LogOutButton } from '../atoms/buttons'
-import { SearchField } from '../atoms/textFields'
-import { SideBarTitle } from '../atoms/titles'
-import { FlexBox, SideBarBox } from '../atoms/layoutElement'
+import { DrawerLinkList, DrawerMovieList } from 'components/molecules'
+import { LogOutButton } from 'components/atoms/buttons'
+import { SearchField } from 'components/atoms/textFields'
+import { SideBarTitle } from 'components/atoms/titles'
+import { FlexBox, SideBarBox } from 'components/atoms/layoutElement'
 
 const drawerWidth = 240
 

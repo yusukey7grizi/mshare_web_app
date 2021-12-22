@@ -9,4 +9,12 @@ const SideBarTitle: FC = () => {
   )
 }
 
-export { SideBarTitle }
+const AuthTitle: FC = () => {
+  return (
+    <Typography sx={{ marginTop: '50px' }} align="center" variant="h2">
+      MShare へようこそ
+    </Typography>
+  )
+}
+
+export { SideBarTitle, AuthTitle }
