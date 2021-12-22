@@ -1,9 +1,12 @@
 import { Container, Box } from '@mui/material'
-import { FormSubmitButton, GoogleSignInButton } from '../atoms/buttons'
-import { AuthSwitchLink } from '../molecules/AuthSwitchLink'
-import { ConfirmEmailField, EmailField } from '../molecules/emailField'
-import { ConFirmPasswordField, PasswordField } from '../molecules/passwordField'
-import { UsernameField } from '../molecules/usernameField'
+import { FormSubmitButton } from 'components/atoms/buttons'
+import { AuthSwitchLink } from 'components/molecules/AuthSwitchLink'
+import { ConfirmEmailField, EmailField } from 'components/molecules/emailField'
+import {
+  ConFirmPasswordField,
+  PasswordField,
+} from 'components/molecules/passwordField'
+import { UsernameField } from 'components/molecules/usernameField'
 
 const RegisterForm = () => {
   return (

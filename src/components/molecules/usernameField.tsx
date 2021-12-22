@@ -1,6 +1,6 @@
 import { FormHelperText, Typography } from '@mui/material'
-import { AuthTextFieldContainer } from '../atoms/layoutElement'
-import { AuthFormTextField } from '../atoms/textFields'
+import { AuthTextFieldContainer } from 'components/atoms/layoutElement'
+import { AuthFormTextField } from 'components/atoms/textFields'
 
 const UsernameField = () => {
   return (

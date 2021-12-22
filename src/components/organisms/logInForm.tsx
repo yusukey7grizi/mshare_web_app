@@ -1,8 +1,8 @@
 import { Container, Box } from '@mui/material'
-import { FormSubmitButton, GoogleSignInButton } from '../atoms/buttons'
-import { AuthSwitchLink } from '../molecules/AuthSwitchLink'
-import { EmailField } from '../molecules/emailField'
-import { PasswordField } from '../molecules/passwordField'
+import { FormSubmitButton, GoogleSignInButton } from 'components/atoms/buttons'
+import { AuthSwitchLink } from 'components/molecules/AuthSwitchLink'
+import { EmailField } from 'components/molecules/emailField'
+import { PasswordField } from 'components/molecules/passwordField'
 
 const LogInForm = () => {
   return (
