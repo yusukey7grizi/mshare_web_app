@@ -1,11 +1,10 @@
 // if logged in, show log in or register
 // else dashboard
-
 import type { NextPage } from 'next'
-import { SideBar } from '../components/organisms/sideBar'
+import { Bar } from '../components/organisms'
 
 const Home: NextPage = () => {
-  return <SideBar />
+  return <></>
 }
 
 export default Home

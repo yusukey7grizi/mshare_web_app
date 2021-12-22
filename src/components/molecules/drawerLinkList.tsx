@@ -15,25 +15,25 @@ const DrawerLinkList: FC = () => {
         </ListItemIcon>
         <ListItemText primary="Home" />
       </ListItem>
-      <ListItem button href="/" component={Link}>
+      <ListItem button href="/search" component={Link}>
         <ListItemIcon>
           <SearchIcon />
         </ListItemIcon>
         <ListItemText primary="映画検索" />
       </ListItem>
-      <ListItem href="/" button component={Link}>
+      <ListItem href="/random" button component={Link}>
         <ListItemIcon>
           <ShuffleIcon />
         </ListItemIcon>
         <ListItemText primary="ガチャ検索" />
       </ListItem>
-      <ListItem href="/" button component={Link}>
+      <ListItem href="/movie/post" button component={Link}>
         <ListItemIcon>
           <AddIcon />
         </ListItemIcon>
         <ListItemText primary="映画を作成" />
       </ListItem>
-      <ListItem href="/" button component={Link}>
+      <ListItem href="/profile" button component={Link}>
         <ListItemIcon>
           <PersonIcon />
         </ListItemIcon>
