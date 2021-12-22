@@ -1,25 +1,14 @@
 import { FC } from 'react'
-import {
-  Drawer,
-  Box,
-  Divider,
-  Typography,
-  Toolbar,
-  AppBar,
-  InputAdornment,
-  CssBaseline,
-  Button,
-  Autocomplete,
-  Link,
-} from '@mui/material'
+import { Drawer, Box, Divider, Toolbar, AppBar } from '@mui/material'
 import { DrawerLinkList, DrawerMovieList } from '../molecules'
-import { TextField } from '@mui/material'
-import SearchIcon from '@mui/icons-material/Search'
-import LogoutIcon from '@mui/icons-material/Logout'
+import { LogOutButton } from '../atoms/buttons'
+import { SearchField } from '../atoms/textFields'
+import { SideBarTitle } from '../atoms/titles'
+import { FlexBox, SideBarBox } from '../atoms/layoutElement'
 
 const drawerWidth = 240
 
-const SideBar = () => {
+const SideBar: FC = () => {
   return (
     <Drawer
       sx={{
@@ -33,50 +22,26 @@ const SideBar = () => {
       variant="permanent"
       anchor="left"
     >
-      <Box role="presentation" sx={{ width: '240px', overflowY: 'hidden' }}>
-        <Typography sx={{ marginTop: '20px' }} align="center" variant="h4">
-          MShare
-        </Typography>
-        <br />
-        <Divider />
+      <SideBarBox>
+        <SideBarTitle />
         <DrawerLinkList />
         <Divider />
         <DrawerMovieList />
-      </Box>
+      </SideBarBox>
     </Drawer>
   )
 }
 
 const TopBar: FC = () => {
-  const options = [
-    { id: 1, text: 'Genre 1' },
-    { id: 2, text: 'Genre 2' },
-    { id: 3, text: 'Genre 3' },
-    { id: 4, text: 'Genre 4' },
-    { id: 5, text: 'Genre 5' },
-    { id: 6, text: 'Genre 6' },
-  ]
   return (
     <AppBar
       position="fixed"
       sx={{ width: `calc(100% - ${drawerWidth}px)`, ml: `${drawerWidth}px` }}
     >
       <Toolbar sx={{ backgroundColor: '#ffff' }}>
-        <TextField
-          variant="filled"
-          sx={{ width: '400px' }}
-          InputProps={{
-            disableUnderline: true,
-            startAdornment: (
-              <InputAdornment position="start">
-                <SearchIcon />
-              </InputAdornment>
-            ),
-          }}
-        />
-        <Link component={Button}>
-          <Typography>ログアウト</Typography>
-        </Link>
+        <Box component="div" sx={{ flexGrow: 1.5 }} />
+        <SearchField />
+        <LogOutButton />
       </Toolbar>
     </AppBar>
   )
@@ -84,12 +49,11 @@ const TopBar: FC = () => {
 
 const Bar: FC = ({ children }) => {
   return (
-    <Box sx={{ display: 'flex' }}>
-      <CssBaseline />
+    <FlexBox>
       <TopBar />
       <SideBar />
       <Box component="main">{children}</Box>
-    </Box>
+    </FlexBox>
   )
 }
 
