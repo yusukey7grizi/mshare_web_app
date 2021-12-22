@@ -9,7 +9,8 @@ export type MovieInfo = {
     uploadedBy: string,
     description: string,
     uploadDate: string,
-    url: string
+    url: string,
+    videoId: string
 }
 
 const MovieDetail: FC = () => {
@@ -18,7 +19,8 @@ const MovieDetail: FC = () => {
         uploadedBy: '',
         description: '',
         uploadDate: '',
-        url: ''
+        url: '',
+        videoId: ''
     })
 
     useEffect(() => {
@@ -30,7 +32,8 @@ const MovieDetail: FC = () => {
             uploadedBy: 'Christopher Nolan',
             description: 'Space stuff',
             uploadDate: '2015-12-15',
-            url: 'https://Youtube.com'
+            url: 'https://Youtube.com',
+            videoId: 'D6or2gdrHRE'
         })
 
     }, [])
