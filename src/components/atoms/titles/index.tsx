@@ -1,7 +1,12 @@
-import React from 'react'
+import { Typography } from '@mui/material'
+import { FC } from 'react'
 
-const index = () => {
-  return <div></div>
+const SideBarTitle: FC = () => {
+  return (
+    <Typography sx={{ marginTop: '20px' }} align="center" variant="h4">
+      MShare
+    </Typography>
+  )
 }
 
-export default index
+export { SideBarTitle }

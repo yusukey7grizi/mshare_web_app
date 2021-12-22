@@ -1,5 +1,12 @@
-const index = () => {
-  return <div></div>
-}
+import { styled } from '@mui/system'
 
-export default index
+const FlexBox = styled('div')({
+  display: 'flex',
+})
+
+const SideBarBox = styled('div')({
+  width: '240px',
+  overflowY: 'hidden',
+})
+
+export { FlexBox, SideBarBox }
