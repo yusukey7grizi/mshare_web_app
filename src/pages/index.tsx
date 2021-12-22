@@ -2,14 +2,8 @@
 // else dashboard
 import type { NextPage } from 'next'
 
-import { LoginTemplate } from '../components/templates/loginTemplate'
-
 const Home: NextPage = () => {
-  return (
-    <>
-      <LoginTemplate />
-    </>
-  )
+  return <></>
 }
 
 export default Home
