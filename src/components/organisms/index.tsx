@@ -1,7 +1,2 @@
-import React from 'react'
-
-const index = () => {
-  return <div></div>
-}
-
-export default index
+export * from './MovieDetailContainer'
+export * from './OtherMoviesContainer'

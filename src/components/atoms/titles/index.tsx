@@ -1,7 +1,21 @@
-import React from 'react'
+import { Typography } from '@mui/material'
+import React, { FC } from 'react'
 
-const index = () => {
-  return <div></div>
+// const Index = () => {
+//   return <div></div>
+// }
+
+type SubtitleProps = {
+  text: string
 }
 
-export default index
+const Subtitle: FC<SubtitleProps>= ({text}) => {
+  return (
+    <Typography 
+      variant='h3'>
+      { text }
+    </Typography>
+  )
+}
+
+export {  Subtitle }
