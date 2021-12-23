@@ -52,7 +52,9 @@ const Bar: FC = ({ children }) => {
     <FlexBox>
       <TopBar />
       <SideBar />
-      <Box component="main">{children}</Box>
+      <Box component="div" sx={{ p: '3rem', pt: '7rem', margin: 'auto' }}>
+        {children}
+      </Box>
     </FlexBox>
   )
 }

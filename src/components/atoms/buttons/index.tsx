@@ -7,7 +7,7 @@ import ButtonUnstyled, { ButtonUnstyledProps } from '@mui/base/ButtonUnstyled'
 import GoogleIcon from '@mui/icons-material/Google'
 
 type FormButtonProps = {
-  text: 'ログイン' | '登録'
+  text: 'ログイン' | '登録' | '作成'
 }
 
 const GoogleSignInButtonRoot = styled(IconButton)`

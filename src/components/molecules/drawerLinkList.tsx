@@ -1,7 +1,6 @@
 import { FC } from 'react'
 import { List, ListItem, ListItemIcon, ListItemText, Link } from '@mui/material'
 import HomeIcon from '@mui/icons-material/Home'
-import SearchIcon from '@mui/icons-material/Search'
 import AddIcon from '@mui/icons-material/Add'
 import ShuffleIcon from '@mui/icons-material/Shuffle'
 import PersonIcon from '@mui/icons-material/Person'
