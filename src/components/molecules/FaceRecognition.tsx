@@ -1,63 +1,74 @@
-import React, { FC, useEffect, useRef } from "react";
+import React, { FC, useState, useEffect, useRef } from "react";
 import * as faceapi from "face-api.js";
-import { detectAllFaces, MtcnnOptions, TNetInput } from "face-api.js";
-import { MtcnnResult } from "face-api.js/build/commonjs/mtcnn/types";
-import Webcam from "react-webcam";
+import {
+  detectSingleFace,
+  MtcnnOptions,
+  TinyFaceDetectorOptions,
+  TNetInput,
+} from "face-api.js";
+// import Webcam from "react-webcam";
 
 const FaceRecognition: FC = () => {
-  const webcamRef = useRef<Webcam>(null);
-  const canvasRef = useRef<HTMLCanvasElement>(null);
-
-  // Run face detection
-  const runFaceDetection = async () => {
-    await loadModels();
-    await getUserMedia();
-  };
+  const webcamRef = useRef<HTMLVideoElement>(null);
+  // state for displaying the latest face recognition score
+  const [score, setScore] = useState<number | undefined>(0);
 
   // Loading models for face detection
   const loadModels = async () => {
     try {
-      await faceapi.loadMtcnnModel("/models");
-      await faceapi.loadFaceDetectionModel("/models");
+      await faceapi.loadTinyFaceDetectorModel("/models");
       await faceapi.loadFaceExpressionModel("/models");
       console.log("Models loaded successfully");
     } catch (error) {
       console.error(error);
     }
   };
-  // start face detection
-  const getUserMedia = async () => {
-    if (webcamRef.current && canvasRef.current) {
-      const webcam = webcamRef.current.video as HTMLVideoElement;
-      const canvas = canvasRef.current;
-      webcam.width = webcam.videoWidth;
-      webcam.height = webcam.videoHeight;
-      canvas.width = webcam.videoWidth;
-      canvas.height = webcam.videoHeight;
-      const video = webcamRef.current.video as TNetInput;
-      const detectionsWithExpressions = await faceapi
-        .detectAllFaces(
-          video,
-          new MtcnnOptions({
-            maxNumScales: 10,
-            scaleFactor: 0.709,
-            scoreThresholds: [0.6, 0.7, 0.7],
-            minFaceSize: 20,
-          })
-        )
-        .withFaceExpressions();
-      console.log(detectionsWithExpressions);
+  // start webcam
+  const startWebcam = async () => {
+    if (webcamRef.current) {
+      const webcam = webcamRef.current;
+
+      // ask for usermedia
+      const stream = await navigator.mediaDevices.getUserMedia({
+        audio: false,
+        video: {
+          width: webcam.videoWidth,
+          height: webcam.videoHeight,
+        },
+      });
+      webcam.srcObject = await stream;
+
+      console.log("webcam initiated");
     }
+  };
+
+  // run face detection on a frame, this is called in a interval after video starts playing
+  const runFaceDetection = () => {
+    const video = webcamRef.current as TNetInput;
+    setInterval(async () => {
+      const detectionsWithExpressions = await detectSingleFace(
+        video,
+        new TinyFaceDetectorOptions()
+      ).withFaceExpressions();
+      setScore(detectionsWithExpressions?.expressions.happy);
+    }, 300);
   };
 
   // On load, start face detection
   useEffect(() => {
-    runFaceDetection();
-  });
+    // setup face detection
+    const setUpFaceDetection = async () => {
+      await loadModels();
+      await startWebcam();
+      console.log("set up complete");
+    };
+    setUpFaceDetection();
+  }, []);
+
   return (
     <div>
-      <Webcam audio={false} ref={webcamRef} />
-      <canvas ref={canvasRef} />
+      <video ref={webcamRef} autoPlay muted onPlay={runFaceDetection} />
+      <h1>{score}</h1>
     </div>
   );
 };
