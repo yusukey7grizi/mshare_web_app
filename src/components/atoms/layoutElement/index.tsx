@@ -9,4 +9,8 @@ const SideBarBox = styled('div')({
   overflowY: 'hidden',
 })
 
-export { FlexBox, SideBarBox }
+const AuthTextFieldContainer = styled('div')({
+  marginBottom: '30px',
+})
+
+export { FlexBox, SideBarBox, AuthTextFieldContainer }

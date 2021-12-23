@@ -1,3 +1,3 @@
-export * from './MovieDetailContainer'
-export * from './OtherMoviesContainer'
-export * from './bar'
+export * from "components/organisms/MovieDetailContainer";
+export * from "components/organisms/OtherMoviesContainer";
+export * from "components/organisms/bar";

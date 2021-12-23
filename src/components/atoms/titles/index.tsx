@@ -21,4 +21,12 @@ const SideBarTitle: FC = () => {
   );
 };
 
-export { Subtitle, SideBarTitle };
+const AuthTitle: FC = () => {
+  return (
+    <Typography sx={{ marginTop: "50px" }} align="center" variant="h2">
+      MShare へようこそ
+    </Typography>
+  );
+};
+
+export { Subtitle, SideBarTitle, AuthTitle };
