@@ -11,6 +11,7 @@ type TextFieldProps = {
 const SearchField: FC = () => {
   return (
     <TextField
+      placeholder="映画を検索する"
       variant="filled"
       sx={{ width: '750px' }}
       InputProps={{

@@ -15,12 +15,6 @@ const DrawerLinkList: FC = () => {
         </ListItemIcon>
         <ListItemText primary="Home" />
       </ListItem>
-      <ListItem button href="/search" component={Link}>
-        <ListItemIcon>
-          <SearchIcon />
-        </ListItemIcon>
-        <ListItemText primary="映画検索" />
-      </ListItem>
       <ListItem href="/random" button component={Link}>
         <ListItemIcon>
           <ShuffleIcon />
