@@ -1,4 +1,4 @@
-export * from "components/organisms/MovieDetailContainer";
-export * from "components/organisms/OtherMoviesContainer";
+export * from "components/organisms/movieDetailContainer";
+export * from "components/organisms/otherMoviesContainer";
 export * from "components/organisms/bar";
-export * from "components/organisms/FacialExpressionRatingContainer";
+export * from "components/organisms/facialExpressionRatingContainer";

@@ -1,5 +1,5 @@
 import React, { FC } from "react";
-import { MovieDetailsProps } from "components/templates/MovieDetailContent";
+import { MovieDetailsProps } from "components/organisms/movieDetailContent";
 
 const YouTubeVideoDetails: FC<MovieDetailsProps> = ({ movieInfo }) => {
   return (
