@@ -1,10 +1,10 @@
 import { FormHelperText, Typography } from '@mui/material'
-import { AuthTextFieldContainer } from 'components/atoms/layoutElement'
+import { FormTextFieldContainer } from 'components/atoms/layoutElement'
 import { AuthFormTextField } from 'components/atoms/textFields'
 
 const EmailField = () => {
   return (
-    <AuthTextFieldContainer>
+    <FormTextFieldContainer>
       <Typography gutterBottom>メールアドレス</Typography>
       <AuthFormTextField
         type="email"
@@ -14,13 +14,13 @@ const EmailField = () => {
       <FormHelperText sx={{ visibility: 'visible' }}>
         メールアドレスを入力してください
       </FormHelperText>
-    </AuthTextFieldContainer>
+    </FormTextFieldContainer>
   )
 }
 
 const ConfirmEmailField = () => {
   return (
-    <AuthTextFieldContainer>
+    <FormTextFieldContainer>
       <Typography gutterBottom>メールアドレスの確認</Typography>
       <AuthFormTextField
         type="email"
@@ -30,7 +30,7 @@ const ConfirmEmailField = () => {
       <FormHelperText sx={{ visibility: 'visible' }}>
         メールアドレスを確認する必要があります
       </FormHelperText>
-    </AuthTextFieldContainer>
+    </FormTextFieldContainer>
   )
 }
 
