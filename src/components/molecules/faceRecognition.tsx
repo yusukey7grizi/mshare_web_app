@@ -9,6 +9,8 @@ import React, {
 import * as faceapi from "face-api.js";
 import {
   detectSingleFace,
+  FaceExpressions,
+  FACE_EXPRESSION_LABELS,
   TinyFaceDetectorOptions,
   TNetInput,
 } from "face-api.js";
@@ -19,17 +21,6 @@ type FaceRecognitionProps = {
   moviePlayerState: MoviePlayerState;
   recognition: boolean;
   setRecognition: Dispatch<SetStateAction<boolean>>;
-};
-
-type FaceRecognitionScore = {
-  happyFrame: number;
-  neutralFrame: number;
-  sadFrame: number;
-  angryFrame: number;
-  fearfulFrame: number;
-  disgustedFrame: number;
-  surprisedFrame: number;
-  totalFrame: number;
 };
 
 // recognition threshold for determining expression
@@ -44,17 +35,22 @@ const FaceRecognition: FC<FaceRecognitionProps> = ({
   // state for displaying the latest face recognition score
   const [modelReady, setModelReady] = useState<boolean>(false);
   const [webcamReady, setWebcamReady] = useState<boolean>(false);
+  const [expressionScore, setExpressionScore] = useState<FaceExpressions>(
+    new FaceExpressions([0, 0, 0, 0, 0, 0, 0])
+  );
 
   useInterval(async () => {
-    console.log(moviePlayerState.playerState);
-    if (
-      moviePlayerState.playerState === YT.PlayerState.PLAYING &&
-      recognition
-    ) {
-      const detectionsWithExpressions = await detectSingleFace(
-        webcamRef.current as TNetInput,
-        new TinyFaceDetectorOptions()
-      ).withFaceExpressions();
+    console.log(expressionScore);
+    if (modelReady && webcamReady) {
+      switch (moviePlayerState.playerState) {
+        case YT.PlayerState.PLAYING:
+          const detectionsWithExpressions = await detectSingleFace(
+            webcamRef.current as TNetInput,
+            new TinyFaceDetectorOptions()
+          ).withFaceExpressions();
+      }
+    }
+    if (moviePlayerState.playerState === YT.PlayerState.PLAYING) {
       // if (
       //   detectionsWithExpressions &&
       //   detectionsWithExpressions.expressions.happy > THRESHOLD
@@ -62,7 +58,7 @@ const FaceRecognition: FC<FaceRecognitionProps> = ({
       //   setHappyFrame(happyFrame + 1);
       //   console.log(
       //     "score updated",
-      //     detectionsWithExpressions.expressions.happy,
+      // detectionsWithExpressions.expressions.happy,
       //     happyFrame
       //   );
       // }
@@ -116,8 +112,8 @@ const FaceRecognition: FC<FaceRecognitionProps> = ({
       await loadModels();
       await startWebcam();
     };
-    setUpFaceDetection();
-  }, []);
+    if (recognition) setUpFaceDetection();
+  }, [recognition]);
 
   return (
     <div>
