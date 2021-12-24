@@ -1,13 +1,6 @@
-import {
-  Box,
-  Card,
-  CardActionArea,
-  CardContent,
-  CardMedia,
-  Typography,
-} from '@mui/material'
+import { Box } from '@mui/material'
 import { MovieItem } from 'components/molecules'
-import React, { FC, Fragment } from 'react'
+import React, { FC } from 'react'
 
 const MovieList: FC = () => {
   const data = [
@@ -47,12 +40,13 @@ const MovieList: FC = () => {
       title: 'title 5',
     },
   ]
+
   return (
     <Box
       sx={{
         display: 'flex',
-        justifyContent: 'space-evenly',
         flexDirection: 'row',
+        overflowX: 'scroll',
       }}
     >
       {data.map(({ id, img, username, title }) => {
