@@ -10,7 +10,7 @@ import useInterval from 'use-interval';
 
 type FaceRecognitionProps = {
   moviePlayerState: MoviePlayerState;
-  recognition: boolean;
+  isRecognitionOn: boolean;
 };
 
 // string keys consumed in ExpressionScore object type
@@ -31,14 +31,14 @@ const THRESHOLD = 0.5;
 
 const FaceRecognition: FC<FaceRecognitionProps> = ({
   moviePlayerState,
-  recognition,
+  isRecognitionOn: isRecognitionOn,
 }) => {
   // ref for grabbing the webcam video element
   const webcamRef = useRef<HTMLVideoElement>(null);
   // model loading status, true if completed
-  const [modelReady, setModelReady] = useState<boolean>(false);
+  const [isModelReady, setIsModelReady] = useState<boolean>(false);
   // webcam status, true if allowed by user and started
-  const [webcamReady, setWebcamReady] = useState<boolean>(false);
+  const [isWebcamReady, setIsWebcamReady] = useState<boolean>(false);
   // total number of face recognition frames
   const [totalFrame, setTotalFrame] = useState<number>(0);
   // keepiung track of number of frames with each face expressions
@@ -55,8 +55,8 @@ const FaceRecognition: FC<FaceRecognitionProps> = ({
   // This interval is used to run face recognition,
   // it runs face detection if all the conditions are met
   useInterval(async () => {
-    console.log(moviePlayerState.playerState);
-    if (modelReady && webcamReady) {
+    // console.log(moviePlayerState.playerState);
+    if (isModelReady && isWebcamReady) {
       // switch statement to check the player state
       switch (moviePlayerState.playerState) {
         // when the video is playing
@@ -99,7 +99,7 @@ const FaceRecognition: FC<FaceRecognitionProps> = ({
     try {
       await faceapi.loadTinyFaceDetectorModel('/models');
       await faceapi.loadFaceExpressionModel('/models');
-      setModelReady(true);
+      setIsModelReady(true);
       console.log('Models loaded successfully');
     } catch (error) {
       console.error(error);
@@ -119,7 +119,7 @@ const FaceRecognition: FC<FaceRecognitionProps> = ({
           },
         });
         webcam.srcObject = await stream;
-        setWebcamReady(true);
+        setIsWebcamReady(true);
         console.log('webcam initiated');
       } catch (error) {
         console.error(error);
@@ -135,7 +135,7 @@ const FaceRecognition: FC<FaceRecognitionProps> = ({
       await startWebcam();
     };
     // if recognition is allowed, start setting up face detection
-    if (recognition) setUpFaceDetection();
+    if (isRecognitionOn) setUpFaceDetection();
 
     // clean up function before unmount
     const cleanup = () => {
@@ -143,13 +143,12 @@ const FaceRecognition: FC<FaceRecognitionProps> = ({
       // PUT /movies request if the user have watched 50% of the video
     };
     return cleanup;
-  }, [recognition]);
+  }, [isRecognitionOn]);
 
   return (
     <>
       <video ref={webcamRef} autoPlay muted hidden />
 
-      {/* <h1>{moviePlayerState.playerState}</h1> */}
       <h1>happy: {expressionScore.happy}</h1>
       <h1>neutral: {expressionScore.neutral}</h1>
       <h1>angry: {expressionScore.angry}</h1>

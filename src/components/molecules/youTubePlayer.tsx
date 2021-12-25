@@ -13,12 +13,15 @@ const YouTubePlayer: FC<YouTubePlayerProps> = ({
   setMoviePlayerState,
 }) => {
   // call back for state update
-  const playerStateChangeHandler = (e: YT.OnStateChangeEvent) => {
+  const playerStateChangeHandler = ({
+    data,
+    target,
+  }: YT.OnStateChangeEvent) => {
     console.log('video player state updated');
     setMoviePlayerState({
-      playerState: e.data,
-      currentTime: e.target.getCurrentTime(),
-      duration: e.target.getDuration(),
+      playerState: data,
+      currentTime: target.getCurrentTime(),
+      duration: target.getDuration(),
     });
   };
 

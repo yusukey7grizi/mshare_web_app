@@ -8,17 +8,17 @@ type FacialExpressionRatingContainerProps = {
 
 const FacialExpressionRatingContainer: FC<FacialExpressionRatingContainerProps> =
   ({ moviePlayerState }) => {
-    const [recognition, setRecognition] = useState(true);
+    const [isRecognitionOn, setIsRecognitionOn] = useState<boolean>(true);
 
     return (
       <>
         <FaceRecognition
           moviePlayerState={moviePlayerState}
-          recognition={recognition}
+          isRecognitionOn={isRecognitionOn}
         />
         <FaceRecognitionToggle
-          recognition={recognition}
-          setRecognition={setRecognition}
+          isRecognitionOn={isRecognitionOn}
+          setisRecognitionOn={setIsRecognitionOn}
         />
       </>
     );
