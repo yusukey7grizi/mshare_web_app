@@ -10,6 +10,10 @@ type FormButtonProps = {
   text: 'ログイン' | '登録' | '作成'
 }
 
+type ShowMoreButtonProps = {
+  isDetailOpened: boolean
+  onClick: () => void
+}
 const GoogleSignInButtonRoot = styled(IconButton)`
   background-color: #000000;
   padding: 15px 10%;
@@ -44,6 +48,23 @@ const LogOutButton: FC = () => {
   )
 }
 
+const ShowMoreButton: FC<ShowMoreButtonProps> = ({
+  isDetailOpened,
+  onClick,
+}) => {
+  return (
+    <Link
+      onClick={onClick}
+      sx={{ color: '#A9A9A9' }}
+      component={Button}
+      underline="none"
+    >
+      <Typography sx={{ fontSize: '0.5rem' }}>
+        {isDetailOpened ? 'Show Less' : 'Show More'}
+      </Typography>
+    </Link>
+  )
+}
 const CustomFormButtonRoot: FC = styled('button')`
   background-color: #007fff;
   padding: 15px 8%;
@@ -71,4 +92,4 @@ const FormSubmitButton: FC<FormButtonProps> = ({ text }) => {
   return <CustomFormButton>{text}</CustomFormButton>
 }
 
-export { LogOutButton, FormSubmitButton, GoogleSignInButton }
+export { LogOutButton, FormSubmitButton, GoogleSignInButton, ShowMoreButton }

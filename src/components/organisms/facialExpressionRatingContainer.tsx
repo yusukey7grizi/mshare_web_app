@@ -1,27 +1,28 @@
-import React, { FC, useState } from 'react';
-import { FaceRecognitionToggle, FaceRecognition } from 'components/molecules';
-import { MoviePlayerState } from 'components/organisms/movieDetailContent';
+import React, { FC, useState } from 'react'
+import { FaceRecognitionToggle, FaceRecognition } from 'components/molecules'
+import { MoviePlayerState } from 'components/templates/movieDetailTemplate'
 
 type FacialExpressionRatingContainerProps = {
-  moviePlayerState: MoviePlayerState;
-};
+  moviePlayerState: MoviePlayerState
+}
 
-const FacialExpressionRatingContainer: FC<FacialExpressionRatingContainerProps> =
-  ({ moviePlayerState }) => {
-    const [isRecognitionOn, setIsRecognitionOn] = useState<boolean>(true);
+const FacialExpressionRatingContainer: FC<FacialExpressionRatingContainerProps> = ({
+  moviePlayerState,
+}) => {
+  const [isRecognitionOn, setIsRecognitionOn] = useState<boolean>(true)
 
-    return (
-      <>
-        <FaceRecognition
-          moviePlayerState={moviePlayerState}
-          isRecognitionOn={isRecognitionOn}
-        />
-        <FaceRecognitionToggle
-          isRecognitionOn={isRecognitionOn}
-          setisRecognitionOn={setIsRecognitionOn}
-        />
-      </>
-    );
-  };
+  return (
+    <>
+      <FaceRecognition
+        moviePlayerState={moviePlayerState}
+        isRecognitionOn={isRecognitionOn}
+      />
+      <FaceRecognitionToggle
+        isRecognitionOn={isRecognitionOn}
+        setisRecognitionOn={setIsRecognitionOn}
+      />
+    </>
+  )
+}
 
-export { FacialExpressionRatingContainer };
+export { FacialExpressionRatingContainer }

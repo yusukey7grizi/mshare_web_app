@@ -39,7 +39,9 @@ const SideBar: FC = () => {
 
 const TopBar: FC = () => {
   const router = useRouter()
+
   const [inputValue, setInputValue] = useState<string>('')
+
   const searchHandler = ({ key }: MuiKeyBoardEvent) => {
     if (key === 'Enter') {
       router.push({
