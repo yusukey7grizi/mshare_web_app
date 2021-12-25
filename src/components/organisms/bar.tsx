@@ -1,12 +1,12 @@
-import { FC } from 'react'
-import { Drawer, Box, Divider, Toolbar, AppBar } from '@mui/material'
-import { DrawerLinkList, DrawerMovieList } from 'components/molecules'
-import { LogOutButton } from 'components/atoms/buttons'
-import { SearchField } from 'components/atoms/textFields'
-import { SideBarTitle } from 'components/atoms/titles'
-import { FlexBox, SideBarBox } from 'components/atoms/layoutElement'
+import { FC } from 'react';
+import { Drawer, Box, Divider, Toolbar, AppBar } from '@mui/material';
+import { DrawerLinkList, DrawerMovieList } from 'components/molecules';
+import { LogOutButton } from 'components/atoms/buttons';
+import { SearchField } from 'components/atoms/textFields';
+import { SideBarTitle } from 'components/atoms/titles';
+import { FlexBox, SideBarBox } from 'components/atoms/layoutElement';
 
-const drawerWidth = 240
+const drawerWidth = 240;
 
 const SideBar: FC = () => {
   return (
@@ -17,10 +17,11 @@ const SideBar: FC = () => {
         '& .MuiDrawer-paper': {
           width: drawerWidth,
           boxSizing: 'border-box',
+          overflow: 'hidden',
         },
       }}
-      variant="permanent"
-      anchor="left"
+      variant='permanent'
+      anchor='left'
     >
       <SideBarBox>
         <SideBarTitle />
@@ -29,23 +30,23 @@ const SideBar: FC = () => {
         <DrawerMovieList />
       </SideBarBox>
     </Drawer>
-  )
-}
+  );
+};
 
 const TopBar: FC = () => {
   return (
     <AppBar
-      position="fixed"
+      position='fixed'
       sx={{ width: `calc(100% - ${drawerWidth}px)`, ml: `${drawerWidth}px` }}
     >
       <Toolbar sx={{ backgroundColor: '#ffff' }}>
-        <Box component="div" sx={{ flexGrow: 1.5 }} />
+        <Box component='div' sx={{ flexGrow: 1.5 }} />
         <SearchField />
         <LogOutButton />
       </Toolbar>
     </AppBar>
-  )
-}
+  );
+};
 
 const Bar: FC = ({ children }) => {
   return (
@@ -53,13 +54,13 @@ const Bar: FC = ({ children }) => {
       <TopBar />
       <SideBar />
       <Box
-        component="div"
+        component='div'
         sx={{ p: '3rem', pt: '7rem', margin: 'auto', overflowX: 'hidden' }}
       >
         {children}
       </Box>
     </FlexBox>
-  )
-}
+  );
+};
 
-export { Bar }
+export { Bar };

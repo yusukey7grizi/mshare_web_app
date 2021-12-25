@@ -1,30 +1,30 @@
-import { FC } from 'react'
-import { InputAdornment, TextField } from '@mui/material'
-import SearchIcon from '@mui/icons-material/Search'
+import { FC } from 'react';
+import { InputAdornment, TextField } from '@mui/material';
+import SearchIcon from '@mui/icons-material/Search';
 
 type TextFieldProps = {
-  placeholder: string
-  error: boolean
-  type: 'text' | 'email' | 'password' | 'url'
-}
+  placeholder: string;
+  error: boolean;
+  type: 'text' | 'email' | 'password' | 'url';
+};
 
 const SearchField: FC = () => {
   return (
     <TextField
-      placeholder="映画を検索する"
-      variant="filled"
+      placeholder='映画を検索する'
+      variant='filled'
       sx={{ width: '750px' }}
       InputProps={{
         disableUnderline: true,
         startAdornment: (
-          <InputAdornment position="start">
+          <InputAdornment position='start'>
             <SearchIcon />
           </InputAdornment>
         ),
       }}
     />
-  )
-}
+  );
+};
 
 const AuthFormTextField: FC<TextFieldProps> = ({
   placeholder,
@@ -39,10 +39,10 @@ const AuthFormTextField: FC<TextFieldProps> = ({
       placeholder={placeholder}
       InputLabelProps={{ shrink: true }}
       sx={{ width: '450px' }}
-      variant="standard"
+      variant='standard'
     />
-  )
-}
+  );
+};
 
 const MovieFormTextField: FC<TextFieldProps> = ({
   placeholder,
@@ -57,9 +57,9 @@ const MovieFormTextField: FC<TextFieldProps> = ({
       placeholder={placeholder}
       InputLabelProps={{ shrink: true }}
       sx={{ width: '650px' }}
-      variant="standard"
+      variant='standard'
     />
-  )
-}
+  );
+};
 
-export { SearchField, AuthFormTextField, MovieFormTextField }
+export { SearchField, AuthFormTextField, MovieFormTextField };
