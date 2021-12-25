@@ -21,6 +21,7 @@ const SideBar: FC = () => {
         '& .MuiDrawer-paper': {
           width: drawerWidth,
           boxSizing: 'border-box',
+          overflow: 'hidden',
         },
       }}
       variant="permanent"
