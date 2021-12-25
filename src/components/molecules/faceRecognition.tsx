@@ -55,7 +55,7 @@ const FaceRecognition: FC<FaceRecognitionProps> = ({
   // This interval is used to run face recognition,
   // it runs face detection if all the conditions are met
   useInterval(async () => {
-    console.log(expressionScore);
+    console.log(moviePlayerState.playerState);
     if (modelReady && webcamReady) {
       // switch statement to check the player state
       switch (moviePlayerState.playerState) {
@@ -67,15 +67,17 @@ const FaceRecognition: FC<FaceRecognitionProps> = ({
             new TinyFaceDetectorOptions()
           ).withFaceExpressions();
           // imcrementing the score of the detected expression
-          for (const [key, value] of Object.entries(
-            detectionsWithExpressions?.expressions as FaceExpressionScores
-          )) {
-            if (value > THRESHOLD) {
-              const updatedState = expressionScore;
-              updatedState[key as FaceExpressions] += 1;
-              setExpressionScore({
-                ...updatedState,
-              });
+          if (detectionsWithExpressions?.expressions) {
+            for (const [key, value] of Object.entries(
+              detectionsWithExpressions?.expressions as FaceExpressionScores
+            )) {
+              if (value > THRESHOLD) {
+                const updatedState = expressionScore;
+                updatedState[key as FaceExpressions] += 1;
+                setExpressionScore({
+                  ...updatedState,
+                });
+              }
             }
           }
           // incrementing the total number of recognitions
@@ -134,6 +136,13 @@ const FaceRecognition: FC<FaceRecognitionProps> = ({
     };
     // if recognition is allowed, start setting up face detection
     if (recognition) setUpFaceDetection();
+
+    // clean up function before unmount
+    const cleanup = () => {
+      // clear interval for useInterval is handled by itself
+      // PUT /movies request if the user have watched 50% of the video
+    };
+    return cleanup;
   }, [recognition]);
 
   return (
