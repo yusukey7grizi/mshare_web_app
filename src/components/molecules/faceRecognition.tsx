@@ -1,12 +1,12 @@
-import React, { FC, useState, useEffect, useRef } from "react";
-import * as faceapi from "face-api.js";
+import React, { FC, useState, useEffect, useRef } from 'react';
+import * as faceapi from 'face-api.js';
 import {
   detectSingleFace,
   TinyFaceDetectorOptions,
   TNetInput,
-} from "face-api.js";
-import { MoviePlayerState } from "components/organisms/movieDetailContent";
-import useInterval from "use-interval";
+} from 'face-api.js';
+import { MoviePlayerState } from 'components/organisms/movieDetailContent';
+import useInterval from 'use-interval';
 
 type FaceRecognitionProps = {
   moviePlayerState: MoviePlayerState;
@@ -15,13 +15,13 @@ type FaceRecognitionProps = {
 
 // string keys consumed in ExpressionScore object type
 type FaceExpressions =
-  | "neutral"
-  | "happy"
-  | "sad"
-  | "angry"
-  | "fearful"
-  | "disgusted"
-  | "surprised";
+  | 'neutral'
+  | 'happy'
+  | 'sad'
+  | 'angry'
+  | 'fearful'
+  | 'disgusted'
+  | 'surprised';
 
 // type to hold the detection score, has keys defined in FaceExpressions
 type FaceExpressionScores = { [key in FaceExpressions]: number };
@@ -97,10 +97,10 @@ const FaceRecognition: FC<FaceRecognitionProps> = ({
   // Loading models for face detection
   const loadModels = async () => {
     try {
-      await faceapi.loadTinyFaceDetectorModel("/models");
-      await faceapi.loadFaceExpressionModel("/models");
+      await faceapi.loadTinyFaceDetectorModel('/models');
+      await faceapi.loadFaceExpressionModel('/models');
       setModelReady(true);
-      console.log("Models loaded successfully");
+      console.log('Models loaded successfully');
     } catch (error) {
       console.error(error);
     }
@@ -120,7 +120,7 @@ const FaceRecognition: FC<FaceRecognitionProps> = ({
         });
         webcam.srcObject = await stream;
         setWebcamReady(true);
-        console.log("webcam initiated");
+        console.log('webcam initiated');
       } catch (error) {
         console.error(error);
       }
@@ -146,7 +146,7 @@ const FaceRecognition: FC<FaceRecognitionProps> = ({
   }, [recognition]);
 
   return (
-    <div>
+    <>
       <video ref={webcamRef} autoPlay muted hidden />
 
       {/* <h1>{moviePlayerState.playerState}</h1> */}
@@ -158,7 +158,7 @@ const FaceRecognition: FC<FaceRecognitionProps> = ({
       <h1>surprised: {expressionScore.surprised}</h1>
       <h1>fearful: {expressionScore.fearful}</h1>
       <h1>total: {totalFrame}</h1>
-    </div>
+    </>
   );
 };
 

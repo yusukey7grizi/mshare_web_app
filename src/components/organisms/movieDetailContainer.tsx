@@ -1,7 +1,7 @@
-import React, { Dispatch, FC, SetStateAction } from "react";
-import { YouTubePlayer, YouTubeVideoDetails } from "components/molecules";
-import { MoviePlayerState } from "components/organisms/movieDetailContent";
-import { MovieInfo } from "pages/movie/[id]";
+import React, { Dispatch, FC, SetStateAction } from 'react';
+import { YouTubePlayer, YouTubeVideoDetails } from 'components/molecules';
+import { MoviePlayerState } from 'components/organisms/movieDetailContent';
+import { MovieInfo } from 'pages/movie/[id]';
 
 type MovieDetailContainerProps = {
   movieInfo: MovieInfo;
@@ -13,13 +13,13 @@ const MovieDetailContainer: FC<MovieDetailContainerProps> = ({
   setMoviePlayerState,
 }) => {
   return (
-    <div>
+    <>
       <YouTubePlayer
         movieInfo={movieInfo}
         setMoviePlayerState={setMoviePlayerState}
       />
       <YouTubeVideoDetails movieInfo={movieInfo} />
-    </div>
+    </>
   );
 };
 

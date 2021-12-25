@@ -1,15 +1,19 @@
-import React, { FC } from "react";
-import { MovieDetailsProps } from "components/organisms/movieDetailContent";
+import React, { FC } from 'react';
+import { MovieInfo } from 'pages/movie/[id]';
 
-const YouTubeVideoDetails: FC<MovieDetailsProps> = ({ movieInfo }) => {
+type YouTubeVideoDetailsProps = {
+  movieInfo: MovieInfo;
+};
+
+const YouTubeVideoDetails: FC<YouTubeVideoDetailsProps> = ({ movieInfo }) => {
   return (
-    <div>
+    <>
       {movieInfo.title}
       {movieInfo.uploadedBy}
       {movieInfo.description}
       {movieInfo.uploadDate}
       {movieInfo.url}
-    </div>
+    </>
   );
 };
 

@@ -1,7 +1,7 @@
-import React, { Dispatch, FC, SetStateAction } from "react";
-import YouTube, { Options } from "react-youtube";
-import { MovieInfo } from "pages/movie/[id]";
-import { MoviePlayerState } from "components/organisms";
+import React, { Dispatch, FC, SetStateAction } from 'react';
+import YouTube, { Options } from 'react-youtube';
+import { MovieInfo } from 'pages/movie/[id]';
+import { MoviePlayerState } from 'components/organisms';
 
 type YouTubePlayerProps = {
   movieInfo: MovieInfo;
@@ -14,7 +14,7 @@ const YouTubePlayer: FC<YouTubePlayerProps> = ({
 }) => {
   // call back for state update
   const playerStateChangeHandler = (e: YT.OnStateChangeEvent) => {
-    console.log("video player state updated");
+    console.log('video player state updated');
     setMoviePlayerState({
       playerState: e.data,
       currentTime: e.target.getCurrentTime(),
@@ -23,8 +23,8 @@ const YouTubePlayer: FC<YouTubePlayerProps> = ({
   };
 
   const options: Options = {
-    height: "390",
-    width: "640",
+    height: '390',
+    width: '640',
     playerVars: {
       // https://developers.google.com/youtube/player_parameters
       autoplay: 1,

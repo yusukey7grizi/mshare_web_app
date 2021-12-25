@@ -1,6 +1,6 @@
-import React, { FC } from "react";
-import { MovieInfo } from "pages/movie/[id]";
-import { Bar, MovieDetailContent } from "components/organisms";
+import React, { FC } from 'react';
+import { MovieInfo } from 'pages/movie/[id]';
+import { Bar, MovieDetailContent } from 'components/organisms';
 
 type MovieDetailsProps = {
   movieInfo: MovieInfo;

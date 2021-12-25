@@ -1,10 +1,10 @@
-import React, { FC, useState } from "react";
+import React, { FC, useState } from 'react';
 import {
   MovieDetailContainer,
   OtherMoviesContainer,
   FacialExpressionRatingContainer,
-} from "components/organisms";
-import { MovieInfo } from "pages/movie/[id]";
+} from 'components/organisms';
+import { MovieInfo } from 'pages/movie/[id]';
 
 export type MoviePlayerState = {
   playerState: YT.PlayerState;
@@ -30,14 +30,14 @@ const MovieDetailContent: FC<MovieDetailContentProps> = ({ movieInfo }) => {
   });
 
   return (
-    <div>
+    <>
       <MovieDetailContainer
         movieInfo={movieInfo}
         setMoviePlayerState={setMoviePlayerState}
       />
       <OtherMoviesContainer movieInfo={movieInfo} />
       <FacialExpressionRatingContainer moviePlayerState={moviePlayerState} />
-    </div>
+    </>
   );
 };
 
