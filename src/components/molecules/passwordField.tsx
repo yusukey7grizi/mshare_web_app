@@ -1,10 +1,10 @@
 import { FormHelperText, Typography } from '@mui/material'
-import { AuthTextFieldContainer } from 'components/atoms/layoutElement'
+import { FormTextFieldContainer } from 'components/atoms/layoutElement'
 import { AuthFormTextField } from 'components/atoms/textFields'
 
 const PasswordField = () => {
   return (
-    <AuthTextFieldContainer>
+    <FormTextFieldContainer>
       <Typography gutterBottom>パスワード</Typography>
       <AuthFormTextField
         type="password"
@@ -14,13 +14,13 @@ const PasswordField = () => {
       <FormHelperText sx={{ visibility: 'visible' }}>
         パスワードを入力してください
       </FormHelperText>
-    </AuthTextFieldContainer>
+    </FormTextFieldContainer>
   )
 }
 
 const ConFirmPasswordField = () => {
   return (
-    <AuthTextFieldContainer>
+    <FormTextFieldContainer>
       <Typography gutterBottom>パスワードの確認</Typography>
       <AuthFormTextField
         type="password"
@@ -30,7 +30,7 @@ const ConFirmPasswordField = () => {
       <FormHelperText error sx={{ visibility: 'hidden' }}>
         パスワードを確認する必要があります
       </FormHelperText>
-    </AuthTextFieldContainer>
+    </FormTextFieldContainer>
   )
 }
 

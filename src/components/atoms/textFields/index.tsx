@@ -5,12 +5,13 @@ import SearchIcon from "@mui/icons-material/Search";
 type TextFieldProps = {
   placeholder: string;
   error: boolean;
-  type: "text" | "email" | "password";
+  type: "text" | "email" | "password" | "url";
 };
 
 const SearchField: FC = () => {
   return (
     <TextField
+      placeholder="映画を検索する"
       variant="filled"
       sx={{ width: "750px" }}
       InputProps={{
@@ -25,10 +26,15 @@ const SearchField: FC = () => {
   );
 };
 
-const AuthFormTextField: FC<TextFieldProps> = ({ placeholder, error }) => {
+const AuthFormTextField: FC<TextFieldProps> = ({
+  placeholder,
+  error,
+  type,
+}) => {
   return (
     <TextField
-      type="te"
+      required
+      type={type}
       error={error}
       placeholder={placeholder}
       InputLabelProps={{ shrink: true }}
@@ -38,4 +44,22 @@ const AuthFormTextField: FC<TextFieldProps> = ({ placeholder, error }) => {
   );
 };
 
-export { SearchField, AuthFormTextField };
+const MovieFormTextField: FC<TextFieldProps> = ({
+  placeholder,
+  error,
+  type,
+}) => {
+  return (
+    <TextField
+      required
+      type={type}
+      error={error}
+      placeholder={placeholder}
+      InputLabelProps={{ shrink: true }}
+      sx={{ width: "650px" }}
+      variant="standard"
+    />
+  );
+};
+
+export { SearchField, AuthFormTextField, MovieFormTextField };
