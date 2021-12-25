@@ -2,7 +2,7 @@ import { Box } from '@mui/material'
 import { MovieItem } from 'components/molecules'
 import React, { FC } from 'react'
 
-const MovieList: FC = () => {
+const HomeMovieList: FC = () => {
   const data = [
     {
       id: '1',
@@ -64,4 +64,4 @@ const MovieList: FC = () => {
   )
 }
 
-export { MovieList }
+export { HomeMovieList }
