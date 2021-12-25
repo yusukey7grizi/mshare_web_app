@@ -1,30 +1,64 @@
-import React, { FC } from 'react'
-import { Box } from '@mui/material'
-import { FormSubmitButton } from 'components/atoms/buttons'
+import React, { FC, SyntheticEvent, useContext } from 'react';
+import { Box } from '@mui/material';
+import { FormSubmitButton } from 'components/atoms/buttons';
 import {
   DescriptionField,
   GenreField,
   YoutubeUrlField,
-} from 'components/molecules'
-import { TitleField } from 'components/molecules/titleField'
+} from 'components/molecules';
+import { TitleField } from 'components/molecules/titleField';
+import { AppContext } from 'contexts/appContext';
+import { muiAutoCompleteOnChangeEvent, MuiOnChangeEvent } from 'types';
+
+type CreateMovieFormInputTypes =
+  | 'title'
+  | 'description'
+  | 'youtubeUrl'
+  | 'genre';
 
 const MovieForm: FC = () => {
+  const { createMovieInput, setCreateMovieInput } = useContext(AppContext);
+  const createOnChangeHandler = (formType: CreateMovieFormInputTypes) => {
+    return ({ target: { value } }: MuiOnChangeEvent) => {
+      if (!value) {
+        return;
+      }
+      const updatedInput = createMovieInput;
+      updatedInput[formType] = value;
+      setCreateMovieInput({ ...createMovieInput, ...updatedInput });
+      console.log(createMovieInput);
+    };
+  };
+
+  const autoCompleteOnChangeHandler = (
+    event: muiAutoCompleteOnChangeEvent,
+    value: string | null
+  ) => {
+    if (!value) {
+      return;
+    }
+    const updatedInput = createMovieInput;
+    updatedInput['genre'] = value;
+    setCreateMovieInput({ ...createMovieInput, ...updatedInput });
+    console.log(createMovieInput);
+  };
+
   return (
     <Box
-      component="form"
+      component='form'
       sx={{
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
       }}
     >
-      <TitleField />
-      <DescriptionField />
-      <GenreField />
-      <YoutubeUrlField />
-      <FormSubmitButton text="作成" />
+      <TitleField onChange={createOnChangeHandler('title')} />
+      <DescriptionField onChange={createOnChangeHandler('description')} />
+      <GenreField onChange={autoCompleteOnChangeHandler} />
+      <YoutubeUrlField onChange={createOnChangeHandler('youtubeUrl')} />
+      <FormSubmitButton text='作成' />
     </Box>
-  )
-}
+  );
+};
 
-export { MovieForm }
+export { MovieForm };
