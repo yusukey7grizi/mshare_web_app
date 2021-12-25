@@ -1,14 +1,10 @@
 // if logged in, show log in or register
 // else dashboard
-import { Bar } from 'components/organisms'
+import { Dashboard } from 'components/templates/dashboard'
 import type { NextPage } from 'next'
 
 const Home: NextPage = () => {
-  return (
-    <>
-      <Bar />
-    </>
-  )
+  return <Dashboard />
 }
 
 export default Home
