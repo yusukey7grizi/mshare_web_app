@@ -1,10 +1,10 @@
 // if logged in, show log in or register
 // else dashboard
-import { Dashboard } from 'components/templates/dashboard'
+import { DashboardTemplate } from 'components/templates/dashboardTemplate'
 import type { NextPage } from 'next'
 
 const Home: NextPage = () => {
-  return <Dashboard />
+  return <DashboardTemplate />
 }
 
 export default Home
