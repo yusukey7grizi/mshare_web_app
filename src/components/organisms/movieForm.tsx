@@ -1,46 +1,46 @@
-import React, { FC, useContext } from 'react';
-import { Box } from '@mui/material';
-import { FormSubmitButton } from 'components/atoms/buttons';
+import React, { FC, useContext } from 'react'
+import { Box } from '@mui/material'
+import { FormSubmitButton } from 'components/atoms/buttons'
 import {
   DescriptionField,
   GenreField,
   YoutubeUrlField,
-} from 'components/molecules';
-import { TitleField } from 'components/molecules/titleField';
-import { AppContext } from 'contexts/appContext';
-import { muiAutoCompleteOnChangeEvent, MuiOnChangeEvent } from 'types';
+} from 'components/molecules'
+import { TitleField } from 'components/molecules/titleField'
+import { AppContext } from 'contexts/appContext'
+import { MuiAutoCompleteOnChangeEvent, MuiOnChangeEvent } from 'types'
 
 type CreateMovieFormInputTypes =
   | 'title'
   | 'description'
   | 'youtubeUrl'
-  | 'genre';
+  | 'genre'
 
 const MovieForm: FC = () => {
-  const { createMovieInput, setCreateMovieInput } = useContext(AppContext);
+  const { createMovieInput, setCreateMovieInput } = useContext(AppContext)
 
   const createOnChangeHandler = (formType: CreateMovieFormInputTypes) => {
     return ({ target: { value } }: MuiOnChangeEvent) => {
-      createMovieInput[formType] = value;
-      setCreateMovieInput(createMovieInput);
-    };
-  };
+      createMovieInput[formType] = value
+      setCreateMovieInput(createMovieInput)
+    }
+  }
 
   const autoCompleteOnChangeHandler = (
-    event: muiAutoCompleteOnChangeEvent,
-    value: string | null
+    event: MuiAutoCompleteOnChangeEvent,
+    value: string | null,
   ) => {
     if (!value) {
-      return;
+      return
     }
-    const updatedInput = createMovieInput;
-    updatedInput['genre'] = value;
-    setCreateMovieInput({ ...createMovieInput, ...updatedInput });
-  };
+    const updatedInput = createMovieInput
+    updatedInput['genre'] = value
+    setCreateMovieInput({ ...createMovieInput, ...updatedInput })
+  }
 
   return (
     <Box
-      component='form'
+      component="form"
       sx={{
         display: 'flex',
         flexDirection: 'column',
@@ -51,9 +51,9 @@ const MovieForm: FC = () => {
       <DescriptionField onChange={createOnChangeHandler('description')} />
       <GenreField onChange={autoCompleteOnChangeHandler} />
       <YoutubeUrlField onChange={createOnChangeHandler('youtubeUrl')} />
-      <FormSubmitButton text='作成' />
+      <FormSubmitButton text="作成" />
     </Box>
-  );
-};
+  )
+}
 
-export { MovieForm };
+export { MovieForm }

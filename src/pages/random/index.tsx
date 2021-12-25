@@ -1,7 +1,8 @@
+import { RandomTemplate } from 'components/templates/randomTemplate'
 import React from 'react'
 
-const index = () => {
-  return <div></div>
+const Random = () => {
+  return <RandomTemplate />
 }
 
-export default index
+export default Random
