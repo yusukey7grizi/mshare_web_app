@@ -1,9 +1,9 @@
 import React, { FC, useState } from 'react'
 import { MovieInfo } from 'pages/movie/[id]'
 import { Bar, MovieDetailContent } from 'components/organisms'
-import { SearchedMovieList } from 'components/organisms/searchedMovieList'
+import { SearchedMovieList as MovieList } from 'components/organisms/searchedMovieList'
 import { MuiDivider } from 'components/atoms/divider'
-import { OtherMoviesTitle } from 'components/atoms/texts'
+import { MovieListTitle } from 'components/atoms/texts'
 import { MoviePlayerState } from 'types'
 
 type MovieDetailsProps = {
@@ -17,7 +17,7 @@ const MovieDetailTemplate: FC<MovieDetailsProps> = ({ movieInfo }) => {
     duration: 0,
   })
 
-  const name = 'シネマトゥデイ'
+  const username = 'シネマトゥデイ'
 
   return (
     <Bar>
@@ -25,9 +25,9 @@ const MovieDetailTemplate: FC<MovieDetailsProps> = ({ movieInfo }) => {
         movieInfo={movieInfo}
         setMoviePlayerState={setMoviePlayerState}
       />
-      <OtherMoviesTitle name={name} />
+      <MovieListTitle username={username} />
       <MuiDivider />
-      <SearchedMovieList />
+      <MovieList />
     </Bar>
   )
 }
