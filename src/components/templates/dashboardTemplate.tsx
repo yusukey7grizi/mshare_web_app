@@ -4,7 +4,7 @@ import { Bar } from 'components/organisms'
 import { HomeMovieList } from 'components/organisms/movieList'
 import React, { FC } from 'react'
 
-const Dashboard: FC = () => {
+const DashboardTemplate: FC = () => {
   return (
     <Bar>
       <Typography variant="h5">アクション映画</Typography>
@@ -31,4 +31,4 @@ const Dashboard: FC = () => {
   )
 }
 
-export { Dashboard }
+export { DashboardTemplate }

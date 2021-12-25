@@ -1,16 +1,23 @@
-import { FC } from 'react'
+import { FC, KeyboardEvent } from 'react'
 import { InputAdornment, TextField } from '@mui/material'
 import SearchIcon from '@mui/icons-material/Search'
+import { MuiKeyBoardEvent, MuiOnChangeEvent } from 'types'
 
 type TextFieldProps = {
   placeholder: string
   error: boolean
   type: 'text' | 'email' | 'password' | 'url'
 }
+type SearchFieldProps = {
+  onKeyPress: ({ key }: MuiKeyBoardEvent) => void
+  onChange: ({ target: { value } }: MuiOnChangeEvent) => void
+}
 
-const SearchField: FC = () => {
+const SearchField: FC<SearchFieldProps> = ({ onKeyPress, onChange }) => {
   return (
     <TextField
+      onChange={onChange}
+      onKeyPress={onKeyPress}
       placeholder="映画を検索する"
       variant="filled"
       sx={{ width: '750px' }}

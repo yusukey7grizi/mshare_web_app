@@ -1,12 +1,16 @@
-import { FC } from 'react'
+import { FC, useState } from 'react'
 import { Drawer, Box, Divider, Toolbar, AppBar } from '@mui/material'
 import { DrawerLinkList, DrawerMovieList } from 'components/molecules'
 import { LogOutButton } from 'components/atoms/buttons'
 import { SearchField } from 'components/atoms/textFields'
 import { SideBarTitle } from 'components/atoms/titles'
 import { FlexBox, SideBarBox } from 'components/atoms/layoutElement'
+import { useRouter } from 'next/router'
+import { MuiOnChangeEvent } from 'types'
 
 const drawerWidth = 240
+
+type MuiKeyBoardEvent = React.KeyboardEvent<HTMLInputElement>
 
 const SideBar: FC = () => {
   return (
@@ -33,6 +37,24 @@ const SideBar: FC = () => {
 }
 
 const TopBar: FC = () => {
+  const router = useRouter()
+  const [inputValue, setInputValue] = useState<string>('')
+  const searchHandler = ({ key }: MuiKeyBoardEvent) => {
+    if (key === 'Enter') {
+      router.push({
+        pathname: '/search',
+        query: { input: inputValue },
+      })
+    }
+  }
+
+  const handleOnChange = ({ target: { value } }: MuiOnChangeEvent) => {
+    if (!value) {
+      return
+    }
+    setInputValue(value)
+  }
+
   return (
     <AppBar
       position="fixed"
@@ -40,7 +62,7 @@ const TopBar: FC = () => {
     >
       <Toolbar sx={{ backgroundColor: '#ffff' }}>
         <Box component="div" sx={{ flexGrow: 1.5 }} />
-        <SearchField />
+        <SearchField onKeyPress={searchHandler} onChange={handleOnChange} />
         <LogOutButton />
       </Toolbar>
     </AppBar>
@@ -54,7 +76,7 @@ const Bar: FC = ({ children }) => {
       <SideBar />
       <Box
         component="div"
-        sx={{ p: '3rem', pt: '7rem', margin: 'auto', overflowX: 'hidden' }}
+        sx={{ pt: '7rem', margin: 'auto', overflowX: 'hidden' }}
       >
         {children}
       </Box>

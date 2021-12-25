@@ -1,7 +1,8 @@
-import React from 'react'
+import { SearchTemplate } from 'components/templates/searchTemplate'
+import React, { FC } from 'react'
 
-const index = () => {
-  return <div></div>
+const Search: FC = () => {
+  return <SearchTemplate />
 }
 
-export default index
+export default Search
