@@ -1,22 +1,28 @@
-import { FormHelperText, Typography } from '@mui/material'
-import { FormTextFieldContainer } from 'components/atoms/layoutElement'
-import { MovieFormTextField } from 'components/atoms/textFields'
-import React, { FC } from 'react'
+import { FormHelperText, Typography } from '@mui/material';
+import { FormTextFieldContainer } from 'components/atoms/layoutElement';
+import { MovieFormTextField } from 'components/atoms/textFields';
+import React, { FC } from 'react';
+import { MuiOnChangeEvent } from 'types';
 
-const DescriptionField: FC = () => {
+type DescriptionFieldProps = {
+  onChange: (input: MuiOnChangeEvent) => void;
+};
+
+const DescriptionField: FC<DescriptionFieldProps> = ({ onChange }) => {
   return (
     <FormTextFieldContainer>
       <Typography gutterBottom>概要</Typography>
       <MovieFormTextField
-        type="text"
+        type='text'
         error={false}
-        placeholder="概要を入力してください"
+        placeholder='概要を入力してください'
+        onChange={onChange}
       />
       <FormHelperText sx={{ visibility: 'visible' }}>
         概要を入力してください
       </FormHelperText>
     </FormTextFieldContainer>
-  )
-}
+  );
+};
 
-export { DescriptionField }
+export { DescriptionField };
