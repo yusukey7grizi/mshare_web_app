@@ -7,7 +7,7 @@ import ButtonUnstyled, { ButtonUnstyledProps } from '@mui/base/ButtonUnstyled'
 import GoogleIcon from '@mui/icons-material/Google'
 
 type FormButtonProps = {
-  text: 'ログイン' | '登録' | '作成'
+  text: 'ログイン' | '登録' | '作成' | 'ガチャる！'
 }
 
 type ShowMoreButtonProps = {
@@ -67,11 +67,12 @@ const ShowMoreButton: FC<ShowMoreButtonProps> = ({
 }
 const CustomFormButtonRoot: FC = styled('button')`
   background-color: #007fff;
-  padding: 15px 8%;
+  width: 30%;
+  height: 4rem;
   border-radius: 500px;
   color: #fff;
   font-weight: 200;
-  font-size: 20px;
+  font-size: 1rem;
   transition: all 200ms ease;
   cursor: pointer;
   box-shadow: 0 4px 20px 0 rgba(61, 71, 82, 0.1), 0 0 0 0 rgba(0, 127, 255, 0);
