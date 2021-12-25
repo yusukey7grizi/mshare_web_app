@@ -7,6 +7,7 @@ type CreateMovieInput = {
   description?: string
   username?: string
   youtubeUrl?: string
+  genre?: string
 }
 
 export type { CreateMovieInput, CreateUserInput }
