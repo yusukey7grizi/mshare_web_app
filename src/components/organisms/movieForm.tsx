@@ -1,4 +1,4 @@
-import React, { FC, SyntheticEvent, useContext } from 'react';
+import React, { FC, useContext } from 'react';
 import { Box } from '@mui/material';
 import { FormSubmitButton } from 'components/atoms/buttons';
 import {
@@ -18,15 +18,11 @@ type CreateMovieFormInputTypes =
 
 const MovieForm: FC = () => {
   const { createMovieInput, setCreateMovieInput } = useContext(AppContext);
+
   const createOnChangeHandler = (formType: CreateMovieFormInputTypes) => {
     return ({ target: { value } }: MuiOnChangeEvent) => {
-      if (!value) {
-        return;
-      }
-      const updatedInput = createMovieInput;
-      updatedInput[formType] = value;
-      setCreateMovieInput({ ...createMovieInput, ...updatedInput });
-      console.log(createMovieInput);
+      createMovieInput[formType] = value;
+      setCreateMovieInput(createMovieInput);
     };
   };
 
@@ -40,7 +36,6 @@ const MovieForm: FC = () => {
     const updatedInput = createMovieInput;
     updatedInput['genre'] = value;
     setCreateMovieInput({ ...createMovieInput, ...updatedInput });
-    console.log(createMovieInput);
   };
 
   return (

@@ -20,15 +20,11 @@ type CreateUserFormInputTypes =
 
 const RegisterForm = () => {
   const { createUserInput, setCreateUserInput } = useContext(AppContext);
+
   const createOnChangeHandler = (formType: CreateUserFormInputTypes) => {
     return ({ target: { value } }: MuiOnChangeEvent) => {
-      if (!value) {
-        return;
-      }
-      const updatedInput = createUserInput;
-      updatedInput[formType] = value;
-      setCreateUserInput({ ...createUserInput, ...updatedInput });
-      console.log(createUserInput);
+      createUserInput[formType] = value;
+      setCreateUserInput(createUserInput);
     };
   };
   return (

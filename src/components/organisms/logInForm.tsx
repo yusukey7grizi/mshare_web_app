@@ -9,15 +9,11 @@ import { MuiOnChangeEvent } from 'types';
 
 const LogInForm = () => {
   const { logInUserInput, setLogInUserInput } = useContext(AppContext);
+
   const createOnChangeHandler = (formType: 'email' | 'password') => {
     return ({ target: { value } }: MuiOnChangeEvent) => {
-      if (!value) {
-        return;
-      }
-      const updatedInput = logInUserInput;
-      updatedInput[formType] = value;
-      setLogInUserInput({ ...logInUserInput, ...updatedInput });
-      console.log(logInUserInput);
+      logInUserInput[formType] = value;
+      setLogInUserInput(logInUserInput);
     };
   };
 

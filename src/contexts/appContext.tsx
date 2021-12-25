@@ -13,11 +13,23 @@ type AppState = {
 export const AppContext = createContext({} as AppState);
 
 const AppProvider: FC = ({ children }) => {
-  const [createMovieInput, setCreateMovieInput] = useState<CreateMovieInput>(
-    {}
-  );
-  const [createUserInput, setCreateUserInput] = useState<CreateUserInput>({});
-  const [logInUserInput, setLogInUserInput] = useState<LogInUserInput>({});
+  const [createMovieInput, setCreateMovieInput] = useState<CreateMovieInput>({
+    title: '',
+    description: '',
+    youtubeUrl: '',
+    genre: '',
+  });
+  const [createUserInput, setCreateUserInput] = useState<CreateUserInput>({
+    username: '',
+    email: '',
+    confirmEmail: '',
+    password: '',
+    confirmPassword: '',
+  });
+  const [logInUserInput, setLogInUserInput] = useState<LogInUserInput>({
+    email: '',
+    password: '',
+  });
   return (
     <AppContext.Provider
       value={{
