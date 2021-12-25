@@ -1,7 +1,7 @@
 import React, { Dispatch, FC, SetStateAction } from 'react'
 import YouTube, { Options } from 'react-youtube'
 import { MovieInfo } from 'pages/movie/[id]'
-import { MoviePlayerState } from 'components/templates/movieDetailTemplate'
+import { MoviePlayerState } from 'types'
 
 type YouTubePlayerProps = {
   movieInfo: MovieInfo

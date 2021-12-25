@@ -1,6 +1,6 @@
 import React, { FC, useState } from 'react'
 import { FaceRecognitionToggle, FaceRecognition } from 'components/molecules'
-import { MoviePlayerState } from 'components/templates/movieDetailTemplate'
+import { MoviePlayerState } from 'types'
 
 type FacialExpressionRatingContainerProps = {
   moviePlayerState: MoviePlayerState

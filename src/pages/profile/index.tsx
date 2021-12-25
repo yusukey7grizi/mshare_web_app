@@ -1,7 +1,8 @@
+import { ProfileTemplate } from 'components/templates/profileTemplate'
 import React from 'react'
 
-const index = () => {
-  return <div></div>
+const Profile = () => {
+  return <ProfileTemplate />
 }
 
-export default index
+export default Profile
