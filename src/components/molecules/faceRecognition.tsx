@@ -6,7 +6,7 @@ import {
   TNetInput,
 } from 'face-api.js'
 import useInterval from 'use-interval'
-import { MoviePlayerState } from 'components/templates/movieDetailTemplate'
+import { MoviePlayerState } from 'types'
 
 type FaceRecognitionProps = {
   moviePlayerState: MoviePlayerState

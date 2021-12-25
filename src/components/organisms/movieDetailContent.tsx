@@ -1,8 +1,8 @@
 import React, { Dispatch, FC, SetStateAction } from 'react'
 import { YouTubePlayer, YouTubeVideoDetails } from 'components/molecules'
 import { MovieInfo } from 'pages/movie/[id]'
-import { MoviePlayerState } from 'components/templates/movieDetailTemplate'
 import { Box } from '@mui/material'
+import { MoviePlayerState } from 'types'
 
 type MovieDetailContainerProps = {
   movieInfo: MovieInfo
