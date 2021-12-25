@@ -1,44 +1,30 @@
-import React, { FC, useState } from 'react';
-import {
-  MovieDetailContainer,
-  OtherMoviesContainer,
-  FacialExpressionRatingContainer,
-} from 'components/organisms';
-import { MovieInfo } from 'pages/movie/[id]';
+import React, { Dispatch, FC, SetStateAction } from 'react'
+import { YouTubePlayer, YouTubeVideoDetails } from 'components/molecules'
+import { MovieInfo } from 'pages/movie/[id]'
+import { MoviePlayerState } from 'components/templates/movieDetailTemplate'
+import { Box } from '@mui/material'
 
-export type MoviePlayerState = {
-  playerState: YT.PlayerState;
-  //       UNSTARTED = -1,
-  //       ENDED = 0,
-  //       PLAYING = 1,
-  //       PAUSED = 2,
-  //       BUFFERING = 3,
-  //       CUED = 5
-  currentTime: number;
-  duration: number;
-};
+type MovieDetailContainerProps = {
+  movieInfo: MovieInfo
+  setMoviePlayerState: Dispatch<SetStateAction<MoviePlayerState>>
+}
 
-type MovieDetailContentProps = {
-  movieInfo: MovieInfo;
-};
-
-const MovieDetailContent: FC<MovieDetailContentProps> = ({ movieInfo }) => {
-  const [moviePlayerState, setMoviePlayerState] = useState<MoviePlayerState>({
-    playerState: -1,
-    currentTime: 0,
-    duration: 0,
-  });
-
+const MovieDetailContent: FC<MovieDetailContainerProps> = ({
+  movieInfo,
+  setMoviePlayerState,
+}) => {
   return (
-    <>
-      <MovieDetailContainer
+    <Box
+      component="div"
+      sx={{ width: '800px', margin: 'auto', textAlign: 'left' }}
+    >
+      <YouTubePlayer
         movieInfo={movieInfo}
         setMoviePlayerState={setMoviePlayerState}
       />
-      <OtherMoviesContainer movieInfo={movieInfo} />
-      <FacialExpressionRatingContainer moviePlayerState={moviePlayerState} />
-    </>
-  );
-};
+      <YouTubeVideoDetails movieInfo={movieInfo} />
+    </Box>
+  )
+}
 
-export { MovieDetailContent };
+export { MovieDetailContent }
