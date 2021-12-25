@@ -3,12 +3,17 @@ import {
   FormHelperText,
   TextField,
   Typography,
-} from '@mui/material'
-import { FormTextFieldContainer } from 'components/atoms/layoutElement'
-import React, { FC } from 'react'
+} from '@mui/material';
+import { FormTextFieldContainer } from 'components/atoms/layoutElement';
+import React, { FC } from 'react';
+import { muiAutoCompleteOnChangeEvent } from 'types';
 
-const GenreField: FC = () => {
-  const options = ['アクション', 'ロマンス', 'ホラー', 'キッズ']
+type GenreFieldProps = {
+  onChange: (event: muiAutoCompleteOnChangeEvent, value: string | null) => void;
+};
+
+const GenreField: FC<GenreFieldProps> = ({ onChange }) => {
+  const options = ['アクション', 'ロマンス', 'ホラー', 'キッズ'];
 
   return (
     <FormTextFieldContainer>
@@ -16,12 +21,13 @@ const GenreField: FC = () => {
       <Autocomplete
         sx={{ width: '650px' }}
         options={options}
+        onChange={onChange}
         renderInput={(params) => (
           <TextField
             required
-            placeholder="ジャンルを選択してください"
+            placeholder='ジャンルを選択してください'
             {...params}
-            variant="standard"
+            variant='standard'
           />
         )}
       />
@@ -29,7 +35,7 @@ const GenreField: FC = () => {
         ジャンルを選択してください
       </FormHelperText>
     </FormTextFieldContainer>
-  )
-}
+  );
+};
 
-export { GenreField }
+export { GenreField };
