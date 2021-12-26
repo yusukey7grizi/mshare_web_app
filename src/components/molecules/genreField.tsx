@@ -33,9 +33,9 @@ const GenreField: FC<GenreFieldProps> = ({ onChange }) => {
         renderInput={(params) => (
           <TextField
             required
-            placeholder="ジャンルを選択してください"
+            placeholder='ジャンルを選択してください'
             {...params}
-            variant="standard"
+            variant='standard'
           />
         )}
       />
