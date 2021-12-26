@@ -21,7 +21,7 @@ const LogInForm = () => {
     }
   }
 
-  const logIn = (event: FormEvent) => {
+  const logInHandler = (event: FormEvent) => {
     event.preventDefault()
     auth
       .logIn(logInUserInput.email, logInUserInput.password)
@@ -44,7 +44,7 @@ const LogInForm = () => {
           flexDirection: 'column',
           alignItems: 'center',
         }}
-        onSubmit={(e: FormEvent) => logIn(e)}
+        onSubmit={(e: FormEvent) => logInHandler(e)}
       >
         <GoogleSignInButton />
         <EmailField onChange={createOnChangeHandler('email')} />

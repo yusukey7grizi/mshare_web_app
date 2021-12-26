@@ -32,7 +32,7 @@ const RegisterForm = () => {
     }
   }
 
-  const createUser = (event: FormEvent) => {
+  const createUserHandler = (event: FormEvent) => {
     event.preventDefault()
     auth
       .createUser(
@@ -59,7 +59,7 @@ const RegisterForm = () => {
           flexDirection: 'column',
           alignItems: 'center',
         }}
-        onSubmit={(e: FormEvent) => createUser(e)}
+        onSubmit={(e: FormEvent) => createUserHandler(e)}
       >
         <EmailField onChange={createOnChangeHandler('email')} />
         <ConfirmEmailField onChange={createOnChangeHandler('confirmEmail')} />
