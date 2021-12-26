@@ -6,14 +6,18 @@ import { GenreField } from 'components/molecules'
 import { Bar, MovieDetailContent } from 'components/organisms'
 import { SearchedMovieList as MovieList } from 'components/organisms/searchedMovieList'
 import React, { FC, useState } from 'react'
-import { MoviePlayerState, MuiAutoCompleteOnChangeEvent } from 'types'
+import {
+  MoviePlayerState,
+  MuiAutoCompleteOnChangeEvent,
+  MuiOnClickEvent,
+} from 'types'
 import { Movie } from 'types/dataTypes'
 
 type Props = {
-  onSubmit: () => void
-  randomMovie: Movie | null
+  onSubmit: (e: MuiOnClickEvent) => void
+  movie: Movie | null
 }
-const RandomTemplate: FC<Props> = ({ onSubmit, randomMovie }) => {
+const RandomTemplate: FC<Props> = ({ onSubmit, movie }) => {
   const [moviePlayerState, setMoviePlayerState] = useState<MoviePlayerState>({
     playerState: -1,
     currentTime: 0,
@@ -47,13 +51,13 @@ const RandomTemplate: FC<Props> = ({ onSubmit, randomMovie }) => {
         <FormSubmitButton text="ガチャる！" />
       </Box>
       <MuiDivider />
-      {randomMovie && (
+      {movie && (
         <>
           <MovieDetailContent
-            movie={randomMovie}
+            movie={movie}
             setMoviePlayerState={setMoviePlayerState}
           />
-          <MovieListTitle username={randomMovie.username} />
+          <MovieListTitle username={movie.username} />
           <MuiDivider />
           <MovieList />
         </>
