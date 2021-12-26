@@ -3,9 +3,7 @@ import { Link, Button, Typography, IconButton } from '@mui/material'
 import LogoutIcon from '@mui/icons-material/Logout'
 import { styled } from '@mui/system'
 import ButtonUnstyled, { ButtonUnstyledProps } from '@mui/base/ButtonUnstyled'
-
 import GoogleIcon from '@mui/icons-material/Google'
-import { MuiOnClickEvent } from 'types'
 
 type FormButtonProps = {
   text: 'ログイン' | '登録' | '作成' | 'ガチャる！'
@@ -46,7 +44,7 @@ type LogOutButtonProps = {
 
 const LogOutButton: FC<LogOutButtonProps> = ({ logOutHandler }) => {
   return (
-    <Link component={Button} underline='none' onClick={logOutHandler}>
+    <Link component={Button} underline="none" onClick={logOutHandler}>
       <LogoutIcon />
       <Typography>ログアウト</Typography>
     </Link>
@@ -62,7 +60,7 @@ const ShowMoreButton: FC<ShowMoreButtonProps> = ({
       onClick={onClick}
       sx={{ color: '#A9A9A9' }}
       component={Button}
-      underline='none'
+      underline="none"
     >
       <Typography sx={{ fontSize: '0.5rem' }}>
         {isDetailOpened ? 'Show Less' : 'Show More'}
@@ -90,7 +88,7 @@ const CustomFormButtonRoot: FC = styled('button')`
 
 const CustomFormButton: FC<ButtonUnstyledProps> = (props) => {
   return (
-    <ButtonUnstyled type='submit' component={CustomFormButtonRoot} {...props} />
+    <ButtonUnstyled type="submit" component={CustomFormButtonRoot} {...props} />
   )
 }
 
@@ -98,4 +96,18 @@ const FormSubmitButton: FC<FormButtonProps> = ({ text }) => {
   return <CustomFormButton>{text}</CustomFormButton>
 }
 
-export { LogOutButton, FormSubmitButton, GoogleSignInButton, ShowMoreButton }
+const RandomButton: FC = () => {
+  return (
+    <Button type="submit" sx={{ width: '20rem', fontSize: '1.5rem' }}>
+      ガチャる！
+    </Button>
+  )
+}
+
+export {
+  LogOutButton,
+  FormSubmitButton,
+  GoogleSignInButton,
+  ShowMoreButton,
+  RandomButton,
+}

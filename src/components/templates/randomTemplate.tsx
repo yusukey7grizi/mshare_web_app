@@ -1,36 +1,32 @@
 import { Box } from '@mui/material'
-import { FormSubmitButton } from 'components/atoms/buttons'
+import { RandomButton } from 'components/atoms/buttons'
 import { MuiDivider } from 'components/atoms/divider'
 import { MovieListTitle } from 'components/atoms/texts'
 import { GenreField } from 'components/molecules'
 import { Bar, MovieDetailContent } from 'components/organisms'
 import { SearchedMovieList as MovieList } from 'components/organisms/searchedMovieList'
 import React, { FC, useState } from 'react'
-import { MoviePlayerState, MuiAutoCompleteOnChangeEvent } from 'types'
+import {
+  MoviePlayerState,
+  MuiAutoCompleteOnChangeEvent,
+  MuiOnClickEvent,
+} from 'types'
 import { Movie } from 'types/dataTypes'
+import { motion } from 'framer-motion'
+import { RandomTitle } from 'components/atoms/titles'
 
 type Props = {
-  onSubmit: () => void
-  randomMovie: Movie | null
+  onSubmit: (e: MuiOnClickEvent) => void
+  movie: Movie | null
+  onChange: (event: MuiAutoCompleteOnChangeEvent, value: string | null) => void
 }
-const RandomTemplate: FC<Props> = ({ onSubmit, randomMovie }) => {
+
+const RandomTemplate: FC<Props> = ({ onSubmit, movie, onChange }) => {
   const [moviePlayerState, setMoviePlayerState] = useState<MoviePlayerState>({
     playerState: -1,
     currentTime: 0,
     duration: 0,
   })
-  const [genre, setGenre] = useState('')
-
-  const handleOnChangeGenre = (
-    event: MuiAutoCompleteOnChangeEvent,
-    value: string | null,
-  ) => {
-    if (value) {
-      setGenre(value)
-    } else {
-      setGenre('')
-    }
-  }
 
   return (
     <Bar>
@@ -43,21 +39,28 @@ const RandomTemplate: FC<Props> = ({ onSubmit, randomMovie }) => {
         }}
         onSubmit={onSubmit}
       >
-        <GenreField onChange={handleOnChangeGenre} />
-        <FormSubmitButton text="ガチャる！" />
+        <RandomTitle />
+        <GenreField onChange={onChange} />
+        <RandomButton />
       </Box>
       <MuiDivider />
-      {randomMovie && (
-        <>
-          <MovieDetailContent
-            movie={randomMovie}
-            setMoviePlayerState={setMoviePlayerState}
-          />
-          <MovieListTitle username={randomMovie.username} />
-          <MuiDivider />
-          <MovieList />
-        </>
-      )}
+      <Box sx={{ height: '65rem', overflow: 'visible' }}>
+        {movie && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 3 }}
+          >
+            <MovieDetailContent
+              movie={movie}
+              setMoviePlayerState={setMoviePlayerState}
+            />
+            <MovieListTitle username={movie.username} />
+            <MuiDivider />
+            <MovieList />
+          </motion.div>
+        )}
+      </Box>
     </Bar>
   )
 }
