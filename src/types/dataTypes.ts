@@ -8,6 +8,7 @@ type Movie = {
   youtubeThumbnailUrl: string
   grinningScore: number
   username: string
+  createdAt: string
 }
 
 export type { Movie }
