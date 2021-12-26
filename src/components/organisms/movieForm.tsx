@@ -12,8 +12,8 @@ import { MuiAutoCompleteOnChangeEvent, MuiOnChangeEvent } from 'types'
 
 type CreateMovieFormInputTypes =
   | 'title'
-  | 'description'
-  | 'youtubeUrl'
+  | 'overview'
+  | 'youtubeLinkUrl'
   | 'genre'
 
 const MovieForm: FC = () => {
@@ -28,7 +28,7 @@ const MovieForm: FC = () => {
 
   const autoCompleteOnChangeHandler = (
     event: MuiAutoCompleteOnChangeEvent,
-    value: string | null,
+    value: string | null
   ) => {
     if (!value) {
       return
@@ -40,7 +40,7 @@ const MovieForm: FC = () => {
 
   return (
     <Box
-      component="form"
+      component='form'
       sx={{
         display: 'flex',
         flexDirection: 'column',
@@ -48,10 +48,10 @@ const MovieForm: FC = () => {
       }}
     >
       <TitleField onChange={createOnChangeHandler('title')} />
-      <DescriptionField onChange={createOnChangeHandler('description')} />
+      <DescriptionField onChange={createOnChangeHandler('overview')} />
       <GenreField onChange={autoCompleteOnChangeHandler} />
-      <YoutubeUrlField onChange={createOnChangeHandler('youtubeUrl')} />
-      <FormSubmitButton text="作成" />
+      <YoutubeUrlField onChange={createOnChangeHandler('youtubeLinkUrl')} />
+      <FormSubmitButton text='作成' />
     </Box>
   )
 }

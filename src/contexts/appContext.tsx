@@ -1,35 +1,35 @@
-import React, { createContext, useState, FC } from 'react';
-import { CreateMovieInput, CreateUserInput, LogInUserInput } from 'types';
+import React, { createContext, useState, FC } from 'react'
+import { CreateMovieInput, CreateUserInput, LogInUserInput } from 'types'
 
 type AppState = {
-  createMovieInput: CreateMovieInput;
-  setCreateMovieInput: (input: CreateMovieInput) => void;
-  createUserInput: CreateUserInput;
-  setCreateUserInput: (input: CreateUserInput) => void;
-  logInUserInput: LogInUserInput;
-  setLogInUserInput: (input: LogInUserInput) => void;
-};
+  createMovieInput: CreateMovieInput
+  setCreateMovieInput: (input: CreateMovieInput) => void
+  createUserInput: CreateUserInput
+  setCreateUserInput: (input: CreateUserInput) => void
+  logInUserInput: LogInUserInput
+  setLogInUserInput: (input: LogInUserInput) => void
+}
 
-export const AppContext = createContext({} as AppState);
+export const AppContext = createContext({} as AppState)
 
 const AppProvider: FC = ({ children }) => {
   const [createMovieInput, setCreateMovieInput] = useState<CreateMovieInput>({
     title: '',
-    description: '',
-    youtubeUrl: '',
+    overview: '',
+    youtubeLinkUrl: '',
     genre: '',
-  });
+  })
   const [createUserInput, setCreateUserInput] = useState<CreateUserInput>({
     username: '',
     email: '',
     confirmEmail: '',
     password: '',
     confirmPassword: '',
-  });
+  })
   const [logInUserInput, setLogInUserInput] = useState<LogInUserInput>({
     email: '',
     password: '',
-  });
+  })
   return (
     <AppContext.Provider
       value={{
@@ -43,7 +43,7 @@ const AppProvider: FC = ({ children }) => {
     >
       {children}
     </AppContext.Provider>
-  );
-};
+  )
+}
 
-export { AppProvider };
+export { AppProvider }
