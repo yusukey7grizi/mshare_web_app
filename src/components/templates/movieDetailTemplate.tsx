@@ -10,26 +10,12 @@ type MovieDetailsProps = {
   movie: Movie
 }
 
-const MovieDetailTemplate: FC<MovieDetailsProps> = () => {
+const MovieDetailTemplate: FC<MovieDetailsProps> = ({ movie }) => {
   const [moviePlayerState, setMoviePlayerState] = useState<MoviePlayerState>({
     playerState: -1,
     currentTime: 0,
     duration: 0,
   })
-
-  const username = 'シネマトゥデイ'
-
-  const movie = {
-    id: 1,
-    userId: 'string',
-    title: 'string',
-    overview: 'string',
-    genre: 'アクション映画',
-    youtubeTitleId: 'ttybTRn0D3E',
-    grinningScore: 1,
-    username: 'string',
-    createdAt: 'string',
-  }
 
   return (
     <Bar>
@@ -37,7 +23,7 @@ const MovieDetailTemplate: FC<MovieDetailsProps> = () => {
         movie={movie}
         setMoviePlayerState={setMoviePlayerState}
       />
-      <MovieListTitle username={username} />
+      <MovieListTitle username={movie.userId} />
       <MuiDivider />
       <MovieList />
     </Bar>
