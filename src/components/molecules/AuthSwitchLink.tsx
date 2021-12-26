@@ -13,7 +13,7 @@ const AuthSwitchLink: React.FC<AuthSwitchLinkProps> = ({ useCase }) => {
 
   const linkText = isSignUp ? 'ログイン。' : '新規登録。'
 
-  const href = isSignUp ? '/auth/logIn' : '/auth/register'
+  const href = isSignUp ? '/auth/login' : '/auth/register'
 
   return (
     <Grid sx={{ display: 'flex', marginTop: '30px' }}>

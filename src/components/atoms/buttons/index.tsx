@@ -41,7 +41,7 @@ const GoogleSignInButton: FC = () => {
 
 const LogOutButton: FC = () => {
   return (
-    <Link component={Button} underline="none" href="/auth/logIn">
+    <Link component={Button} underline="none" href="/auth/login">
       <LogoutIcon />
       <Typography>ログアウト</Typography>
     </Link>
