@@ -49,7 +49,7 @@ const TopBar: FC = () => {
     if (key === 'Enter') {
       router.push({
         pathname: '/search',
-        query: { input: inputValue },
+        query: { input: inputValue, useCase: 'title' },
       })
     }
   }
