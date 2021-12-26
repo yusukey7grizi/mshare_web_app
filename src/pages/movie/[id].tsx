@@ -25,7 +25,16 @@ const MovieDetail: FC = () => {
 
   useEffect(() => {
     // api fetching here
-
+    const fetchData = async () => {
+      try {
+        const res = await fetch('http://localhost:8000/movies/random')
+        const data = await res.json()
+        console.log(data)
+      } catch (error) {
+        console.log(error)
+      }
+    }
+    fetchData()
     // dummy data
     setMovieInfo({
       title: '東京リベンジャーズ',
