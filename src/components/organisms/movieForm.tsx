@@ -1,4 +1,4 @@
-import React, { FC, useContext } from 'react'
+import React, { FC, FormEvent, useContext } from 'react'
 import { Box } from '@mui/material'
 import { FormSubmitButton } from 'components/atoms/buttons'
 import {
@@ -8,7 +8,13 @@ import {
 } from 'components/molecules'
 import { TitleField } from 'components/molecules/titleField'
 import { AppContext } from 'contexts/appContext'
-import { MuiAutoCompleteOnChangeEvent, MuiOnChangeEvent } from 'types'
+import {
+  CreateMovieInput,
+  MuiAutoCompleteOnChangeEvent,
+  MuiOnChangeEvent,
+} from 'types'
+import { useAuth } from 'contexts/authContext'
+import { useRouter } from 'next/router'
 
 type CreateMovieFormInputTypes =
   | 'title'
@@ -16,8 +22,19 @@ type CreateMovieFormInputTypes =
   | 'youtubeLinkUrl'
   | 'genre'
 
+interface PostMovieBody {
+  title: string
+  overview: string
+  userId: string
+  userName: string
+  genre: string
+  youtubeTitleId: string
+}
+
 const MovieForm: FC = () => {
   const { createMovieInput, setCreateMovieInput } = useContext(AppContext)
+  const auth = useAuth()
+  const router = useRouter()
 
   const createOnChangeHandler = (formType: CreateMovieFormInputTypes) => {
     return ({ target: { value } }: MuiOnChangeEvent) => {
@@ -38,6 +55,39 @@ const MovieForm: FC = () => {
     setCreateMovieInput({ ...createMovieInput, ...updatedInput })
   }
 
+  const moviePostHandler = async (event: FormEvent) => {
+    event.preventDefault()
+
+    const youtubeUrlParams = new URLSearchParams(
+      createMovieInput.youtubeLinkUrl
+    )
+    const youtubeTitleId = youtubeUrlParams.get('v')
+
+    if (!(auth.user?.uid && auth.user?.displayName && youtubeTitleId)) return
+
+    const data: PostMovieBody = {
+      title: createMovieInput.title,
+      overview: createMovieInput.overview,
+      userId: auth.user.uid,
+      userName: auth.user.displayName,
+      genre: createMovieInput.genre,
+      youtubeTitleId: youtubeTitleId,
+    }
+
+    const res = await fetch('localhost:8000/movies', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(data),
+    })
+    if (res.ok) {
+      router.push('/')
+    } else {
+      router.push('/movie/post')
+    }
+  }
+
   return (
     <Box
       component='form'
@@ -46,6 +96,7 @@ const MovieForm: FC = () => {
         flexDirection: 'column',
         alignItems: 'center',
       }}
+      onSubmit={(e: FormEvent) => moviePostHandler(e)}
     >
       <TitleField onChange={createOnChangeHandler('title')} />
       <DescriptionField onChange={createOnChangeHandler('overview')} />

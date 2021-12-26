@@ -13,7 +13,15 @@ type GenreFieldProps = {
 }
 
 const GenreField: FC<GenreFieldProps> = ({ onChange }) => {
-  const options = ['アクション', 'ロマンス', 'ホラー', 'キッズ']
+  const options = [
+    'アクション映画',
+    'ホラー映画',
+    'ファンタジー映画',
+    'アドベンチャー映画',
+    'ミステリー映画',
+    '恋愛映画',
+    'その他',
+  ]
 
   return (
     <FormTextFieldContainer>
@@ -25,9 +33,9 @@ const GenreField: FC<GenreFieldProps> = ({ onChange }) => {
         renderInput={(params) => (
           <TextField
             required
-            placeholder="ジャンルを選択してください"
+            placeholder='ジャンルを選択してください'
             {...params}
-            variant="standard"
+            variant='standard'
           />
         )}
       />
