@@ -11,14 +11,14 @@ import React, { FC, Fragment } from 'react'
 type MovieItemProps = {
   key: number
   id: number
-  youtubeThumbnailUrl: string
+  youtubeTitleId: string
   username: string
   title: string
 }
 
 const MovieItem: FC<MovieItemProps> = ({
   id,
-  youtubeThumbnailUrl,
+  youtubeTitleId,
   username,
   title,
 }) => {
@@ -29,7 +29,10 @@ const MovieItem: FC<MovieItemProps> = ({
           sx={{ width: '16rem', height: '12.8rem' }}
           href={`/movie/${id}`}
         >
-          <CardMedia component="img" image={youtubeThumbnailUrl} />
+          <CardMedia
+            component="img"
+            image={`https://i.ytimg.com/vi/${youtubeTitleId}/mqdefault.jpg`}
+          />
           <CardContent>
             <Typography sx={{ fontWeight: 'bold' }}>{title}</Typography>
             <Typography sx={{ fontSize: '0.5rem' }}>{username}</Typography>

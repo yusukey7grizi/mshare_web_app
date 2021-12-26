@@ -15,19 +15,17 @@ const HomeMovieList: FC<Props> = ({ movieList }) => {
         overflowX: 'scroll',
       }}
     >
-      {movieList
-        .slice(0, 9)
-        .map(({ id, title, youtubeThumbnailUrl, username }) => {
-          return (
-            <MovieItem
-              id={id}
-              key={id}
-              youtubeThumbnailUrl={youtubeThumbnailUrl}
-              username={username}
-              title={title}
-            />
-          )
-        })}
+      {movieList.slice(0, 9).map(({ id, title, youtubeTitleId, username }) => {
+        return (
+          <MovieItem
+            id={id}
+            key={id}
+            youtubeTitleId={youtubeTitleId}
+            username={username}
+            title={title}
+          />
+        )
+      })}
     </Box>
   )
 }

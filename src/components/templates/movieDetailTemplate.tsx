@@ -19,10 +19,22 @@ const MovieDetailTemplate: FC<MovieDetailsProps> = ({ movieInfo }) => {
 
   const username = 'シネマトゥデイ'
 
+  const movie = {
+    id: 1,
+    userId: 'string',
+    title: 'string',
+    overview: 'string',
+    genre: 'アクション映画',
+    youtubeTitleId: 'ttybTRn0D3E',
+    grinningScore: 1,
+    username: 'string',
+    createdAt: 'string',
+  }
+
   return (
     <Bar>
       <MovieDetailContent
-        movieInfo={movieInfo}
+        movie={movie}
         setMoviePlayerState={setMoviePlayerState}
       />
       <MovieListTitle username={username} />

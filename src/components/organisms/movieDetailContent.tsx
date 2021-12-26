@@ -3,14 +3,15 @@ import { YouTubePlayer, YouTubeVideoDetails } from 'components/molecules'
 import { MovieInfo } from 'pages/movie/[id]'
 import { Box } from '@mui/material'
 import { MoviePlayerState } from 'types'
+import { Movie } from 'types/dataTypes'
 
 type MovieDetailContainerProps = {
-  movieInfo: MovieInfo
+  movie: Movie
   setMoviePlayerState: Dispatch<SetStateAction<MoviePlayerState>>
 }
 
 const MovieDetailContent: FC<MovieDetailContainerProps> = ({
-  movieInfo,
+  movie,
   setMoviePlayerState,
 }) => {
   return (
@@ -18,11 +19,8 @@ const MovieDetailContent: FC<MovieDetailContainerProps> = ({
       component="div"
       sx={{ width: '800px', margin: 'auto', textAlign: 'left' }}
     >
-      <YouTubePlayer
-        movieInfo={movieInfo}
-        setMoviePlayerState={setMoviePlayerState}
-      />
-      <YouTubeVideoDetails movieInfo={movieInfo} />
+      <YouTubePlayer movie={movie} setMoviePlayerState={setMoviePlayerState} />
+      <YouTubeVideoDetails movie={movie} />
     </Box>
   )
 }
