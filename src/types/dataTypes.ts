@@ -4,8 +4,7 @@ type Movie = {
   title: string
   overview: string
   genre: string
-  youtubeLinkUrl: string
-  youtubeThumbnailUrl: string
+  youtubeTitleId: string
   grinningScore: number
   username: string
   createdAt: string
