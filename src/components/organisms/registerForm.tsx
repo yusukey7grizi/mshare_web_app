@@ -1,32 +1,54 @@
-import { Container, Box } from '@mui/material';
-import { FormSubmitButton } from 'components/atoms/buttons';
-import { AuthSwitchLink } from 'components/molecules/AuthSwitchLink';
-import { ConfirmEmailField, EmailField } from 'components/molecules/emailField';
+import { Container, Box } from '@mui/material'
+import { FormSubmitButton } from 'components/atoms/buttons'
+import { AuthSwitchLink } from 'components/molecules/AuthSwitchLink'
+import { ConfirmEmailField, EmailField } from 'components/molecules/emailField'
 import {
   ConFirmPasswordField,
   PasswordField,
-} from 'components/molecules/passwordField';
-import { UsernameField } from 'components/molecules/usernameField';
-import { AppContext } from 'contexts/appContext';
-import { useContext } from 'react';
-import { MuiOnChangeEvent } from 'types';
+} from 'components/molecules/passwordField'
+import { UsernameField } from 'components/molecules/usernameField'
+import { AppContext } from 'contexts/appContext'
+import { useAuth } from 'contexts/authContext'
+import { useRouter } from 'next/router'
+import { FormEvent, useContext } from 'react'
+import { MuiOnChangeEvent } from 'types'
 
 type CreateUserFormInputTypes =
   | 'email'
   | 'password'
   | 'confirmEmail'
   | 'confirmPassword'
-  | 'username';
+  | 'username'
 
 const RegisterForm = () => {
-  const { createUserInput, setCreateUserInput } = useContext(AppContext);
+  const { createUserInput, setCreateUserInput } = useContext(AppContext)
+  const auth = useAuth()
+  const router = useRouter()
 
   const createOnChangeHandler = (formType: CreateUserFormInputTypes) => {
     return ({ target: { value } }: MuiOnChangeEvent) => {
-      createUserInput[formType] = value;
-      setCreateUserInput(createUserInput);
-    };
-  };
+      createUserInput[formType] = value
+      setCreateUserInput(createUserInput)
+    }
+  }
+
+  const createUser = (event: FormEvent) => {
+    event.preventDefault()
+    auth
+      .createUser(
+        createUserInput.email,
+        createUserInput.password,
+        createUserInput.username
+      )
+      .then(() => {
+        console.log('created user successfully', auth.user)
+        router.push('/')
+      })
+      .catch((err) => {
+        console.log(err)
+      })
+  }
+
   return (
     <Container>
       <Box
@@ -37,6 +59,7 @@ const RegisterForm = () => {
           flexDirection: 'column',
           alignItems: 'center',
         }}
+        onSubmit={(e: FormEvent) => createUser(e)}
       >
         <EmailField onChange={createOnChangeHandler('email')} />
         <ConfirmEmailField onChange={createOnChangeHandler('confirmEmail')} />
@@ -49,7 +72,7 @@ const RegisterForm = () => {
         <AuthSwitchLink useCase='register' />
       </Box>
     </Container>
-  );
-};
+  )
+}
 
-export { RegisterForm };
+export { RegisterForm }
