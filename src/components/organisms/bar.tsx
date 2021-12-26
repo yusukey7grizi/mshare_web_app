@@ -1,4 +1,4 @@
-import { FC, useState } from 'react'
+import { FC, MouseEventHandler, useState } from 'react'
 import { Drawer, Box, Divider, Toolbar, AppBar } from '@mui/material'
 import { DrawerLinkList, DrawerMovieList } from 'components/molecules'
 import { LogOutButton } from 'components/atoms/buttons'
@@ -6,7 +6,8 @@ import { SearchField } from 'components/atoms/textFields'
 import { SideBarTitle } from 'components/atoms/titles'
 import { FlexBox, SideBarBox } from 'components/atoms/layoutElement'
 import { useRouter } from 'next/router'
-import { MuiOnChangeEvent } from 'types'
+import { MuiOnChangeEvent, MuiOnClickEvent } from 'types'
+import { useAuth } from 'contexts/authContext'
 
 const drawerWidth = 240
 
@@ -24,8 +25,8 @@ const SideBar: FC = () => {
           overflow: 'hidden',
         },
       }}
-      variant="permanent"
-      anchor="left"
+      variant='permanent'
+      anchor='left'
     >
       <SideBarBox>
         <SideBarTitle />
@@ -41,6 +42,8 @@ const TopBar: FC = () => {
   const router = useRouter()
 
   const [inputValue, setInputValue] = useState<string>('')
+
+  const auth = useAuth()
 
   const searchHandler = ({ key }: MuiKeyBoardEvent) => {
     if (key === 'Enter') {
@@ -58,15 +61,26 @@ const TopBar: FC = () => {
     setInputValue(value)
   }
 
+  const logOutHandler = () => {
+    auth
+      .logOut()
+      .then(() => {
+        router.push('/auth/login')
+      })
+      .catch((err) => {
+        console.error(err)
+      })
+  }
+
   return (
     <AppBar
-      position="fixed"
+      position='fixed'
       sx={{ width: `calc(100% - ${drawerWidth}px)`, ml: `${drawerWidth}px` }}
     >
       <Toolbar sx={{ backgroundColor: '#ffff' }}>
-        <Box component="div" sx={{ flexGrow: 1.5 }} />
+        <Box component='div' sx={{ flexGrow: 1.5 }} />
         <SearchField onKeyPress={searchHandler} onChange={handleOnChange} />
-        <LogOutButton />
+        <LogOutButton logOutHandler={logOutHandler} />
       </Toolbar>
     </AppBar>
   )
@@ -78,7 +92,7 @@ const Bar: FC = ({ children }) => {
       <TopBar />
       <SideBar />
       <Box
-        component="div"
+        component='div'
         sx={{ pt: '7rem', margin: 'auto', overflowX: 'hidden' }}
       >
         {children}
