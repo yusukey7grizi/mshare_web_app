@@ -1,16 +1,16 @@
 import React, { FC, useState } from 'react'
-import { MovieInfo } from 'pages/movie/[id]'
 import { Bar, MovieDetailContent } from 'components/organisms'
 import { SearchedMovieList as MovieList } from 'components/organisms/searchedMovieList'
 import { MuiDivider } from 'components/atoms/divider'
 import { MovieListTitle } from 'components/atoms/texts'
 import { MoviePlayerState } from 'types'
+import { Movie } from 'types/dataTypes'
 
 type MovieDetailsProps = {
-  movieInfo: MovieInfo
+  movie: Movie
 }
 
-const MovieDetailTemplate: FC<MovieDetailsProps> = ({ movieInfo }) => {
+const MovieDetailTemplate: FC<MovieDetailsProps> = () => {
   const [moviePlayerState, setMoviePlayerState] = useState<MoviePlayerState>({
     playerState: -1,
     currentTime: 0,
