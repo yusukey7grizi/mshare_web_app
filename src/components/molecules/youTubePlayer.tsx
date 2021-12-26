@@ -1,15 +1,15 @@
 import React, { Dispatch, FC, SetStateAction } from 'react'
 import YouTube, { Options } from 'react-youtube'
-import { MovieInfo } from 'pages/movie/[id]'
 import { MoviePlayerState } from 'types'
+import { Movie } from 'types/dataTypes'
 
 type YouTubePlayerProps = {
-  movieInfo: MovieInfo
+  movie: Movie
   setMoviePlayerState: Dispatch<SetStateAction<MoviePlayerState>>
 }
 
 const YouTubePlayer: FC<YouTubePlayerProps> = ({
-  movieInfo,
+  movie,
   setMoviePlayerState,
 }) => {
   // call back for state update
@@ -35,7 +35,7 @@ const YouTubePlayer: FC<YouTubePlayerProps> = ({
   }
   return (
     <YouTube
-      videoId={movieInfo.videoId}
+      videoId={movie.youtubeTitleId}
       opts={options}
       onStateChange={playerStateChangeHandler}
     />

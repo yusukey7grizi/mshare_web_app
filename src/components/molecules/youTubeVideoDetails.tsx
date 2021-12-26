@@ -1,15 +1,15 @@
 import React, { FC, useState } from 'react'
-import { MovieInfo } from 'pages/movie/[id]'
 import { Box, Typography } from '@mui/material'
 import { ShowMoreButton } from 'components/atoms/buttons'
+import { Movie } from 'types/dataTypes'
 
 type YouTubeVideoDetailsProps = {
-  movieInfo: MovieInfo
+  movie: Movie
 }
 
-const YouTubeVideoDetails: FC<YouTubeVideoDetailsProps> = ({ movieInfo }) => {
+const YouTubeVideoDetails: FC<YouTubeVideoDetailsProps> = ({ movie }) => {
   const [isDetailOpened, setIsDetailOpened] = useState<boolean>(false)
-  const { description, title, uploadDate, uploadedBy } = movieInfo
+  const { overview, title, createdAt, username } = movie
 
   return (
     <>
@@ -17,14 +17,14 @@ const YouTubeVideoDetails: FC<YouTubeVideoDetailsProps> = ({ movieInfo }) => {
         {title}
       </Typography>
       <Typography variant="subtitle1" sx={{ fontWeight: 'bold' }}>
-        {uploadedBy}
+        {username}
       </Typography>
       <Typography
         gutterBottom
         variant="subtitle2"
-      >{`${uploadDate}    ニヤッと度: 50%`}</Typography>
+      >{`${createdAt}    ニヤッと度: 50%`}</Typography>
       {isDetailOpened && (
-        <Typography variant="subtitle2">{`概要： ${description}`}</Typography>
+        <Typography variant="subtitle2">{`概要： ${overview}`}</Typography>
       )}
       <ShowMoreButton
         onClick={() => {
