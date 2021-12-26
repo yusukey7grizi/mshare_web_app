@@ -17,8 +17,6 @@ const MovieDetailTemplate: FC<MovieDetailsProps> = () => {
     duration: 0,
   })
 
-  const username = 'シネマトゥデイ'
-
   const movie = {
     id: 1,
     userId: 'string',
@@ -27,7 +25,7 @@ const MovieDetailTemplate: FC<MovieDetailsProps> = () => {
     genre: 'アクション映画',
     youtubeTitleId: 'ttybTRn0D3E',
     grinningScore: 1,
-    username: 'string',
+    userName: 'string',
     createdAt: 'string',
   }
 
@@ -37,7 +35,7 @@ const MovieDetailTemplate: FC<MovieDetailsProps> = () => {
         movie={movie}
         setMoviePlayerState={setMoviePlayerState}
       />
-      <MovieListTitle username={username} />
+      <MovieListTitle userName={movie.userName} />
       <MuiDivider />
       <MovieList />
     </Bar>

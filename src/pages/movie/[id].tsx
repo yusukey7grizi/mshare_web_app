@@ -13,7 +13,7 @@ const MovieDetail: FC = () => {
     genre: 'アクション映画',
     youtubeTitleId: 'ttybTRn0D3E',
     grinningScore: 1,
-    username: 'string',
+    userName: 'string',
     createdAt: 'string',
   }
 

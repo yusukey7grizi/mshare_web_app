@@ -55,7 +55,7 @@ const RandomTemplate: FC<Props> = ({ onSubmit, movie, onChange }) => {
               movie={movie}
               setMoviePlayerState={setMoviePlayerState}
             />
-            <MovieListTitle username={movie.username} />
+            <MovieListTitle userName={movie.userName} />
             <MuiDivider />
             <MovieList />
           </motion.div>
