@@ -57,13 +57,17 @@ const MovieForm: FC = () => {
 
   const moviePostHandler = async (event: FormEvent) => {
     event.preventDefault()
+    console.log('Posting new movie')
 
     const youtubeUrlParams = new URLSearchParams(
-      createMovieInput.youtubeLinkUrl
+      createMovieInput.youtubeLinkUrl.split('?')[1]
     )
     const youtubeTitleId = youtubeUrlParams.get('v')
 
-    if (!(auth.user?.uid && auth.user?.displayName && youtubeTitleId)) return
+    if (!(auth.user?.uid && auth.user?.displayName && youtubeTitleId)) {
+      console.log(auth.user?.uid, auth.user?.displayName, youtubeTitleId)
+      return
+    }
 
     const data: PostMovieBody = {
       title: createMovieInput.title,
@@ -74,17 +78,20 @@ const MovieForm: FC = () => {
       youtubeTitleId: youtubeTitleId,
     }
 
-    const res = await fetch('localhost:8000/movies', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(data),
-    })
-    if (res.ok) {
-      router.push('/')
-    } else {
-      router.push('/movie/post')
+    try {
+      const res = await fetch('http://localhost:8000/movies', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+      })
+      if (res.ok) {
+        console.log('request ok')
+        router.push('/')
+      }
+    } catch (error) {
+      console.error(error)
     }
   }
 
