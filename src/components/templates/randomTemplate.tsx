@@ -44,23 +44,22 @@ const RandomTemplate: FC<Props> = ({ onSubmit, movie, onChange }) => {
         <RandomButton />
       </Box>
       <MuiDivider />
-      <Box sx={{ height: '65rem', overflow: 'visible' }}>
-        {movie && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 3 }}
-          >
-            <MovieDetailContent
-              movie={movie}
-              setMoviePlayerState={setMoviePlayerState}
-            />
-            <MovieListTitle username={movie.username} />
-            <MuiDivider />
-            <MovieList />
-          </motion.div>
-        )}
-      </Box>
+
+      {movie && (
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 3 }}
+        >
+          <MovieDetailContent
+            movie={movie}
+            setMoviePlayerState={setMoviePlayerState}
+          />
+          <MovieListTitle userName={movie.userName} />
+          <MuiDivider />
+          <MovieList />
+        </motion.div>
+      )}
     </Bar>
   )
 }

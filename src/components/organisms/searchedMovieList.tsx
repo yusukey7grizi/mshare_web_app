@@ -7,16 +7,8 @@ const SearchedMovieList: FC = () => {
   const { searchedMovieList } = useContext(AppContext)
   return (
     <Box sx={{ display: 'flex', flexDirection: 'row', flexWrap: 'wrap' }}>
-      {searchedMovieList.map(({ id, youtubeTitleId, username, title }) => {
-        return (
-          <MovieItem
-            id={id}
-            key={id}
-            youtubeTitleId={youtubeTitleId}
-            username={username}
-            title={title}
-          />
-        )
+      {searchedMovieList.map((movie) => {
+        return <MovieItem key={movie.id} movie={movie} />
       })}
     </Box>
   )
