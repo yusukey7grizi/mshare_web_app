@@ -11,7 +11,11 @@ const Subtitle: FC<SubtitleProps> = ({ text }) => {
 
 const SideBarTitle: FC = () => {
   return (
-    <Typography sx={{ marginTop: '20px' }} align="center" variant="h4">
+    <Typography
+      sx={{ marginTop: '20px', fontWeight: 'bold' }}
+      align="center"
+      variant="h4"
+    >
       MShare
     </Typography>
   )

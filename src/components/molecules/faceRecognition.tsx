@@ -77,12 +77,12 @@ const FaceRecognition: FC<FaceRecognitionProps> = ({
           // run the face detection
           const detectionsWithExpressions = await detectSingleFace(
             webcamRef.current as TNetInput,
-            new TinyFaceDetectorOptions()
+            new TinyFaceDetectorOptions(),
           ).withFaceExpressions()
           // imcrementing the score of the detected expression
           if (detectionsWithExpressions?.expressions) {
             for (const [key, value] of Object.entries(
-              detectionsWithExpressions?.expressions as FaceExpressionScores
+              detectionsWithExpressions?.expressions as FaceExpressionScores,
             )) {
               if (value > THRESHOLD) {
                 const updatedState = expressionScore
@@ -102,7 +102,7 @@ const FaceRecognition: FC<FaceRecognitionProps> = ({
           if (isScoreUpdated) break
           try {
             const putBody: putMovieBody = {
-              grinningScore: expressionScore.happy,
+              grinningScore: grinningScore,
             }
             const res = await fetch(
               `http://localhost:8000/movies/${movie.id}`,
@@ -112,7 +112,7 @@ const FaceRecognition: FC<FaceRecognitionProps> = ({
                   'Content-Type': 'application/json',
                 },
                 body: JSON.stringify(putBody),
-              }
+              },
             )
             if (res.ok) {
               console.log('score updated successfully')
@@ -204,14 +204,14 @@ const FaceRecognition: FC<FaceRecognitionProps> = ({
       {isRecognitionOn ? (
         <>
           <Typography
-            variant='h5'
-            fontWeight='bold'
-            textAlign='center'
+            variant="h5"
+            fontWeight="bold"
+            textAlign="center"
             gutterBottom
           >
             現在のあなたのニヤッと回数 : {expressionScore.happy}
           </Typography>
-          <video ref={webcamRef} width='800' height='450' autoPlay muted />
+          <video ref={webcamRef} width="800" height="450" autoPlay muted />
         </>
       ) : (
         <video ref={webcamRef} autoPlay muted hidden />
