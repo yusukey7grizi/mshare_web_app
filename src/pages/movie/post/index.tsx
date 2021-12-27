@@ -1,8 +1,13 @@
 import React, { FC } from 'react'
 import { PostMovieTemplate } from 'components/templates/postMovieTemplate'
+import { LogInCheck } from 'contexts/authContext'
 
 const PostMovie: FC = () => {
-  return <PostMovieTemplate />
+  return (
+    <LogInCheck>
+      <PostMovieTemplate />
+    </LogInCheck>
+  )
 }
 
 export default PostMovie
