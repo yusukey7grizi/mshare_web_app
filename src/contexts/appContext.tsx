@@ -11,8 +11,6 @@ type AppState = {
   setLogInUserInput: (input: LogInUserInput) => void
   setMovieList: (input: Movie[]) => void
   movieList: Movie[]
-  setSearchedMovieList: (input: Movie[]) => void
-  searchedMovieList: Movie[]
 }
 
 export const AppContext = createContext({} as AppState)
@@ -36,7 +34,7 @@ const AppProvider: FC = ({ children }) => {
     password: '',
   })
   const [movieList, setMovieList] = useState<Movie[]>([])
-  const [searchedMovieList, setSearchedMovieList] = useState<Movie[]>([])
+
   return (
     <AppContext.Provider
       value={{
@@ -48,8 +46,6 @@ const AppProvider: FC = ({ children }) => {
         setLogInUserInput: setLogInUserInput,
         setMovieList: setMovieList,
         movieList: movieList,
-        setSearchedMovieList: setSearchedMovieList,
-        searchedMovieList: searchedMovieList,
       }}
     >
       {children}

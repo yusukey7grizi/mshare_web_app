@@ -5,6 +5,7 @@ import { Movie } from 'types/dataTypes'
 
 const Random = () => {
   const [randomMovie, setRandomMovie] = useState<Movie | null>(null)
+  const [relatedMovieList, setRelatedMovieList] = useState([])
   const [genre, setGenre] = useState('')
 
   const getRandomMovieHandler = async (e: MuiOnClickEvent) => {
@@ -15,6 +16,13 @@ const Random = () => {
     )
     const data = await res.json()
     setRandomMovie(data)
+
+    const { userId } = data
+    const relatedMoviesRes = await fetch(
+      `http://localhost:8000/movies?userId=${userId}`,
+    )
+    const relatedMoviesData = await relatedMoviesRes.json()
+    setRelatedMovieList(relatedMoviesData)
   }
 
   const handleOnChangeGenre = (
@@ -28,6 +36,7 @@ const Random = () => {
 
   return (
     <RandomTemplate
+      relatedMovieList={relatedMovieList}
       onChange={handleOnChangeGenre}
       movie={randomMovie}
       onSubmit={getRandomMovieHandler}
