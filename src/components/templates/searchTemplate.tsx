@@ -1,11 +1,16 @@
 import { Bar } from 'components/organisms'
 import { SearchedMovieList } from 'components/organisms/searchedMovieList'
 import React, { FC } from 'react'
+import { Movie } from 'types/dataTypes'
 
-const SearchTemplate: FC = () => {
+type Props = {
+  searchedMovieList: Movie[]
+}
+
+const SearchTemplate: FC<Props> = ({ searchedMovieList }) => {
   return (
     <Bar>
-      <SearchedMovieList />
+      <SearchedMovieList movieList={searchedMovieList} />
     </Bar>
   )
 }

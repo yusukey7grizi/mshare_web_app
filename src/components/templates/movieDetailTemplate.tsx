@@ -8,9 +8,13 @@ import { Movie } from 'types/dataTypes'
 
 type MovieDetailsProps = {
   movie: Movie
+  relatedMovieList: Movie[]
 }
 
-const MovieDetailTemplate: FC<MovieDetailsProps> = ({ movie }) => {
+const MovieDetailTemplate: FC<MovieDetailsProps> = ({
+  movie,
+  relatedMovieList,
+}) => {
   const [moviePlayerState, setMoviePlayerState] = useState<MoviePlayerState>({
     playerState: -1,
     currentTime: 0,
@@ -25,7 +29,7 @@ const MovieDetailTemplate: FC<MovieDetailsProps> = ({ movie }) => {
       />
       <MovieListTitle userName={movie.userName} />
       <MuiDivider />
-      <MovieList />
+      <MovieList movieList={relatedMovieList} />
     </Bar>
   )
 }

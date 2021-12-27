@@ -37,7 +37,7 @@ type AuthState = {
   createUser: (
     email: string,
     password: string,
-    username: string
+    username: string,
   ) => Promise<void | User>
   logOut: () => Promise<void>
 }
@@ -53,20 +53,6 @@ export const AuthProvider: FC = ({ children }) => {
   return (
     <authContext.Provider value={authState}>{children}</authContext.Provider>
   )
-}
-
-export const LogInCheck: FC = ({ children }) => {
-  const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false)
-  const router = useRouter()
-  useEffect(() => {
-    const signedInUserId = Cookies.get('uid')
-    if (!signedInUserId) {
-      router.replace('/auth/login')
-    }
-    setIsLoggedIn(true)
-  }, [router])
-
-  return isLoggedIn ? <>{children}</> : <></>
 }
 
 export const useAuth = () => {
