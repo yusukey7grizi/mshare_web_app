@@ -1,5 +1,4 @@
 import { ProfileTemplate } from 'components/templates/profileTemplate'
-import { LogInCheck } from 'contexts/authContext'
 import React from 'react'
 
 const Profile = () => {
@@ -17,11 +16,7 @@ const Profile = () => {
     },
   ]
 
-  return (
-    <LogInCheck>
-      <ProfileTemplate movieList={movieList} />
-    </LogInCheck>
-  )
+  return <ProfileTemplate movieList={movieList} />
 }
 
 export default Profile

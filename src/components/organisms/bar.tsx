@@ -1,4 +1,4 @@
-import { FC, MouseEventHandler, useState } from 'react'
+import { FC, useEffect, useState } from 'react'
 import { Drawer, Box, Divider, Toolbar, AppBar } from '@mui/material'
 import { DrawerLinkList, DrawerMovieList } from 'components/molecules'
 import { LogInLogOutButton } from 'components/atoms/buttons'
@@ -6,14 +6,17 @@ import { SearchField } from 'components/atoms/textFields'
 import { SideBarTitle } from 'components/atoms/titles'
 import { FlexBox, SideBarBox } from 'components/atoms/layoutElement'
 import { useRouter } from 'next/router'
-import { MuiOnChangeEvent, MuiOnClickEvent } from 'types'
+import { MuiKeyBoardEvent, MuiOnChangeEvent } from 'types'
 import { useAuth } from 'contexts/authContext'
+import Cookies from 'js-cookie'
 
 const drawerWidth = 240
 
-type MuiKeyBoardEvent = React.KeyboardEvent<HTMLInputElement>
+type Props = {
+  isLoggedIn: boolean
+}
 
-const SideBar: FC = () => {
+const SideBar: FC<Props> = ({ isLoggedIn }) => {
   return (
     <Drawer
       sx={{
@@ -25,20 +28,20 @@ const SideBar: FC = () => {
           overflow: 'hidden',
         },
       }}
-      variant='permanent'
-      anchor='left'
+      variant="permanent"
+      anchor="left"
     >
       <SideBarBox>
         <SideBarTitle />
-        <DrawerLinkList />
+        <DrawerLinkList isLoggedIn={isLoggedIn} />
         <Divider />
-        <DrawerMovieList />
+        {isLoggedIn && <DrawerMovieList />}
       </SideBarBox>
     </Drawer>
   )
 }
 
-const TopBar: FC = () => {
+const TopBar: FC<Props> = ({ isLoggedIn }) => {
   const router = useRouter()
 
   const [inputValue, setInputValue] = useState<string>('')
@@ -78,17 +81,17 @@ const TopBar: FC = () => {
 
   return (
     <AppBar
-      position='fixed'
+      position="fixed"
       sx={{ width: `calc(100% - ${drawerWidth}px)`, ml: `${drawerWidth}px` }}
     >
       <Toolbar sx={{ backgroundColor: '#ffff' }}>
-        <Box component='div' sx={{ flexGrow: 1.5 }} />
+        <Box component="div" sx={{ flexGrow: 1.5 }} />
         <SearchField onKeyPress={searchHandler} onChange={handleOnChange} />
 
-        {auth.user ? (
-          <LogInLogOutButton onClick={logOutHandler} type='LogOut' />
+        {isLoggedIn ? (
+          <LogInLogOutButton onClick={logOutHandler} type="LogOut" />
         ) : (
-          <LogInLogOutButton onClick={logInHandler} type='LogIn' />
+          <LogInLogOutButton onClick={logInHandler} type="LogIn" />
         )}
       </Toolbar>
     </AppBar>
@@ -96,12 +99,24 @@ const TopBar: FC = () => {
 }
 
 const Bar: FC = ({ children }) => {
+  const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false)
+  const router = useRouter()
+
+  useEffect(() => {
+    const signedInUserId = Cookies.get('uid')
+    if (!signedInUserId) {
+      setIsLoggedIn(false)
+      return
+    }
+    setIsLoggedIn(true)
+  }, [router])
+
   return (
     <FlexBox>
-      <TopBar />
-      <SideBar />
+      <TopBar isLoggedIn={isLoggedIn} />
+      <SideBar isLoggedIn={isLoggedIn} />
       <Box
-        component='div'
+        component="div"
         sx={{ pt: '7rem', margin: 'auto', overflowX: 'hidden' }}
       >
         {children}
