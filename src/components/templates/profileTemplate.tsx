@@ -8,16 +8,15 @@ import { Movie } from 'types/dataTypes'
 
 type Props = {
   movieList: Movie[]
+  userName: string
+  email: string
 }
-const ProfileTemplate: FC<Props> = ({ movieList }) => {
+const ProfileTemplate: FC<Props> = ({ movieList, userName, email }) => {
   const [moviePlayerState, setMoviePlayerState] = useState<MoviePlayerState>({
     playerState: -1,
     currentTime: 0,
     duration: 0,
   })
-
-  const userName = 'Hiroki'
-  const email = 'hirokihanada@gmail.com'
 
   return (
     <Bar>
