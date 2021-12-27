@@ -8,11 +8,12 @@ import { Movie } from 'types/dataTypes'
 
 const MovieDetail: FC = () => {
   const router = useRouter()
+  const { id } = router.query
 
   const [movie, setMovie] = useState<Movie>({} as Movie)
   const [relatedMovieList, setRelatedMovieList] = useState<Movie[]>([])
+
   useEffect(() => {
-    const { id } = router.query
     // api fetching here
     const fetchOneMovie = async () => {
       try {
@@ -32,9 +33,11 @@ const MovieDetail: FC = () => {
     if (id) fetchOneMovie()
   }, [router])
 
-  return (
-    <MovieDetailTemplate relatedMovieList={relatedMovieList} movie={movie} />
-  )
+  const filteredList = relatedMovieList.filter(({ id }) => {
+    return id !== Number(router.query.id)
+  })
+
+  return <MovieDetailTemplate relatedMovieList={filteredList} movie={movie} />
 }
 
 export default MovieDetail
