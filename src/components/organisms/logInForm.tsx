@@ -37,7 +37,7 @@ const LogInForm = () => {
   return (
     <Container>
       <Box
-        component='form'
+        component="form"
         sx={{
           marginTop: 8,
           display: 'flex',
@@ -46,11 +46,10 @@ const LogInForm = () => {
         }}
         onSubmit={(e: FormEvent) => logInHandler(e)}
       >
-        <GoogleSignInButton />
         <EmailField onChange={createOnChangeHandler('email')} />
         <PasswordField onChange={createOnChangeHandler('password')} />
-        <FormSubmitButton text='ログイン' />
-        <AuthSwitchLink useCase='logIn' />
+        <FormSubmitButton text="ログイン" />
+        <AuthSwitchLink useCase="logIn" />
       </Box>
     </Container>
   )
