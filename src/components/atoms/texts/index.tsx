@@ -15,19 +15,16 @@ const MovieListTitle: FC<MovieListTitleProps> = ({ userName }) => {
 
 const UsernameText: FC<UsernameTextProps> = ({ userName }) => {
   return (
-    <Typography
-      sx={{ textAlign: 'left', pl: '8rem', fontWeight: 'bold' }}
-      variant="h1"
-    >
-      {userName}
+    <Typography sx={{ pl: '8rem', fontWeight: 'bold' }} variant="h4">
+      ユーザーネーム: {userName}
     </Typography>
   )
 }
 
 const EmailText: FC<EmailTextProps> = ({ email }) => {
   return (
-    <Typography sx={{ textAlign: 'left', pl: '9rem' }} variant="subtitle1">
-      {email}
+    <Typography sx={{ pl: '9rem' }} variant="subtitle1">
+      メールアドレス: {email}
     </Typography>
   )
 }
