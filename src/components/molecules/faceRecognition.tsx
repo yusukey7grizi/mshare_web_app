@@ -7,10 +7,15 @@ import {
 } from 'face-api.js'
 import useInterval from 'use-interval'
 import { MoviePlayerState } from 'types'
+import { Movie } from 'types/dataTypes'
+import { Typography } from '@mui/material'
 
 type FaceRecognitionProps = {
   moviePlayerState: MoviePlayerState
   isRecognitionOn: boolean
+  movie: Movie
+  grinningScore: number
+  setGrinningScore: (input: number) => void
 }
 
 // string keys consumed in ExpressionScore object type
@@ -26,12 +31,19 @@ type FaceExpressions =
 // type to hold the detection score, has keys defined in FaceExpressions
 type FaceExpressionScores = { [key in FaceExpressions]: number }
 
+type putMovieBody = {
+  grinningScore: number
+}
+
 // recognition threshold for determining expression
 const THRESHOLD = 0.5
 
 const FaceRecognition: FC<FaceRecognitionProps> = ({
   moviePlayerState,
-  isRecognitionOn: isRecognitionOn,
+  isRecognitionOn,
+  movie,
+  grinningScore,
+  setGrinningScore,
 }) => {
   // ref for grabbing the webcam video element
   const webcamRef = useRef<HTMLVideoElement>(null)
@@ -39,6 +51,7 @@ const FaceRecognition: FC<FaceRecognitionProps> = ({
   const [isModelReady, setIsModelReady] = useState<boolean>(false)
   // webcam status, true if allowed by user and started
   const [isWebcamReady, setIsWebcamReady] = useState<boolean>(false)
+  const [isScoreUpdated, setIsScoreUpdated] = useState<boolean>(false)
   // total number of face recognition frames
   const [totalFrame, setTotalFrame] = useState<number>(0)
   // keepiung track of number of frames with each face expressions
@@ -64,12 +77,12 @@ const FaceRecognition: FC<FaceRecognitionProps> = ({
           // run the face detection
           const detectionsWithExpressions = await detectSingleFace(
             webcamRef.current as TNetInput,
-            new TinyFaceDetectorOptions(),
+            new TinyFaceDetectorOptions()
           ).withFaceExpressions()
           // imcrementing the score of the detected expression
           if (detectionsWithExpressions?.expressions) {
             for (const [key, value] of Object.entries(
-              detectionsWithExpressions?.expressions as FaceExpressionScores,
+              detectionsWithExpressions?.expressions as FaceExpressionScores
             )) {
               if (value > THRESHOLD) {
                 const updatedState = expressionScore
@@ -77,6 +90,7 @@ const FaceRecognition: FC<FaceRecognitionProps> = ({
                 setExpressionScore({
                   ...updatedState,
                 })
+                if (key == 'happy') setGrinningScore(grinningScore + 1)
               }
             }
           }
@@ -85,7 +99,28 @@ const FaceRecognition: FC<FaceRecognitionProps> = ({
           break
         // when the video ends
         case YT.PlayerState.ENDED:
-          // calculate the score for the video and call PUT movie
+          if (isScoreUpdated) break
+          try {
+            const putBody: putMovieBody = {
+              grinningScore: expressionScore.happy,
+            }
+            const res = await fetch(
+              `http://localhost:8000/movies/${movie.id}`,
+              {
+                method: 'PUT',
+                headers: {
+                  'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(putBody),
+              }
+            )
+            if (res.ok) {
+              console.log('score updated successfully')
+              setIsScoreUpdated(true)
+            }
+          } catch (error) {
+            console.error(error)
+          }
           break
         // default case CUE, PAUSED, BUFFERING
         default:
@@ -114,8 +149,8 @@ const FaceRecognition: FC<FaceRecognitionProps> = ({
         const stream = await navigator.mediaDevices.getUserMedia({
           audio: false,
           video: {
-            width: webcam.videoWidth,
-            height: webcam.videoHeight,
+            width: { min: 1280 },
+            height: { min: 720 },
           },
         })
         webcam.srcObject = await stream
@@ -134,29 +169,61 @@ const FaceRecognition: FC<FaceRecognitionProps> = ({
       await loadModels()
       await startWebcam()
     }
+
+    const sendScore = async () => {
+      if (isScoreUpdated) return
+      const putBody: putMovieBody = { grinningScore: expressionScore.happy }
+      try {
+        const res = await fetch(`http://localhost:8000/movies/${movie.id}`, {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(putBody),
+        })
+        if (res.ok) {
+          console.log('put success', res)
+        }
+      } catch (error) {
+        console.error
+      }
+    }
+
     // if recognition is allowed, start setting up face detection
     if (isRecognitionOn) setUpFaceDetection()
 
     // clean up function before unmount
     const cleanup = () => {
-      // clear interval for useInterval is handled by itself
-      // PUT /movies request if the user have watched 50% of the video
+      sendScore()
     }
     return cleanup
   }, [isRecognitionOn])
 
   return (
     <>
-      <video ref={webcamRef} autoPlay muted hidden />
+      {isRecognitionOn ? (
+        <>
+          <Typography
+            variant='h5'
+            fontWeight='bold'
+            textAlign='center'
+            gutterBottom
+          >
+            現在のあなたのニヤッと回数 : {expressionScore.happy}
+          </Typography>
+          <video ref={webcamRef} width='800' height='450' autoPlay muted />
+        </>
+      ) : (
+        <video ref={webcamRef} autoPlay muted hidden />
+      )}
 
-      <h1>happy: {expressionScore.happy}</h1>
-      <h1>neutral: {expressionScore.neutral}</h1>
+      {/* <h1>neutral: {expressionScore.neutral}</h1>
       <h1>angry: {expressionScore.angry}</h1>
       <h1>sad: {expressionScore.sad}</h1>
       <h1>disgusted: {expressionScore.disgusted}</h1>
       <h1>surprised: {expressionScore.surprised}</h1>
       <h1>fearful: {expressionScore.fearful}</h1>
-      <h1>total: {totalFrame}</h1>
+      <h1>total: {totalFrame}</h1> */}
     </>
   )
 }
