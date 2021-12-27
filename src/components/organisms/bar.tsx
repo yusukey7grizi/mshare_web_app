@@ -28,14 +28,13 @@ const SideBar: FC<Props> = ({ isLoggedIn }) => {
           overflow: 'hidden',
         },
       }}
-      variant='permanent'
-      anchor='left'
+      variant="permanent"
+      anchor="left"
     >
       <SideBarBox>
         <SideBarTitle />
         <DrawerLinkList isLoggedIn={isLoggedIn} />
         <Divider />
-        {isLoggedIn && <DrawerMovieList />}
       </SideBarBox>
     </Drawer>
   )
@@ -81,19 +80,19 @@ const TopBar: FC<Props> = ({ isLoggedIn }) => {
 
   return (
     <AppBar
-      position='fixed'
+      position="fixed"
       sx={{ width: `calc(100% - ${drawerWidth}px)`, ml: `${drawerWidth}px` }}
     >
       <Toolbar
         sx={{ backgroundColor: '#ffff', justifyContent: 'space-between' }}
       >
-        <Box component='div' sx={{ width: '100' }} />
+        <Box component="div" sx={{ width: '100' }} />
         <SearchField onKeyPress={searchHandler} onChange={handleOnChange} />
 
         {isLoggedIn ? (
-          <LogInLogOutButton onClick={logOutHandler} type='LogOut' />
+          <LogInLogOutButton onClick={logOutHandler} type="LogOut" />
         ) : (
-          <LogInLogOutButton onClick={logInHandler} type='LogIn' />
+          <LogInLogOutButton onClick={logInHandler} type="LogIn" />
         )}
       </Toolbar>
     </AppBar>
@@ -118,7 +117,7 @@ const Bar: FC = ({ children }) => {
       <TopBar isLoggedIn={isLoggedIn} />
       <SideBar isLoggedIn={isLoggedIn} />
       <Box
-        component='div'
+        component="div"
         sx={{ pt: '7rem', margin: 'auto', overflowX: 'hidden' }}
       >
         {children}
