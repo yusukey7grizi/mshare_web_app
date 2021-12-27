@@ -7,15 +7,19 @@ import { Movie } from 'types/dataTypes'
 
 type MovieDetailsProps = {
   movie: Movie
+  relatedMovieList: Movie[]
 }
 
-const MovieDetailTemplate: FC<MovieDetailsProps> = ({ movie }) => {
+const MovieDetailTemplate: FC<MovieDetailsProps> = ({
+  movie,
+  relatedMovieList,
+}) => {
   return (
     <Bar>
       <MovieDetailContent movie={movie} />
       <MovieListTitle userName={movie.userName} />
       <MuiDivider />
-      <MovieList />
+      <MovieList movieList={relatedMovieList} />
     </Bar>
   )
 }

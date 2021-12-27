@@ -5,7 +5,10 @@ import AddIcon from '@mui/icons-material/Add'
 import ShuffleIcon from '@mui/icons-material/Shuffle'
 import PersonIcon from '@mui/icons-material/Person'
 
-const DrawerLinkList: FC = () => {
+type Props = {
+  isLoggedIn: boolean
+}
+const DrawerLinkList: FC<Props> = ({ isLoggedIn }) => {
   return (
     <List>
       <ListItem href="/" button component={Link}>
@@ -20,13 +23,21 @@ const DrawerLinkList: FC = () => {
         </ListItemIcon>
         <ListItemText primary="ガチャ検索" />
       </ListItem>
-      <ListItem href="/movie/post" button component={Link}>
+      <ListItem
+        href={isLoggedIn ? '/movie/post' : '/auth/login'}
+        button
+        component={Link}
+      >
         <ListItemIcon>
           <AddIcon />
         </ListItemIcon>
         <ListItemText primary="映画を作成" />
       </ListItem>
-      <ListItem href="/profile" button component={Link}>
+      <ListItem
+        href={isLoggedIn ? '/profile' : '/auth/login'}
+        button
+        component={Link}
+      >
         <ListItemIcon>
           <PersonIcon />
         </ListItemIcon>

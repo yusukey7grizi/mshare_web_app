@@ -1,11 +1,12 @@
 import { SearchTemplate } from 'components/templates/searchTemplate'
 import { AppContext } from 'contexts/appContext'
 import { useRouter } from 'next/router'
-import React, { FC, useContext, useEffect } from 'react'
+import React, { FC, useContext, useEffect, useState } from 'react'
+import { Movie } from 'types/dataTypes'
 
 const Search: FC = () => {
   const router = useRouter()
-  const { setSearchedMovieList } = useContext(AppContext)
+  const [searchedMovieList, setSearchedMovieList] = useState<Movie[]>([])
   const { input, useCase } = router.query
   const isTitle = useCase === 'title'
 
@@ -22,7 +23,7 @@ const Search: FC = () => {
     fetchPartialMovies()
   }, [input])
 
-  return <SearchTemplate />
+  return <SearchTemplate searchedMovieList={searchedMovieList} />
 }
 
 export default Search
