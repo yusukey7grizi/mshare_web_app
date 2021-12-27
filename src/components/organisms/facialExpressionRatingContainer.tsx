@@ -6,10 +6,12 @@ import { Movie } from 'types/dataTypes'
 type FacialExpressionRatingContainerProps = {
   moviePlayerState: MoviePlayerState
   movie: Movie
+  grinningScore: number
+  setGrinningScore: (input: number) => void
 }
 
 const FacialExpressionRatingContainer: FC<FacialExpressionRatingContainerProps> =
-  ({ moviePlayerState, movie }) => {
+  ({ moviePlayerState, movie, grinningScore, setGrinningScore }) => {
     const [isRecognitionOn, setIsRecognitionOn] = useState<boolean>(true)
 
     return (
@@ -18,6 +20,8 @@ const FacialExpressionRatingContainer: FC<FacialExpressionRatingContainerProps> 
           moviePlayerState={moviePlayerState}
           isRecognitionOn={isRecognitionOn}
           movie={movie}
+          grinningScore={grinningScore}
+          setGrinningScore={setGrinningScore}
         />
         <FaceRecognitionToggle
           isRecognitionOn={isRecognitionOn}

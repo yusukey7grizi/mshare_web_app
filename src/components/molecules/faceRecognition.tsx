@@ -8,11 +8,14 @@ import {
 import useInterval from 'use-interval'
 import { MoviePlayerState } from 'types'
 import { Movie } from 'types/dataTypes'
+import { Typography } from '@mui/material'
 
 type FaceRecognitionProps = {
   moviePlayerState: MoviePlayerState
   isRecognitionOn: boolean
   movie: Movie
+  grinningScore: number
+  setGrinningScore: (input: number) => void
 }
 
 // string keys consumed in ExpressionScore object type
@@ -39,6 +42,8 @@ const FaceRecognition: FC<FaceRecognitionProps> = ({
   moviePlayerState,
   isRecognitionOn,
   movie,
+  grinningScore,
+  setGrinningScore,
 }) => {
   // ref for grabbing the webcam video element
   const webcamRef = useRef<HTMLVideoElement>(null)
@@ -84,6 +89,7 @@ const FaceRecognition: FC<FaceRecognitionProps> = ({
                 setExpressionScore({
                   ...updatedState,
                 })
+                if (key == 'happy') setGrinningScore(grinningScore + 1)
               }
             }
           }
@@ -120,8 +126,6 @@ const FaceRecognition: FC<FaceRecognitionProps> = ({
     }
   }, 300)
 
-  const sendScore = async () => {}
-
   // Loading models for face detection
   const loadModels = async () => {
     try {
@@ -142,8 +146,8 @@ const FaceRecognition: FC<FaceRecognitionProps> = ({
         const stream = await navigator.mediaDevices.getUserMedia({
           audio: false,
           video: {
-            width: webcam.videoWidth,
-            height: webcam.videoHeight,
+            width: { min: 1280 },
+            height: { min: 720 },
           },
         })
         webcam.srcObject = await stream
@@ -195,8 +199,15 @@ const FaceRecognition: FC<FaceRecognitionProps> = ({
     <>
       {isRecognitionOn ? (
         <>
-          <video ref={webcamRef} autoPlay muted />
-          <h1>happy: {expressionScore.happy}</h1>
+          <Typography
+            variant='h5'
+            fontWeight='bold'
+            textAlign='center'
+            gutterBottom
+          >
+            現在のあなたのニヤッと回数 : {expressionScore.happy}
+          </Typography>
+          <video ref={webcamRef} width='800' height='450' autoPlay muted />
         </>
       ) : (
         <video ref={webcamRef} autoPlay muted hidden />

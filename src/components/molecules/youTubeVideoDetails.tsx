@@ -2,14 +2,19 @@ import React, { FC, useState } from 'react'
 import { Box, Typography } from '@mui/material'
 import { ShowMoreButton } from 'components/atoms/buttons'
 import { Movie } from 'types/dataTypes'
+import { MuiDivider } from 'components/atoms/divider'
 
 type YouTubeVideoDetailsProps = {
   movie: Movie
+  grinningScore: number
 }
 
-const YouTubeVideoDetails: FC<YouTubeVideoDetailsProps> = ({ movie }) => {
+const YouTubeVideoDetails: FC<YouTubeVideoDetailsProps> = ({
+  movie,
+  grinningScore,
+}) => {
   const [isDetailOpened, setIsDetailOpened] = useState<boolean>(false)
-  const { overview, title, createdAt, userName, grinningScore } = movie
+  const { overview, title, createdAt, userName } = movie
 
   const today = new Date(createdAt)
   const date = String(today.getDate()).padStart(2, '0')
@@ -19,21 +24,21 @@ const YouTubeVideoDetails: FC<YouTubeVideoDetailsProps> = ({ movie }) => {
 
   return (
     <>
-      <Typography variant="h4" sx={{ fontWeight: 'bold', pt: '1rem' }}>
+      <Typography variant='h4' sx={{ fontWeight: 'bold', pt: '1rem' }}>
         {title}
       </Typography>
-      <Typography variant="subtitle1" sx={{ fontWeight: 'bold' }}>
+      <Typography variant='subtitle1' sx={{ fontWeight: 'bold' }}>
         {userName}
       </Typography>
-      <Typography gutterBottom variant="subtitle2">
+      <Typography gutterBottom variant='subtitle2'>
         {createdDate}
       </Typography>
-      <Typography gutterBottom variant="subtitle2">
+      <Typography gutterBottom variant='subtitle2'>
         ニヤッと回数：
         {grinningScore ? `${grinningScore} 回` : '0回'}
       </Typography>
       {isDetailOpened && (
-        <Typography variant="subtitle2">{`概要： ${overview}`}</Typography>
+        <Typography variant='subtitle2'>{`概要： ${overview}`}</Typography>
       )}
       <ShowMoreButton
         onClick={() => {
@@ -41,6 +46,7 @@ const YouTubeVideoDetails: FC<YouTubeVideoDetailsProps> = ({ movie }) => {
         }}
         isDetailOpened={isDetailOpened}
       />
+      <MuiDivider />
     </>
   )
 }
