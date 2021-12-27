@@ -1,4 +1,5 @@
 import { ProfileTemplate } from 'components/templates/profileTemplate'
+import { LogInCheck } from 'contexts/authContext'
 import React from 'react'
 
 const Profile = () => {
@@ -15,7 +16,12 @@ const Profile = () => {
       createdAt: '2021-12-27 02:52:40.603295+00',
     },
   ]
-  return <ProfileTemplate movieList={movieList} />
+
+  return (
+    <LogInCheck>
+      <ProfileTemplate movieList={movieList} />
+    </LogInCheck>
+  )
 }
 
 export default Profile

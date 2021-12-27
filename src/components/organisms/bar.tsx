@@ -1,7 +1,7 @@
 import { FC, MouseEventHandler, useState } from 'react'
 import { Drawer, Box, Divider, Toolbar, AppBar } from '@mui/material'
 import { DrawerLinkList, DrawerMovieList } from 'components/molecules'
-import { LogOutButton } from 'components/atoms/buttons'
+import { LogInLogOutButton } from 'components/atoms/buttons'
 import { SearchField } from 'components/atoms/textFields'
 import { SideBarTitle } from 'components/atoms/titles'
 import { FlexBox, SideBarBox } from 'components/atoms/layoutElement'
@@ -65,11 +65,15 @@ const TopBar: FC = () => {
     auth
       .logOut()
       .then(() => {
-        router.push('/auth/login')
+        router.push('/')
       })
       .catch((err) => {
         console.error(err)
       })
+  }
+
+  const logInHandler = () => {
+    router.push('/auth/login')
   }
 
   return (
@@ -80,7 +84,12 @@ const TopBar: FC = () => {
       <Toolbar sx={{ backgroundColor: '#ffff' }}>
         <Box component='div' sx={{ flexGrow: 1.5 }} />
         <SearchField onKeyPress={searchHandler} onChange={handleOnChange} />
-        <LogOutButton logOutHandler={logOutHandler} />
+
+        {auth.user ? (
+          <LogInLogOutButton onClick={logOutHandler} type='LogOut' />
+        ) : (
+          <LogInLogOutButton onClick={logInHandler} type='LogIn' />
+        )}
       </Toolbar>
     </AppBar>
   )

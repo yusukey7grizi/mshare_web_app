@@ -1,6 +1,7 @@
 import { FC, MouseEventHandler } from 'react'
 import { Link, Button, Typography, IconButton } from '@mui/material'
 import LogoutIcon from '@mui/icons-material/Logout'
+import LoginIcon from '@mui/icons-material/Login'
 import { styled } from '@mui/system'
 import ButtonUnstyled, { ButtonUnstyledProps } from '@mui/base/ButtonUnstyled'
 import GoogleIcon from '@mui/icons-material/Google'
@@ -38,15 +39,20 @@ const GoogleSignInButton: FC = () => {
   )
 }
 
-type LogOutButtonProps = {
-  logOutHandler: () => void
+type LogInLogOutButtonButtonProps = {
+  onClick: () => void
+  type: 'LogOut' | 'LogIn'
 }
 
-const LogOutButton: FC<LogOutButtonProps> = ({ logOutHandler }) => {
+const LogInLogOutButton: FC<LogInLogOutButtonButtonProps> = ({
+  onClick,
+  type,
+}) => {
   return (
-    <Link component={Button} underline="none" onClick={logOutHandler}>
-      <LogoutIcon />
-      <Typography>ログアウト</Typography>
+    <Link component={Button} underline='none' onClick={onClick}>
+      {type == 'LogOut' ? <LogoutIcon /> : <LoginIcon />}
+
+      <Typography>{type == 'LogOut' ? 'ログアウト' : 'ログイン'}</Typography>
     </Link>
   )
 }
@@ -60,7 +66,7 @@ const ShowMoreButton: FC<ShowMoreButtonProps> = ({
       onClick={onClick}
       sx={{ color: '#A9A9A9' }}
       component={Button}
-      underline="none"
+      underline='none'
     >
       <Typography sx={{ fontSize: '0.5rem' }}>
         {isDetailOpened ? 'Show Less' : 'Show More'}
@@ -88,7 +94,7 @@ const CustomFormButtonRoot: FC = styled('button')`
 
 const CustomFormButton: FC<ButtonUnstyledProps> = (props) => {
   return (
-    <ButtonUnstyled type="submit" component={CustomFormButtonRoot} {...props} />
+    <ButtonUnstyled type='submit' component={CustomFormButtonRoot} {...props} />
   )
 }
 
@@ -98,14 +104,14 @@ const FormSubmitButton: FC<FormButtonProps> = ({ text }) => {
 
 const RandomButton: FC = () => {
   return (
-    <Button type="submit" sx={{ width: '20rem', fontSize: '1.5rem' }}>
+    <Button type='submit' sx={{ width: '20rem', fontSize: '1.5rem' }}>
       ガチャる！
     </Button>
   )
 }
 
 export {
-  LogOutButton,
+  LogInLogOutButton,
   FormSubmitButton,
   GoogleSignInButton,
   ShowMoreButton,
