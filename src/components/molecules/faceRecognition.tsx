@@ -7,10 +7,12 @@ import {
 } from 'face-api.js'
 import useInterval from 'use-interval'
 import { MoviePlayerState } from 'types'
+import { Movie } from 'types/dataTypes'
 
 type FaceRecognitionProps = {
   moviePlayerState: MoviePlayerState
   isRecognitionOn: boolean
+  movie: Movie
 }
 
 // string keys consumed in ExpressionScore object type
@@ -26,12 +28,17 @@ type FaceExpressions =
 // type to hold the detection score, has keys defined in FaceExpressions
 type FaceExpressionScores = { [key in FaceExpressions]: number }
 
+type putMovieBody = {
+  grinningScore: number
+}
+
 // recognition threshold for determining expression
 const THRESHOLD = 0.5
 
 const FaceRecognition: FC<FaceRecognitionProps> = ({
   moviePlayerState,
-  isRecognitionOn: isRecognitionOn,
+  isRecognitionOn,
+  movie,
 }) => {
   // ref for grabbing the webcam video element
   const webcamRef = useRef<HTMLVideoElement>(null)
@@ -64,12 +71,12 @@ const FaceRecognition: FC<FaceRecognitionProps> = ({
           // run the face detection
           const detectionsWithExpressions = await detectSingleFace(
             webcamRef.current as TNetInput,
-            new TinyFaceDetectorOptions(),
+            new TinyFaceDetectorOptions()
           ).withFaceExpressions()
           // imcrementing the score of the detected expression
           if (detectionsWithExpressions?.expressions) {
             for (const [key, value] of Object.entries(
-              detectionsWithExpressions?.expressions as FaceExpressionScores,
+              detectionsWithExpressions?.expressions as FaceExpressionScores
             )) {
               if (value > THRESHOLD) {
                 const updatedState = expressionScore
@@ -85,7 +92,26 @@ const FaceRecognition: FC<FaceRecognitionProps> = ({
           break
         // when the video ends
         case YT.PlayerState.ENDED:
-          // calculate the score for the video and call PUT movie
+          try {
+            const putBody: putMovieBody = {
+              grinningScore: expressionScore.happy,
+            }
+            const res = await fetch(
+              `http://localhost:8000/movies/${movie.id}`,
+              {
+                method: 'PUT',
+                headers: {
+                  'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(putBody),
+              }
+            )
+            if (res.ok) {
+              console.log('score updated successfully')
+            }
+          } catch (error) {
+            console.error(error)
+          }
           break
         // default case CUE, PAUSED, BUFFERING
         default:
@@ -93,6 +119,8 @@ const FaceRecognition: FC<FaceRecognitionProps> = ({
       }
     }
   }, 300)
+
+  const sendScore = async () => {}
 
   // Loading models for face detection
   const loadModels = async () => {
@@ -134,29 +162,53 @@ const FaceRecognition: FC<FaceRecognitionProps> = ({
       await loadModels()
       await startWebcam()
     }
+
+    const sendScore = async () => {
+      const putBody: putMovieBody = { grinningScore: expressionScore.happy }
+      try {
+        const res = await fetch(`http://localhost:8000/movies/${movie.id}`, {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(putBody),
+        })
+        if (res.ok) {
+          console.log('put success', res)
+        }
+      } catch (error) {
+        console.error
+      }
+    }
+
     // if recognition is allowed, start setting up face detection
     if (isRecognitionOn) setUpFaceDetection()
 
     // clean up function before unmount
     const cleanup = () => {
-      // clear interval for useInterval is handled by itself
-      // PUT /movies request if the user have watched 50% of the video
+      sendScore()
     }
     return cleanup
   }, [isRecognitionOn])
 
   return (
     <>
-      <video ref={webcamRef} autoPlay muted hidden />
+      {isRecognitionOn ? (
+        <>
+          <video ref={webcamRef} autoPlay muted />
+          <h1>happy: {expressionScore.happy}</h1>
+        </>
+      ) : (
+        <video ref={webcamRef} autoPlay muted hidden />
+      )}
 
-      <h1>happy: {expressionScore.happy}</h1>
-      <h1>neutral: {expressionScore.neutral}</h1>
+      {/* <h1>neutral: {expressionScore.neutral}</h1>
       <h1>angry: {expressionScore.angry}</h1>
       <h1>sad: {expressionScore.sad}</h1>
       <h1>disgusted: {expressionScore.disgusted}</h1>
       <h1>surprised: {expressionScore.surprised}</h1>
       <h1>fearful: {expressionScore.fearful}</h1>
-      <h1>total: {totalFrame}</h1>
+      <h1>total: {totalFrame}</h1> */}
     </>
   )
 }
