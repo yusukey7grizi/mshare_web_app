@@ -31,13 +31,13 @@ const MovieItem: FC<MovieItemProps> = ({ movie }) => {
           onClick={cardOnClickHandler}
         >
           <CardMedia
-            component='img'
+            component="img"
             image={`https://i.ytimg.com/vi/${movie.youtubeTitleId}/mqdefault.jpg`}
           />
           <CardContent>
             <Typography sx={{ fontWeight: 'bold' }}>{movie.title}</Typography>
             <Typography sx={{ fontSize: '0.5rem' }}>
-              {movie.username}
+              {movie.userName}
             </Typography>
           </CardContent>
         </CardActionArea>
