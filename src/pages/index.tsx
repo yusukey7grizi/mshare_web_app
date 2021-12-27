@@ -2,7 +2,6 @@
 // else dashboard
 import { DashboardTemplate } from 'components/templates/dashboardTemplate'
 import { AppContext } from 'contexts/appContext'
-import { LogInCheck } from 'contexts/authContext'
 import type { NextPage } from 'next'
 import { useContext, useEffect } from 'react'
 
@@ -20,11 +19,7 @@ const Home: NextPage = () => {
     }
   }, [])
 
-  return (
-    <LogInCheck>
-      <DashboardTemplate />
-    </LogInCheck>
-  )
+  return <DashboardTemplate />
 }
 
 export default Home
