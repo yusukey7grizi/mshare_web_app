@@ -1,22 +1,34 @@
+import { MuiCircularProgress } from 'components/atoms/circularProgress'
 import { ProfileTemplate } from 'components/templates/profileTemplate'
-import React from 'react'
+import { useAuth } from 'contexts/authContext'
+import React, { useEffect, useState } from 'react'
+import { Movie } from 'types/dataTypes'
 
 const Profile = () => {
-  const movieList = [
-    {
-      id: 10,
-      userId: '20',
-      title: 'sample',
-      overview: 'sample',
-      genre: 'ホラー映画',
-      youtubeTitleId: '1vKiPwEYbyk',
-      grinningScore: 12,
-      userName: 'username',
-      createdAt: '2021-12-27 02:52:40.603295+00',
-    },
-  ]
+  const auth = useAuth()
 
-  return <ProfileTemplate movieList={movieList} />
+  const [movieList, setMovieList] = useState<Movie[]>([])
+
+  useEffect(() => {
+    const fetchUserMovies = async () => {
+      const res = await fetch(
+        `http://localhost:8000/movies?userId=${auth.user?.uid}`,
+      )
+      const data = await res.json()
+      setMovieList(data)
+    }
+    if (auth.user) {
+      fetchUserMovies()
+    }
+  })
+
+  return (
+    <ProfileTemplate
+      email={auth.user?.email || ''}
+      userName={auth.user?.displayName || ''}
+      movieList={movieList}
+    />
+  )
 }
 
 export default Profile
