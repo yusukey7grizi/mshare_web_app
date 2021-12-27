@@ -6,7 +6,7 @@ type Movie = {
   genre: string
   youtubeTitleId: string
   grinningScore: number
-  username: string
+  userName: string
   createdAt: string
 }
 

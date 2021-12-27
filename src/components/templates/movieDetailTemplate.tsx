@@ -23,7 +23,7 @@ const MovieDetailTemplate: FC<MovieDetailsProps> = ({ movie }) => {
         movie={movie}
         setMoviePlayerState={setMoviePlayerState}
       />
-      <MovieListTitle username={movie.userId} />
+      <MovieListTitle userName={movie.userName} />
       <MuiDivider />
       <MovieList />
     </Bar>

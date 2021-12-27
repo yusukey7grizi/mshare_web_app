@@ -12,12 +12,12 @@ const ProfileTemplate = () => {
     duration: 0,
   })
 
-  const username = 'Hiroki'
+  const userName = 'Hiroki'
   const email = 'hirokihanada@gmail.com'
 
   return (
     <Bar>
-      <UsernameText username={username} />
+      <UsernameText userName={userName} />
       <EmailText email={email} />
       <MovieListTitle />
       <MuiDivider />
