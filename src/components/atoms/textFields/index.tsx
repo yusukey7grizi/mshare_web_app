@@ -1,18 +1,18 @@
-import { FC, KeyboardEvent } from 'react';
-import { InputAdornment, TextField } from '@mui/material';
-import SearchIcon from '@mui/icons-material/Search';
-import { MuiKeyBoardEvent, MuiOnChangeEvent } from 'types';
+import { FC, KeyboardEvent } from 'react'
+import { InputAdornment, TextField } from '@mui/material'
+import SearchIcon from '@mui/icons-material/Search'
+import { MuiKeyBoardEvent, MuiOnChangeEvent } from 'types'
 
 type TextFieldProps = {
-  placeholder: string;
-  error: boolean;
-  type: 'text' | 'email' | 'password' | 'url';
-  onChange: (input: MuiOnChangeEvent) => void;
-};
+  placeholder: string
+  error: boolean
+  type: 'text' | 'email' | 'password' | 'url'
+  onChange: (input: MuiOnChangeEvent) => void
+}
 type SearchFieldProps = {
-  onKeyPress: ({ key }: MuiKeyBoardEvent) => void;
-  onChange: ({ target: { value } }: MuiOnChangeEvent) => void;
-};
+  onKeyPress: ({ key }: MuiKeyBoardEvent) => void
+  onChange: ({ target: { value } }: MuiOnChangeEvent) => void
+}
 
 const SearchField: FC<SearchFieldProps> = ({ onKeyPress, onChange }) => {
   return (
@@ -31,8 +31,8 @@ const SearchField: FC<SearchFieldProps> = ({ onKeyPress, onChange }) => {
         ),
       }}
     />
-  );
-};
+  )
+}
 
 const AuthFormTextField: FC<TextFieldProps> = ({
   placeholder,
@@ -51,8 +51,8 @@ const AuthFormTextField: FC<TextFieldProps> = ({
       variant='standard'
       onChange={onChange}
     />
-  );
-};
+  )
+}
 
 const MovieFormTextField: FC<TextFieldProps> = ({
   placeholder,
@@ -71,7 +71,7 @@ const MovieFormTextField: FC<TextFieldProps> = ({
       variant='standard'
       onChange={onChange}
     />
-  );
-};
+  )
+}
 
-export { SearchField, AuthFormTextField, MovieFormTextField };
+export { SearchField, AuthFormTextField, MovieFormTextField }
