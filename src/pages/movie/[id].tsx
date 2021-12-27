@@ -3,34 +3,29 @@
 
 import React, { FC, useEffect, useState } from 'react'
 import { MovieDetailTemplate } from 'components/templates/movieDetailTemplate'
+import { useRouter } from 'next/router'
+import { Movie } from 'types/dataTypes'
 
 const MovieDetail: FC = () => {
-  const movie = {
-    id: 1,
-    userId: 'string',
-    title: 'string',
-    overview: 'string',
-    genre: 'アクション映画',
-    youtubeTitleId: 'ttybTRn0D3E',
-    grinningScore: 1,
-    userName: 'string',
-    createdAt: 'string',
-  }
+  const router = useRouter()
+
+  const [movie, setMovie] = useState<Movie>({} as Movie)
 
   useEffect(() => {
+    const { id } = router.query
     // api fetching here
     const fetchData = async () => {
       try {
-        const res = await fetch('http://localhost:8000/movies/random')
-        const data = await res.json()
+        const res = await fetch(`http://localhost:8000/movies/${id}`)
+        const data: Movie = await res.json()
         console.log(data)
+        setMovie(data)
       } catch (error) {
         console.log(error)
       }
     }
-    fetchData()
-    // dummy data
-  }, [])
+    if (id) fetchData()
+  }, [router])
 
   return <MovieDetailTemplate movie={movie} />
 }

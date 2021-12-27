@@ -10,24 +10,12 @@ type MovieDetailsProps = {
   movie: Movie
 }
 
-const MovieDetailTemplate: FC<MovieDetailsProps> = () => {
+const MovieDetailTemplate: FC<MovieDetailsProps> = ({ movie }) => {
   const [moviePlayerState, setMoviePlayerState] = useState<MoviePlayerState>({
     playerState: -1,
     currentTime: 0,
     duration: 0,
   })
-
-  const movie = {
-    id: 1,
-    userId: 'string',
-    title: 'string',
-    overview: 'string',
-    genre: 'アクション映画',
-    youtubeTitleId: 'ttybTRn0D3E',
-    grinningScore: 1,
-    userName: 'string',
-    createdAt: 'string',
-  }
 
   return (
     <Bar>
