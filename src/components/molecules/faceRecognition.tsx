@@ -51,6 +51,7 @@ const FaceRecognition: FC<FaceRecognitionProps> = ({
   const [isModelReady, setIsModelReady] = useState<boolean>(false)
   // webcam status, true if allowed by user and started
   const [isWebcamReady, setIsWebcamReady] = useState<boolean>(false)
+  const [isScoreUpdated, setIsScoreUpdated] = useState<boolean>(false)
   // total number of face recognition frames
   const [totalFrame, setTotalFrame] = useState<number>(0)
   // keepiung track of number of frames with each face expressions
@@ -98,6 +99,7 @@ const FaceRecognition: FC<FaceRecognitionProps> = ({
           break
         // when the video ends
         case YT.PlayerState.ENDED:
+          if (isScoreUpdated) break
           try {
             const putBody: putMovieBody = {
               grinningScore: expressionScore.happy,
@@ -114,6 +116,7 @@ const FaceRecognition: FC<FaceRecognitionProps> = ({
             )
             if (res.ok) {
               console.log('score updated successfully')
+              setIsScoreUpdated(true)
             }
           } catch (error) {
             console.error(error)
@@ -168,6 +171,7 @@ const FaceRecognition: FC<FaceRecognitionProps> = ({
     }
 
     const sendScore = async () => {
+      if (isScoreUpdated) return
       const putBody: putMovieBody = { grinningScore: expressionScore.happy }
       try {
         const res = await fetch(`http://localhost:8000/movies/${movie.id}`, {
