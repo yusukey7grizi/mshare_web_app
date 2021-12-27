@@ -1,6 +1,7 @@
 import React, {
   createContext,
   FC,
+  ReactNode,
   useContext,
   useEffect,
   useState,
@@ -17,6 +18,8 @@ import {
   User,
   UserCredential,
 } from 'firebase/auth'
+import { NextRouter, useRouter } from 'next/router'
+import Cookies from 'js-cookie'
 
 const firebaseConfig = {
   apiKey: 'AIzaSyC_N3NsHmcxdR17UOvtezZurnDDaxVhpTE',
@@ -52,6 +55,20 @@ export const AuthProvider: FC = ({ children }) => {
   )
 }
 
+export const LogInCheck: FC = ({ children }) => {
+  const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false)
+  const router = useRouter()
+  useEffect(() => {
+    const signedInUserId = Cookies.get('uid')
+    if (!signedInUserId) {
+      router.replace('/auth/login')
+    }
+    setIsLoggedIn(true)
+  }, [router])
+
+  return isLoggedIn ? <>{children}</> : <></>
+}
+
 export const useAuth = () => {
   return useContext(authContext)
 }
@@ -64,6 +81,7 @@ const useProvideAuth = () => {
     return signInWithEmailAndPassword(auth, email, password)
       .then((userCredentials: UserCredential) => {
         setUser(userCredentials.user)
+        Cookies.set('uid', userCredentials.user.uid)
         return userCredentials.user
       })
       .catch((error) => {
@@ -78,6 +96,7 @@ const useProvideAuth = () => {
           displayName: username,
         })
         setUser(userCredentials.user)
+        Cookies.set('uid', userCredentials.user.uid)
         return userCredentials.user
       })
       .catch((error) => {
@@ -86,17 +105,23 @@ const useProvideAuth = () => {
   }
 
   const logOut = () => {
-    return signOut(auth).catch((error) => {
-      console.error(error)
-    })
+    return signOut(auth)
+      .then(() => {
+        Cookies.remove('uid')
+      })
+      .catch((error) => {
+        console.error(error)
+      })
   }
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
       if (currentUser) {
         setUser(currentUser)
+        Cookies.set('uid', currentUser.uid)
       } else {
         setUser(null)
+        Cookies.remove('uid')
       }
     })
 
