@@ -64,14 +64,10 @@ const TopBar: FC<Props> = ({ isLoggedIn }) => {
   }
 
   const logOutHandler = () => {
-    auth
-      .logOut()
-      .then(() => {
-        router.push('/')
-      })
-      .catch((err) => {
-        console.error(err)
-      })
+    router.push('/auth/login')
+    auth.logOut().catch((err) => {
+      console.error(err)
+    })
   }
 
   const logInHandler = () => {

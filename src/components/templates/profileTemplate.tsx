@@ -1,3 +1,4 @@
+import { Box } from '@mui/material'
 import { MuiDivider } from 'components/atoms/divider'
 import { EmailText, MovieListTitle, UsernameText } from 'components/atoms/texts'
 import { Bar } from 'components/organisms'
@@ -20,8 +21,10 @@ const ProfileTemplate: FC<Props> = ({ movieList, userName, email }) => {
 
   return (
     <Bar>
-      <UsernameText userName={userName} />
-      <EmailText email={email} />
+      <Box sx={{ width: '50rem', margin: 'auto' }}>
+        <UsernameText userName={userName} />
+        <EmailText email={email} />
+      </Box>
       <MovieListTitle />
       <MuiDivider />
       <MovieList movieList={movieList} />
