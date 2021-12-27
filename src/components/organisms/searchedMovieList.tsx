@@ -1,15 +1,23 @@
-import { Box } from '@mui/material'
+import { Box, Typography } from '@mui/material'
 import { MovieItem } from 'components/molecules'
 import { AppContext } from 'contexts/appContext'
 import React, { FC, useContext } from 'react'
+import { Movie } from 'types/dataTypes'
 
-const SearchedMovieList: FC = () => {
+type Props = {
+  movieList: Movie[]
+}
+const SearchedMovieList: FC<Props> = ({ movieList }) => {
   const { searchedMovieList } = useContext(AppContext)
   return (
     <Box sx={{ display: 'flex', flexDirection: 'row', flexWrap: 'wrap' }}>
-      {searchedMovieList.map((movie) => {
-        return <MovieItem key={movie.id} movie={movie} />
-      })}
+      {movieList ? (
+        movieList.map((movie) => {
+          return <MovieItem key={movie.id} movie={movie} />
+        })
+      ) : (
+        <Typography>該当する作品はありません</Typography>
+      )}
     </Box>
   )
 }
