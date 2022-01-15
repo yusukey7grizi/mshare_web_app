@@ -5,9 +5,8 @@ import { MovieListTitle } from 'components/atoms/texts'
 import { GenreField } from 'components/molecules'
 import { Bar, MovieDetailContent } from 'components/organisms'
 import { SearchedMovieList as MovieList } from 'components/organisms/searchedMovieList'
-import React, { FC, useState } from 'react'
+import React, { FC } from 'react'
 import {
-  MoviePlayerState,
   MuiAutoCompleteOnChangeEvent,
   MuiOnClickEvent,
 } from 'types'
@@ -28,11 +27,6 @@ const RandomTemplate: FC<Props> = ({
   onChange,
   relatedMovieList,
 }) => {
-  const [moviePlayerState, setMoviePlayerState] = useState<MoviePlayerState>({
-    playerState: -1,
-    currentTime: 0,
-    duration: 0,
-  })
 
   return (
     <Bar>
@@ -59,7 +53,6 @@ const RandomTemplate: FC<Props> = ({
         >
           <MovieDetailContent
             movie={movie}
-            setMoviePlayerState={setMoviePlayerState}
           />
           <MovieListTitle userName={movie.userName} />
           <MuiDivider />
