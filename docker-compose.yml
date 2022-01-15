@@ -1,7 +1,7 @@
 version: "3"
 
 services:
-  frontend:
+  mshare_web_app:
     build: .
     environment:
       - NODE_ENV=development
@@ -11,3 +11,4 @@ services:
     ports:
       - "3000:3000"
     tty: true
+    container_name: mshare_web_app
