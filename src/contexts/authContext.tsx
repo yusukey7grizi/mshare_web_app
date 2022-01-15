@@ -22,13 +22,13 @@ import { NextRouter, useRouter } from 'next/router'
 import Cookies from 'js-cookie'
 
 const firebaseConfig = {
-  apiKey: 'AIzaSyC_N3NsHmcxdR17UOvtezZurnDDaxVhpTE',
-  authDomain: 'mshare-authentication.firebaseapp.com',
-  projectId: 'mshare-authentication',
-  storageBucket: 'mshare-authentication.appspot.com',
-  messagingSenderId: '786116129507',
-  appId: '1:786116129507:web:f6f88b477b63a64012cbd6',
-  measurementId: 'G-0CXZSTY13R',
+  apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
+  authDomain: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN,
+  projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID,
+  storageBucket: process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: process.env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID,
+  appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID,
+  measurementId: process.env.NEXT_PUBLIC_FIREBASE_MEASSUMENT_ID,
 }
 
 type AuthState = {
