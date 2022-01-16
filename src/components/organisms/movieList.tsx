@@ -1,11 +1,12 @@
-import { Box } from '@mui/material'
-import { MovieItem } from 'components/molecules'
-import React, { FC } from 'react'
-import { Movie } from 'types/dataTypes'
+import { Box } from '@mui/material';
+import { MovieItem } from 'components/molecules';
+import React, { FC } from 'react';
+import { Movie } from 'types/dataTypes';
 
 type Props = {
-  movieList: Movie[]
-}
+  movieList: Movie[];
+};
+
 const HomeMovieList: FC<Props> = ({ movieList }) => {
   return (
     <Box
@@ -16,10 +17,10 @@ const HomeMovieList: FC<Props> = ({ movieList }) => {
       }}
     >
       {movieList.slice(0, 9).map((movie) => {
-        return <MovieItem key={movie.id} movie={movie} />
+        return <MovieItem key={movie.id} movie={movie} />;
       })}
     </Box>
-  )
-}
+  );
+};
 
-export { HomeMovieList }
+export { HomeMovieList };

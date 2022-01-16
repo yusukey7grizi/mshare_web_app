@@ -1,4 +1,4 @@
-import { FC, KeyboardEvent } from 'react';
+import { FC } from 'react';
 import { InputAdornment, TextField } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 import { MuiKeyBoardEvent, MuiOnChangeEvent } from 'types';
@@ -9,6 +9,7 @@ type TextFieldProps = {
   type: 'text' | 'email' | 'password' | 'url';
   onChange: (input: MuiOnChangeEvent) => void;
 };
+
 type SearchFieldProps = {
   onKeyPress: ({ key }: MuiKeyBoardEvent) => void;
   onChange: ({ target: { value } }: MuiOnChangeEvent) => void;
@@ -47,7 +48,7 @@ const AuthFormTextField: FC<TextFieldProps> = ({
       error={error}
       placeholder={placeholder}
       InputLabelProps={{ shrink: true }}
-      sx={{ width: '450px' }}
+      sx={{ width: '32rem' }}
       variant='standard'
       onChange={onChange}
     />
@@ -67,7 +68,7 @@ const MovieFormTextField: FC<TextFieldProps> = ({
       error={error}
       placeholder={placeholder}
       InputLabelProps={{ shrink: true }}
-      sx={{ width: '650px' }}
+      sx={{ width: '40rem' }}
       variant='standard'
       onChange={onChange}
     />
