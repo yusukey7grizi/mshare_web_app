@@ -1,8 +1,7 @@
 import { ProfileTemplate } from 'components/templates/profileTemplate';
 import { AppContext } from 'contexts/appContext';
 import { useAuth } from 'contexts/authContext';
-import React, { useContext, useEffect, useState } from 'react';
-import { Movie } from 'types/dataTypes';
+import React, { useContext, useEffect } from 'react';
 
 const Profile = () => {
   const auth = useAuth();
