@@ -1,19 +1,29 @@
-import React, { createContext, useState, FC } from 'react'
-import { CreateMovieInput, CreateUserInput, LogInUserInput } from 'types'
-import { Movie } from 'types/dataTypes'
+import React, { createContext, useState, FC } from 'react';
+import { CreateMovieInput, CreateUserInput, LogInUserInput } from 'types';
+import { Movie } from 'types/dataTypes';
+
+type Maybe<T> = T | null;
 
 type AppState = {
-  createMovieInput: CreateMovieInput
-  setCreateMovieInput: (input: CreateMovieInput) => void
-  createUserInput: CreateUserInput
-  setCreateUserInput: (input: CreateUserInput) => void
-  logInUserInput: LogInUserInput
-  setLogInUserInput: (input: LogInUserInput) => void
-  setMovieList: (input: Movie[]) => void
-  movieList: Movie[]
-}
+  createMovieInput: CreateMovieInput;
+  setCreateMovieInput: (input: CreateMovieInput) => void;
+  createUserInput: CreateUserInput;
+  setCreateUserInput: (input: CreateUserInput) => void;
+  logInUserInput: LogInUserInput;
+  setLogInUserInput: (input: LogInUserInput) => void;
+  setMovieList: (input: Movie[]) => void;
+  movieList: Movie[];
+  setMovie: (input: Movie) => void;
+  movie: Maybe<Movie>;
+  setRelatedMovieList: (input: Movie[]) => void;
+  relatedMovieList: Movie[];
+  setRandomMovie: (input: Maybe<Movie>) => void;
+  randomMovie: Maybe<Movie>;
+  setSearchedMovieList: (input: Movie[]) => void;
+  searchedMovieList: Movie[];
+};
 
-export const AppContext = createContext({} as AppState)
+export const AppContext = createContext({} as AppState);
 
 const AppProvider: FC = ({ children }) => {
   const [createMovieInput, setCreateMovieInput] = useState<CreateMovieInput>({
@@ -21,19 +31,23 @@ const AppProvider: FC = ({ children }) => {
     overview: '',
     youtubeLinkUrl: '',
     genre: '',
-  })
+  });
   const [createUserInput, setCreateUserInput] = useState<CreateUserInput>({
     username: '',
     email: '',
     confirmEmail: '',
     password: '',
     confirmPassword: '',
-  })
+  });
   const [logInUserInput, setLogInUserInput] = useState<LogInUserInput>({
     email: '',
     password: '',
-  })
-  const [movieList, setMovieList] = useState<Movie[]>([])
+  });
+  const [movieList, setMovieList] = useState<Movie[]>([]);
+  const [relatedMovieList, setRelatedMovieList] = useState<Movie[]>([]);
+  const [searchedMovieList, setSearchedMovieList] = useState<Movie[]>([]);
+  const [movie, setMovie] = useState<Maybe<Movie>>(null);
+  const [randomMovie, setRandomMovie] = useState<Maybe<Movie>>(null);
 
   return (
     <AppContext.Provider
@@ -46,11 +60,19 @@ const AppProvider: FC = ({ children }) => {
         setLogInUserInput: setLogInUserInput,
         setMovieList: setMovieList,
         movieList: movieList,
+        setRelatedMovieList: setRelatedMovieList,
+        relatedMovieList: relatedMovieList,
+        setMovie: setMovie,
+        movie: movie,
+        setRandomMovie: setRandomMovie,
+        randomMovie: randomMovie,
+        setSearchedMovieList: setSearchedMovieList,
+        searchedMovieList: searchedMovieList,
       }}
     >
       {children}
     </AppContext.Provider>
-  )
-}
+  );
+};
 
-export { AppProvider }
+export { AppProvider };
