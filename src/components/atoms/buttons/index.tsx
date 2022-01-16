@@ -12,6 +12,7 @@ type ShowMoreButtonProps = {
   isDetailOpened: boolean;
   onClick: () => void;
 };
+
 const GoogleSignInButtonRoot = styled(IconButton)`
   background-color: #000000;
   padding: 15px 10%;
@@ -54,6 +55,7 @@ const ShowMoreButton: FC<ShowMoreButtonProps> = ({
     </Link>
   );
 };
+
 const CustomFormButtonRoot: FC = styled('button')`
   background-color: #007fff;
   width: 30%;

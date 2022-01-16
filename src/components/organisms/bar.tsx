@@ -15,6 +15,8 @@ type Props = {
   isLoggedIn: boolean;
 };
 
+const iconButtonStyle = { width: '3rem', height: '3rem' } as const;
+
 const TopBar: FC<Props> = ({ isLoggedIn }) => {
   const router = useRouter();
   const auth = useAuth();
@@ -62,7 +64,7 @@ const TopBar: FC<Props> = ({ isLoggedIn }) => {
         {isSearchFieldOpen ? (
           <>
             <IconButton
-              sx={{ width: '3rem', height: '3rem' }}
+              sx={iconButtonStyle}
               onClick={() => {
                 setIsSearchFieldOpen(false);
               }}
@@ -88,7 +90,7 @@ const TopBar: FC<Props> = ({ isLoggedIn }) => {
               />
             ) : (
               <IconButton
-                sx={{ width: '3rem', height: '3rem' }}
+                sx={iconButtonStyle}
                 onClick={() => {
                   setIsSearchFieldOpen(true);
                 }}
