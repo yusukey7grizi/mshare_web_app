@@ -1,15 +1,15 @@
-import { FC, useState, useEffect } from "react";
-import { Box, Toolbar, AppBar, IconButton } from "@mui/material";
-import { SearchField } from "components/atoms/textFields";
-import { BarTitle } from "components/atoms/titles";
-import { useRouter } from "next/router";
-import { MuiKeyBoardEvent, MuiOnChangeEvent } from "types";
-import { useAuth } from "contexts/authContext";
-import Cookies from "js-cookie";
-import { useMediaQuery } from "utils/screenSize";
-import { MenuDrawer } from "components/molecules";
-import CloseIcon from "@mui/icons-material/Close";
-import SearchIcon from "@mui/icons-material/Search";
+import { FC, useState, useEffect } from 'react';
+import { Box, Toolbar, AppBar, IconButton } from '@mui/material';
+import { SearchField } from 'components/atoms/textFields';
+import { BarTitle } from 'components/atoms/titles';
+import { useRouter } from 'next/router';
+import { MuiKeyBoardEvent, MuiOnChangeEvent } from 'types';
+import { useAuth } from 'contexts/authContext';
+import Cookies from 'js-cookie';
+import { useMediaQuery } from 'utils/screenSize';
+import { MenuDrawer } from 'components/molecules';
+import CloseIcon from '@mui/icons-material/Close';
+import SearchIcon from '@mui/icons-material/Search';
 
 type Props = {
   isLoggedIn: boolean;
@@ -20,14 +20,14 @@ const TopBar: FC<Props> = ({ isLoggedIn }) => {
   const auth = useAuth();
   const isLargeScreenSize = useMediaQuery(970);
 
-  const [inputValue, setInputValue] = useState<string>("");
+  const [inputValue, setInputValue] = useState<string>('');
   const [isSearchFieldOpen, setIsSearchFieldOpen] = useState<boolean>(false);
 
   const searchHandler = ({ key }: MuiKeyBoardEvent) => {
-    if (key === "Enter") {
+    if (key === 'Enter') {
       router.push({
-        pathname: "/search",
-        query: { input: inputValue, useCase: "title" },
+        pathname: '/search',
+        query: { input: inputValue, useCase: 'title' },
       });
     }
   };
@@ -40,29 +40,29 @@ const TopBar: FC<Props> = ({ isLoggedIn }) => {
   };
 
   const logOutHandler = () => {
-    router.push("/auth/login");
+    router.push('/auth/login');
     auth.logOut().catch((err) => {
       console.error(err);
     });
   };
 
   const logInHandler = () => {
-    router.push("/auth/login");
+    router.push('/auth/login');
   };
 
   return (
-    <AppBar position="fixed">
+    <AppBar position='fixed'>
       <Toolbar
         sx={{
-          backgroundColor: "#ffff",
-          height: "80px",
-          justifyContent: "space-between",
+          backgroundColor: '#ffff',
+          height: '80px',
+          justifyContent: 'space-between',
         }}
       >
         {isSearchFieldOpen ? (
           <>
             <IconButton
-              sx={{ width: "3rem", height: "3rem" }}
+              sx={{ width: '3rem', height: '3rem' }}
               onClick={() => {
                 setIsSearchFieldOpen(false);
               }}
@@ -75,7 +75,7 @@ const TopBar: FC<Props> = ({ isLoggedIn }) => {
           <>
             <Box>
               <MenuDrawer
-                anchor={isLargeScreenSize ? "left" : "top"}
+                anchor={isLargeScreenSize ? 'left' : 'top'}
                 authHandler={isLoggedIn ? logOutHandler : logInHandler}
                 isLoggedIn
               />
@@ -88,7 +88,7 @@ const TopBar: FC<Props> = ({ isLoggedIn }) => {
               />
             ) : (
               <IconButton
-                sx={{ width: "3rem", height: "3rem" }}
+                sx={{ width: '3rem', height: '3rem' }}
                 onClick={() => {
                   setIsSearchFieldOpen(true);
                 }}
@@ -108,7 +108,7 @@ const Bar: FC = ({ children }) => {
   const router = useRouter();
 
   useEffect(() => {
-    const signedInUserId = Cookies.get("uid");
+    const signedInUserId = Cookies.get('uid');
     if (!signedInUserId) {
       setIsLoggedIn(false);
       return;
@@ -119,7 +119,7 @@ const Bar: FC = ({ children }) => {
   return (
     <>
       <TopBar isLoggedIn={isLoggedIn} />
-      <Box component="div" sx={{ pt: "7rem", pr: "4rem", pl: "4rem" }}>
+      <Box component='div' sx={{ pt: '7rem', pr: '4rem', pl: '4rem' }}>
         {children}
       </Box>
     </>

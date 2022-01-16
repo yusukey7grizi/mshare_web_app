@@ -1,14 +1,14 @@
-import React, { FC, useState, useEffect, useRef } from "react";
-import * as faceapi from "face-api.js";
+import React, { FC, useState, useEffect, useRef } from 'react';
+import * as faceapi from 'face-api.js';
 import {
   detectSingleFace,
   TinyFaceDetectorOptions,
   TNetInput,
-} from "face-api.js";
-import useInterval from "use-interval";
-import { MoviePlayerState } from "types";
-import { Movie } from "types/dataTypes";
-import { Typography } from "@mui/material";
+} from 'face-api.js';
+import useInterval from 'use-interval';
+import { MoviePlayerState } from 'types';
+import { Movie } from 'types/dataTypes';
+import { Typography } from '@mui/material';
 
 type FaceRecognitionProps = {
   moviePlayerState: MoviePlayerState;
@@ -20,13 +20,13 @@ type FaceRecognitionProps = {
 
 // string keys consumed in ExpressionScore object type
 type FaceExpressions =
-  | "neutral"
-  | "happy"
-  | "sad"
-  | "angry"
-  | "fearful"
-  | "disgusted"
-  | "surprised";
+  | 'neutral'
+  | 'happy'
+  | 'sad'
+  | 'angry'
+  | 'fearful'
+  | 'disgusted'
+  | 'surprised';
 
 // type to hold the detection score, has keys defined in FaceExpressions
 type FaceExpressionScores = { [key in FaceExpressions]: number };
@@ -90,7 +90,7 @@ const FaceRecognition: FC<FaceRecognitionProps> = ({
                 setExpressionScore({
                   ...updatedState,
                 });
-                if (key == "happy") setGrinningScore(grinningScore + 1);
+                if (key == 'happy') setGrinningScore(grinningScore + 1);
               }
             }
           }
@@ -107,15 +107,15 @@ const FaceRecognition: FC<FaceRecognitionProps> = ({
             const res = await fetch(
               `http://localhost:8000/movies/${movie.id}`,
               {
-                method: "PUT",
+                method: 'PUT',
                 headers: {
-                  "Content-Type": "application/json",
+                  'Content-Type': 'application/json',
                 },
                 body: JSON.stringify(putBody),
               }
             );
             if (res.ok) {
-              console.log("score updated successfully");
+              console.log('score updated successfully');
               setIsScoreUpdated(true);
             }
           } catch (error) {
@@ -132,10 +132,10 @@ const FaceRecognition: FC<FaceRecognitionProps> = ({
   // Loading models for face detection
   const loadModels = async () => {
     try {
-      await faceapi.loadTinyFaceDetectorModel("/models");
-      await faceapi.loadFaceExpressionModel("/models");
+      await faceapi.loadTinyFaceDetectorModel('/models');
+      await faceapi.loadFaceExpressionModel('/models');
       setIsModelReady(true);
-      console.log("Models loaded successfully");
+      console.log('Models loaded successfully');
     } catch (error) {
       console.error(error);
     }
@@ -155,7 +155,7 @@ const FaceRecognition: FC<FaceRecognitionProps> = ({
         });
         webcam.srcObject = await stream;
         setIsWebcamReady(true);
-        console.log("webcam initiated");
+        console.log('webcam initiated');
       } catch (error) {
         console.error(error);
       }
@@ -175,14 +175,14 @@ const FaceRecognition: FC<FaceRecognitionProps> = ({
       const putBody: putMovieBody = { grinningScore: expressionScore.happy };
       try {
         const res = await fetch(`http://localhost:8000/movies/${movie.id}`, {
-          method: "PUT",
+          method: 'PUT',
           headers: {
-            "Content-Type": "application/json",
+            'Content-Type': 'application/json',
           },
           body: JSON.stringify(putBody),
         });
         if (res.ok) {
-          console.log("put success", res);
+          console.log('put success', res);
         }
       } catch (error) {
         console.error;
@@ -205,14 +205,14 @@ const FaceRecognition: FC<FaceRecognitionProps> = ({
       {isRecognitionOn ? (
         <>
           <Typography
-            variant="h5"
-            fontWeight="bold"
-            textAlign="center"
+            variant='h5'
+            fontWeight='bold'
+            textAlign='center'
             gutterBottom
           >
             現在のあなたのニヤッと回数 : {expressionScore.happy}
           </Typography>
-          <video ref={webcamRef} width="800" height="450" autoPlay muted />
+          <video ref={webcamRef} width='800' height='450' autoPlay muted />
         </>
       ) : (
         <video ref={webcamRef} autoPlay muted hidden />

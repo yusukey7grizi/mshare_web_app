@@ -1,12 +1,12 @@
-import { FC, KeyboardEvent } from "react";
-import { InputAdornment, TextField } from "@mui/material";
-import SearchIcon from "@mui/icons-material/Search";
-import { MuiKeyBoardEvent, MuiOnChangeEvent } from "types";
+import { FC, KeyboardEvent } from 'react';
+import { InputAdornment, TextField } from '@mui/material';
+import SearchIcon from '@mui/icons-material/Search';
+import { MuiKeyBoardEvent, MuiOnChangeEvent } from 'types';
 
 type TextFieldProps = {
   placeholder: string;
   error: boolean;
-  type: "text" | "email" | "password" | "url";
+  type: 'text' | 'email' | 'password' | 'url';
   onChange: (input: MuiOnChangeEvent) => void;
 };
 type SearchFieldProps = {
@@ -19,13 +19,13 @@ const SearchField: FC<SearchFieldProps> = ({ onKeyPress, onChange }) => {
     <TextField
       onChange={onChange}
       onKeyPress={onKeyPress}
-      placeholder="映画を検索する"
-      variant="filled"
-      sx={{ width: "40rem", pr: 2, pl: 2 }}
+      placeholder='映画を検索する'
+      variant='filled'
+      sx={{ width: '40rem', pr: 2, pl: 2 }}
       InputProps={{
         disableUnderline: true,
         startAdornment: (
-          <InputAdornment position="start">
+          <InputAdornment position='start'>
             <SearchIcon />
           </InputAdornment>
         ),
@@ -47,8 +47,8 @@ const AuthFormTextField: FC<TextFieldProps> = ({
       error={error}
       placeholder={placeholder}
       InputLabelProps={{ shrink: true }}
-      sx={{ width: "450px" }}
-      variant="standard"
+      sx={{ width: '450px' }}
+      variant='standard'
       onChange={onChange}
     />
   );
@@ -67,8 +67,8 @@ const MovieFormTextField: FC<TextFieldProps> = ({
       error={error}
       placeholder={placeholder}
       InputLabelProps={{ shrink: true }}
-      sx={{ width: "650px" }}
-      variant="standard"
+      sx={{ width: '650px' }}
+      variant='standard'
       onChange={onChange}
     />
   );

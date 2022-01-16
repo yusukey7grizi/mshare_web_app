@@ -1,11 +1,11 @@
-import { FC } from "react";
-import { Link, Button, Typography, IconButton } from "@mui/material";
-import { styled } from "@mui/system";
-import ButtonUnstyled, { ButtonUnstyledProps } from "@mui/base/ButtonUnstyled";
-import GoogleIcon from "@mui/icons-material/Google";
+import { FC } from 'react';
+import { Link, Button, Typography, IconButton } from '@mui/material';
+import { styled } from '@mui/system';
+import ButtonUnstyled, { ButtonUnstyledProps } from '@mui/base/ButtonUnstyled';
+import GoogleIcon from '@mui/icons-material/Google';
 
 type FormButtonProps = {
-  text: "ログイン" | "登録" | "作成" | "ガチャる！";
+  text: 'ログイン' | '登録' | '作成' | 'ガチャる！';
 };
 
 type ShowMoreButtonProps = {
@@ -30,8 +30,8 @@ const GoogleSignInButtonRoot = styled(IconButton)`
 `;
 const GoogleSignInButton: FC = () => {
   return (
-    <GoogleSignInButtonRoot sx={{ marginBottom: "1.5rem" }}>
-      <GoogleIcon sx={{ marginRight: "5px" }} />
+    <GoogleSignInButtonRoot sx={{ marginBottom: '1.5rem' }}>
+      <GoogleIcon sx={{ marginRight: '5px' }} />
       <Typography>SIGN IN WITH GOOGLE</Typography>
     </GoogleSignInButtonRoot>
   );
@@ -44,17 +44,17 @@ const ShowMoreButton: FC<ShowMoreButtonProps> = ({
   return (
     <Link
       onClick={onClick}
-      sx={{ color: "#A9A9A9" }}
+      sx={{ color: '#A9A9A9' }}
       component={Button}
-      underline="none"
+      underline='none'
     >
-      <Typography sx={{ fontSize: "0.5rem" }}>
-        {isDetailOpened ? "Show Less" : "Show More"}
+      <Typography sx={{ fontSize: '0.5rem' }}>
+        {isDetailOpened ? 'Show Less' : 'Show More'}
       </Typography>
     </Link>
   );
 };
-const CustomFormButtonRoot: FC = styled("button")`
+const CustomFormButtonRoot: FC = styled('button')`
   background-color: #007fff;
   width: 30%;
   height: 4rem;
@@ -74,7 +74,7 @@ const CustomFormButtonRoot: FC = styled("button")`
 
 const CustomFormButton: FC<ButtonUnstyledProps> = (props) => {
   return (
-    <ButtonUnstyled type="submit" component={CustomFormButtonRoot} {...props} />
+    <ButtonUnstyled type='submit' component={CustomFormButtonRoot} {...props} />
   );
 };
 
@@ -84,7 +84,7 @@ const FormSubmitButton: FC<FormButtonProps> = ({ text }) => {
 
 const RandomButton: FC = () => {
   return (
-    <Button type="submit" sx={{ width: "20rem", fontSize: "1.5rem" }}>
+    <Button type='submit' sx={{ width: '20rem', fontSize: '1.5rem' }}>
       ガチャる！
     </Button>
   );

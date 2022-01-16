@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from 'react';
 
 const useMediaQuery = (width: number) => {
   const [isLargeScreeen, setIsLargeScreen] = useState<boolean>(true);

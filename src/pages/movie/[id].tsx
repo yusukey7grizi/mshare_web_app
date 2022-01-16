@@ -1,10 +1,7 @@
-// show youtube video with iframe
-// show video details
-
-import React, { FC, useEffect, useState } from "react";
-import { MovieDetailTemplate } from "components/templates/movieDetailTemplate";
-import { useRouter } from "next/router";
-import { Movie } from "types/dataTypes";
+import React, { FC, useEffect, useState } from 'react';
+import { MovieDetailTemplate } from 'components/templates/movieDetailTemplate';
+import { useRouter } from 'next/router';
+import { Movie } from 'types/dataTypes';
 
 const MovieDetail: FC = () => {
   const router = useRouter();

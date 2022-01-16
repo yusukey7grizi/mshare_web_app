@@ -1,13 +1,13 @@
-import { SearchTemplate } from "components/templates/searchTemplate";
-import { useRouter } from "next/router";
-import React, { FC, useEffect, useState } from "react";
-import { Movie } from "types/dataTypes";
+import { SearchTemplate } from 'components/templates/searchTemplate';
+import { useRouter } from 'next/router';
+import React, { FC, useEffect, useState } from 'react';
+import { Movie } from 'types/dataTypes';
 
 const Search: FC = () => {
   const router = useRouter();
   const [searchedMovieList, setSearchedMovieList] = useState<Movie[]>([]);
   const { input, useCase } = router.query;
-  const isTitle = useCase === "title";
+  const isTitle = useCase === 'title';
 
   useEffect(() => {
     const fetchPartialMovies = async () => {
