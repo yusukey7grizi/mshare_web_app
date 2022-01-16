@@ -20,6 +20,7 @@ import {
 } from 'firebase/auth'
 import { NextRouter, useRouter } from 'next/router'
 import Cookies from 'js-cookie'
+import { Console } from 'console'
 
 const firebaseConfig = {
   apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
@@ -33,13 +34,19 @@ const firebaseConfig = {
 
 type AuthState = {
   user: User | null
-  logIn: (email: string, password: string) => Promise<void | User>
+  logIn: (email: string, password: string) => Promise<boolean>
   createUser: (
     email: string,
     password: string,
-    username: string,
-  ) => Promise<void | User>
-  logOut: () => Promise<void>
+    username: string
+  ) => Promise<boolean>
+  logOut: () => Promise<boolean>
+  verifyUser: () => Promise<boolean>
+}
+
+type VerificationResponse = {
+  status: boolean
+  user: User | null
 }
 
 if (!firebase.getApps.length) {
@@ -63,41 +70,80 @@ const useProvideAuth = () => {
   const [user, setUser] = useState<User | null>(null)
   const auth = getAuth()
 
+  // signs in to firebase auth, then requests backend to create session cookie
   const signIn = (email: string, password: string) => {
     return signInWithEmailAndPassword(auth, email, password)
-      .then((userCredentials: UserCredential) => {
-        setUser(userCredentials.user)
-        Cookies.set('uid', userCredentials.user.uid)
-        return userCredentials.user
+      .then(async (userCredentials: UserCredential) => {
+        const idToken = userCredentials.user.getIdToken()
+        const res = await fetch('http://localhost:8000/auth/login', {
+          method: 'POST',
+          body: JSON.stringify({ id: idToken }),
+        })
+        if (res.ok) {
+          const data: VerificationResponse = await res.json()
+          if (data.status) await setUser(data.user)
+          return data.status
+        } else {
+          return false
+        }
       })
       .catch((error) => {
         console.error(error)
+        return false
       })
   }
 
   const signUp = (email: string, password: string, username: string) => {
     return createUserWithEmailAndPassword(auth, email, password)
-      .then((userCredentials: UserCredential) => {
+      .then(async (userCredentials: UserCredential) => {
         updateProfile(userCredentials.user, {
           displayName: username,
         })
-        setUser(userCredentials.user)
-        Cookies.set('uid', userCredentials.user.uid)
-        return userCredentials.user
+        try {
+          const res = await signIn(email, password)
+          return res
+        } catch (error) {
+          console.error(error)
+          return false
+        }
       })
       .catch((error) => {
         console.error(error)
+        return false
       })
   }
 
   const logOut = () => {
     return signOut(auth)
-      .then(() => {
-        Cookies.remove('uid')
+      .then(async () => {
+        const res = await fetch('http://localhost:8000/auth/logout', {
+          method: 'POST',
+        })
+        return res.ok
       })
       .catch((error) => {
         console.error(error)
+        return false
       })
+  }
+
+  // verifies user session token from the cookie and sets user for auth context
+  // should be used in the middleware before redirect to private pages
+  const verifyUser = () => {
+    return new Promise<boolean>(async () => {
+      try {
+        const res = await fetch('http://localhost:8000/auth/verify', {
+          method: 'POST',
+        })
+        if (res.ok) {
+          const data: VerificationResponse = await res.json()
+          if (data.status) await setUser(data.user)
+          return data.status
+        }
+      } catch (error) {
+        console.error(error)
+      }
+    })
   }
 
   useEffect(() => {
@@ -118,6 +164,7 @@ const useProvideAuth = () => {
     logIn: signIn,
     createUser: signUp,
     logOut: logOut,
+    verifyUser: verifyUser,
   }
 
   return authState
