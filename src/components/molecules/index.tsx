@@ -3,7 +3,6 @@ export * from 'components/molecules/youTubeVideoDetails';
 export * from 'components/molecules/faceRecognitionToggle';
 export * from 'components/molecules/faceRecognition';
 export * from 'components/molecules/menuDrawer';
-export * from 'components/molecules/menuDrawer';
 export * from 'components/molecules/descriptionField';
 export * from 'components/molecules/genreField';
 export * from 'components/molecules/titleField';
