@@ -1,19 +1,17 @@
-import { FC, MouseEventHandler } from 'react'
-import { Link, Button, Typography, IconButton } from '@mui/material'
-import LogoutIcon from '@mui/icons-material/Logout'
-import LoginIcon from '@mui/icons-material/Login'
-import { styled } from '@mui/system'
-import ButtonUnstyled, { ButtonUnstyledProps } from '@mui/base/ButtonUnstyled'
-import GoogleIcon from '@mui/icons-material/Google'
+import { FC } from 'react';
+import { Link, Button, Typography, IconButton } from '@mui/material';
+import { styled } from '@mui/system';
+import ButtonUnstyled, { ButtonUnstyledProps } from '@mui/base/ButtonUnstyled';
+import GoogleIcon from '@mui/icons-material/Google';
 
 type FormButtonProps = {
-  text: 'ログイン' | '登録' | '作成' | 'ガチャる！'
-}
+  text: 'ログイン' | '登録' | '作成' | 'ガチャる！';
+};
 
 type ShowMoreButtonProps = {
-  isDetailOpened: boolean
-  onClick: () => void
-}
+  isDetailOpened: boolean;
+  onClick: () => void;
+};
 const GoogleSignInButtonRoot = styled(IconButton)`
   background-color: #000000;
   padding: 15px 10%;
@@ -29,33 +27,15 @@ const GoogleSignInButtonRoot = styled(IconButton)`
   &:hover {
     background-color: #2e2e2e;
   }
-`
+`;
 const GoogleSignInButton: FC = () => {
   return (
     <GoogleSignInButtonRoot sx={{ marginBottom: '1.5rem' }}>
       <GoogleIcon sx={{ marginRight: '5px' }} />
       <Typography>SIGN IN WITH GOOGLE</Typography>
     </GoogleSignInButtonRoot>
-  )
-}
-
-type LogInLogOutButtonButtonProps = {
-  onClick: () => void
-  type: 'LogOut' | 'LogIn'
-}
-
-const LogInLogOutButton: FC<LogInLogOutButtonButtonProps> = ({
-  onClick,
-  type,
-}) => {
-  return (
-    <Link component={Button} underline='none' onClick={onClick}>
-      {type == 'LogOut' ? <LogoutIcon /> : <LoginIcon />}
-
-      <Typography>{type == 'LogOut' ? 'ログアウト' : 'ログイン'}</Typography>
-    </Link>
-  )
-}
+  );
+};
 
 const ShowMoreButton: FC<ShowMoreButtonProps> = ({
   isDetailOpened,
@@ -72,8 +52,8 @@ const ShowMoreButton: FC<ShowMoreButtonProps> = ({
         {isDetailOpened ? 'Show Less' : 'Show More'}
       </Typography>
     </Link>
-  )
-}
+  );
+};
 const CustomFormButtonRoot: FC = styled('button')`
   background-color: #007fff;
   width: 30%;
@@ -90,30 +70,24 @@ const CustomFormButtonRoot: FC = styled('button')`
   &:hover {
     background-color: #0059b2;
   }
-`
+`;
 
 const CustomFormButton: FC<ButtonUnstyledProps> = (props) => {
   return (
     <ButtonUnstyled type='submit' component={CustomFormButtonRoot} {...props} />
-  )
-}
+  );
+};
 
 const FormSubmitButton: FC<FormButtonProps> = ({ text }) => {
-  return <CustomFormButton>{text}</CustomFormButton>
-}
+  return <CustomFormButton>{text}</CustomFormButton>;
+};
 
 const RandomButton: FC = () => {
   return (
     <Button type='submit' sx={{ width: '20rem', fontSize: '1.5rem' }}>
       ガチャる！
     </Button>
-  )
-}
+  );
+};
 
-export {
-  LogInLogOutButton,
-  FormSubmitButton,
-  GoogleSignInButton,
-  ShowMoreButton,
-  RandomButton,
-}
+export { FormSubmitButton, GoogleSignInButton, ShowMoreButton, RandomButton };

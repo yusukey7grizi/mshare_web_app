@@ -1,44 +1,47 @@
-import { Typography } from '@mui/material'
-import React, { FC } from 'react'
+import { Link, Typography, Button } from '@mui/material';
+import React, { FC } from 'react';
 
 type SubtitleProps = {
-  text: string
-}
+  text: string;
+};
 
 const Subtitle: FC<SubtitleProps> = ({ text }) => {
-  return <Typography variant="h3">{text}</Typography>
-}
+  return <Typography variant='h3'>{text}</Typography>;
+};
 
-const SideBarTitle: FC = () => {
+const BarTitle: FC = () => {
   return (
-    <Typography
-      sx={{ marginTop: '20px', fontWeight: 'bold' }}
-      align="center"
-      variant="h4"
+    <Link
+      href='/'
+      underline='none'
+      component={Button}
+      sx={{ fontWeight: 'bold', color: 'black' }}
+      align='center'
+      variant='h4'
     >
       MShare
-    </Typography>
-  )
-}
+    </Link>
+  );
+};
 
 const AuthTitle: FC = () => {
   return (
-    <Typography sx={{ marginTop: '50px' }} align="center" variant="h2">
+    <Typography sx={{ marginTop: '50px' }} align='center' variant='h2'>
       MShare へようこそ
     </Typography>
-  )
-}
+  );
+};
 
 const RandomTitle: FC = () => {
   return (
     <Typography
       sx={{ pt: '50px', pb: '7rem', fontWeight: 'bold' }}
-      align="center"
-      variant="h5"
+      align='center'
+      variant='h5'
     >
       ランダムガチャ検索で新しい映画と出会おう！
     </Typography>
-  )
-}
+  );
+};
 
-export { Subtitle, SideBarTitle, AuthTitle, RandomTitle }
+export { Subtitle, BarTitle, AuthTitle, RandomTitle };
