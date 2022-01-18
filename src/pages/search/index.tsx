@@ -1,11 +1,11 @@
 import { SearchTemplate } from 'components/templates/searchTemplate';
+import { AppContext } from 'contexts/appContext';
 import { useRouter } from 'next/router';
-import React, { FC, useEffect, useState } from 'react';
-import { Movie } from 'types/dataTypes';
+import React, { FC, useContext, useEffect } from 'react';
 
 const Search: FC = () => {
   const router = useRouter();
-  const [searchedMovieList, setSearchedMovieList] = useState<Movie[]>([]);
+  const { setSearchedMovieList } = useContext(AppContext);
   const { input, useCase } = router.query;
   const isTitle = useCase === 'title';
 
@@ -23,7 +23,7 @@ const Search: FC = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [input]);
 
-  return <SearchTemplate searchedMovieList={searchedMovieList} />;
+  return <SearchTemplate />;
 };
 
 export default Search;

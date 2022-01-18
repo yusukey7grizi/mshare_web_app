@@ -1,14 +1,14 @@
-import React, { FC, useEffect, useState } from 'react';
+import React, { FC, useContext, useEffect, useState } from 'react';
 import { MovieDetailTemplate } from 'components/templates/movieDetailTemplate';
 import { useRouter } from 'next/router';
 import { Movie } from 'types/dataTypes';
+import { AppContext } from 'contexts/appContext';
 
 const MovieDetail: FC = () => {
+  const { setMovie, movie, setRelatedMovieList, relatedMovieList } =
+    useContext(AppContext);
   const router = useRouter();
   const { id } = router.query;
-
-  const [movie, setMovie] = useState<Movie>({} as Movie);
-  const [relatedMovieList, setRelatedMovieList] = useState<Movie[]>([]);
 
   useEffect(() => {
     // api fetching here
@@ -16,13 +16,19 @@ const MovieDetail: FC = () => {
       try {
         const res = await fetch(`http://localhost:8000/movies/${id}`);
         const data: Movie = await res.json();
-        setMovie(data);
+
         const { userId } = data;
+
         const relatedMoviesRes = await fetch(
           `http://localhost:8000/movies?userId=${userId}`
         );
         const relatedMoviesData = await relatedMoviesRes.json();
-        setRelatedMovieList(relatedMoviesData);
+        const filteredList = relatedMoviesData.filter((data: Movie) => {
+          return data.id !== Number(router.query.id);
+        });
+
+        setMovie(data);
+        setRelatedMovieList(filteredList);
       } catch (error) {
         console.log(error);
       }
@@ -31,11 +37,7 @@ const MovieDetail: FC = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [router]);
 
-  const filteredList = relatedMovieList.filter(({ id }) => {
-    return id !== Number(router.query.id);
-  });
-
-  return <MovieDetailTemplate relatedMovieList={filteredList} movie={movie} />;
+  return <MovieDetailTemplate />;
 };
 
 export default MovieDetail;
