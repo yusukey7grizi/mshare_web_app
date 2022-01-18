@@ -1,12 +1,11 @@
 import { FC, useState, useEffect } from 'react';
-import { Box, Toolbar, AppBar, IconButton } from '@mui/material';
+import { Box, Toolbar, AppBar, IconButton, useMediaQuery } from '@mui/material';
 import { SearchField } from 'components/atoms/textFields';
 import { BarTitle } from 'components/atoms/titles';
 import { useRouter } from 'next/router';
 import { MuiKeyBoardEvent, MuiOnChangeEvent } from 'types';
 import { useAuth } from 'contexts/authContext';
 import Cookies from 'js-cookie';
-import { useMediaQuery } from 'utils/screenSize';
 import { MenuDrawer } from 'components/molecules';
 import CloseIcon from '@mui/icons-material/Close';
 import SearchIcon from '@mui/icons-material/Search';
@@ -20,7 +19,7 @@ const iconButtonStyle = { width: '3rem', height: '3rem' } as const;
 const TopBar: FC<Props> = ({ isLoggedIn }) => {
   const router = useRouter();
   const auth = useAuth();
-  const isLargeScreenSize = useMediaQuery(970);
+  const isLargeScreenSize = useMediaQuery('(min-width:970px)');
 
   const [inputValue, setInputValue] = useState<string>('');
   const [isSearchFieldOpen, setIsSearchFieldOpen] = useState<boolean>(false);
