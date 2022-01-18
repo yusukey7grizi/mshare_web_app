@@ -1,8 +1,7 @@
 import { SearchTemplate } from 'components/templates/searchTemplate';
 import { AppContext } from 'contexts/appContext';
 import { useRouter } from 'next/router';
-import React, { FC, useContext, useEffect, useState } from 'react';
-import { Movie } from 'types/dataTypes';
+import React, { FC, useContext, useEffect } from 'react';
 
 const Search: FC = () => {
   const router = useRouter();
