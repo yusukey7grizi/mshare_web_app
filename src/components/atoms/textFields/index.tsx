@@ -1,18 +1,19 @@
-import { FC, KeyboardEvent } from 'react'
-import { InputAdornment, TextField } from '@mui/material'
-import SearchIcon from '@mui/icons-material/Search'
-import { MuiKeyBoardEvent, MuiOnChangeEvent } from 'types'
+import { FC } from 'react';
+import { InputAdornment, TextField } from '@mui/material';
+import SearchIcon from '@mui/icons-material/Search';
+import { MuiKeyBoardEvent, MuiOnChangeEvent } from 'types';
 
 type TextFieldProps = {
-  placeholder: string
-  error: boolean
-  type: 'text' | 'email' | 'password' | 'url'
-  onChange: (input: MuiOnChangeEvent) => void
-}
+  placeholder: string;
+  error: boolean;
+  type: 'text' | 'email' | 'password' | 'url';
+  onChange: (input: MuiOnChangeEvent) => void;
+};
+
 type SearchFieldProps = {
-  onKeyPress: ({ key }: MuiKeyBoardEvent) => void
-  onChange: ({ target: { value } }: MuiOnChangeEvent) => void
-}
+  onKeyPress: ({ key }: MuiKeyBoardEvent) => void;
+  onChange: ({ target: { value } }: MuiOnChangeEvent) => void;
+};
 
 const SearchField: FC<SearchFieldProps> = ({ onKeyPress, onChange }) => {
   return (
@@ -21,7 +22,7 @@ const SearchField: FC<SearchFieldProps> = ({ onKeyPress, onChange }) => {
       onKeyPress={onKeyPress}
       placeholder='映画を検索する'
       variant='filled'
-      sx={{ width: '750px' }}
+      sx={{ width: '40rem', pr: 2, pl: 2 }}
       InputProps={{
         disableUnderline: true,
         startAdornment: (
@@ -31,8 +32,8 @@ const SearchField: FC<SearchFieldProps> = ({ onKeyPress, onChange }) => {
         ),
       }}
     />
-  )
-}
+  );
+};
 
 const AuthFormTextField: FC<TextFieldProps> = ({
   placeholder,
@@ -47,12 +48,12 @@ const AuthFormTextField: FC<TextFieldProps> = ({
       error={error}
       placeholder={placeholder}
       InputLabelProps={{ shrink: true }}
-      sx={{ width: '450px' }}
+      sx={{ width: '32rem' }}
       variant='standard'
       onChange={onChange}
     />
-  )
-}
+  );
+};
 
 const MovieFormTextField: FC<TextFieldProps> = ({
   placeholder,
@@ -67,11 +68,11 @@ const MovieFormTextField: FC<TextFieldProps> = ({
       error={error}
       placeholder={placeholder}
       InputLabelProps={{ shrink: true }}
-      sx={{ width: '650px' }}
+      sx={{ width: '40rem' }}
       variant='standard'
       onChange={onChange}
     />
-  )
-}
+  );
+};
 
-export { SearchField, AuthFormTextField, MovieFormTextField }
+export { SearchField, AuthFormTextField, MovieFormTextField };

@@ -5,9 +5,9 @@ import React, {
   useContext,
   useEffect,
   useState,
-} from 'react'
-import * as firebase from 'firebase/app'
-import 'firebase/auth'
+} from 'react';
+import * as firebase from 'firebase/app';
+import 'firebase/auth';
 import {
   createUserWithEmailAndPassword,
   getAuth,
@@ -17,10 +17,8 @@ import {
   updateProfile,
   User,
   UserCredential,
-} from 'firebase/auth'
-import { NextRouter, useRouter } from 'next/router'
-import Cookies from 'js-cookie'
-import { Console } from 'console'
+} from 'firebase/auth';
+import Cookies from 'js-cookie';
 
 const firebaseConfig = {
   apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
@@ -30,7 +28,7 @@ const firebaseConfig = {
   messagingSenderId: process.env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID,
   appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID,
   measurementId: process.env.NEXT_PUBLIC_FIREBASE_MEASSUMENT_ID,
-}
+};
 
 type AuthState = {
   user: User | null
@@ -50,25 +48,25 @@ type VerificationResponse = {
 }
 
 if (!firebase.getApps.length) {
-  firebase.initializeApp(firebaseConfig)
+  firebase.initializeApp(firebaseConfig);
 }
 
-const authContext = createContext({} as AuthState)
+const authContext = createContext({} as AuthState);
 
 export const AuthProvider: FC = ({ children }) => {
-  const authState: AuthState = useProvideAuth()
+  const authState: AuthState = useProvideAuth();
   return (
     <authContext.Provider value={authState}>{children}</authContext.Provider>
-  )
-}
+  );
+};
 
 export const useAuth = () => {
-  return useContext(authContext)
-}
+  return useContext(authContext);
+};
 
 const useProvideAuth = () => {
-  const [user, setUser] = useState<User | null>(null)
-  const auth = getAuth()
+  const [user, setUser] = useState<User | null>(null);
+  const auth = getAuth();
 
   // signs in to firebase auth, then requests backend to create session cookie
   const signIn = (email: string, password: string) => {
@@ -149,16 +147,17 @@ const useProvideAuth = () => {
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
       if (currentUser) {
-        setUser(currentUser)
-        Cookies.set('uid', currentUser.uid)
+        setUser(currentUser);
+        Cookies.set('uid', currentUser.uid);
       } else {
-        setUser(null)
-        Cookies.remove('uid')
+        setUser(null);
+        Cookies.remove('uid');
       }
-    })
+    });
 
-    return () => unsubscribe()
-  })
+    return () => unsubscribe();
+  });
+
   const authState: AuthState = {
     user: user,
     logIn: signIn,
@@ -167,5 +166,5 @@ const useProvideAuth = () => {
     verifyUser: verifyUser,
   }
 
-  return authState
-}
+  return authState;
+};

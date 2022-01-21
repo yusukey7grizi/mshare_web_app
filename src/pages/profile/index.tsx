@@ -1,34 +1,32 @@
-import { MuiCircularProgress } from 'components/atoms/circularProgress'
-import { ProfileTemplate } from 'components/templates/profileTemplate'
-import { useAuth } from 'contexts/authContext'
-import React, { useEffect, useState } from 'react'
-import { Movie } from 'types/dataTypes'
+import { ProfileTemplate } from 'components/templates/profileTemplate';
+import { AppContext } from 'contexts/appContext';
+import { useAuth } from 'contexts/authContext';
+import React, { useContext, useEffect } from 'react';
 
 const Profile = () => {
-  const auth = useAuth()
+  const auth = useAuth();
 
-  const [movieList, setMovieList] = useState<Movie[]>([])
+  const { setRelatedMovieList } = useContext(AppContext);
 
   useEffect(() => {
     const fetchUserMovies = async () => {
       const res = await fetch(
-        `http://localhost:8000/movies?userId=${auth.user?.uid}`,
-      )
-      const data = await res.json()
-      setMovieList(data)
-    }
+        `http://localhost:8000/movies?userId=${auth.user?.uid}`
+      );
+      const data = await res.json();
+      setRelatedMovieList(data);
+    };
     if (auth.user) {
-      fetchUserMovies()
+      fetchUserMovies();
     }
-  })
+  });
 
   return (
     <ProfileTemplate
       email={auth.user?.email || ''}
       userName={auth.user?.displayName || ''}
-      movieList={movieList}
     />
-  )
-}
+  );
+};
 
-export default Profile
+export default Profile;
