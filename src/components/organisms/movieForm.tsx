@@ -95,7 +95,6 @@ const MovieForm: FC = () => {
     <Box
       component='form'
       sx={{
-        width: '100%',
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
