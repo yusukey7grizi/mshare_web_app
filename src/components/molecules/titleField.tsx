@@ -1,25 +1,24 @@
-import { FormHelperText, Typography } from '@mui/material'
-import { FormTextFieldContainer } from 'components/atoms/layoutElement'
-import { MovieFormTextField } from 'components/atoms/textFields'
-import React, { FC } from 'react'
-import { MuiOnChangeEvent } from 'types'
+import { Box, Typography } from '@mui/material';
+import { MovieFormTextField } from 'components/atoms/textFields';
+import React, { FC } from 'react';
+import { MuiOnChangeEvent } from 'types';
 
 type TitleFieldProps = {
-  onChange: (input: MuiOnChangeEvent) => void
-}
+  onChange: (input: MuiOnChangeEvent) => void;
+};
 
 const TitleField: FC<TitleFieldProps> = ({ onChange }) => {
   return (
-    <FormTextFieldContainer>
+    <Box sx={{ mb: '2rem' }}>
       <Typography gutterBottom>タイトル</Typography>
       <MovieFormTextField
-        type="text"
+        type='text'
         error={false}
-        placeholder="タイトルを入力してください"
+        placeholder='タイトルを入力してください'
         onChange={onChange}
       />
-    </FormTextFieldContainer>
-  )
-}
+    </Box>
+  );
+};
 
-export { TitleField }
+export { TitleField };

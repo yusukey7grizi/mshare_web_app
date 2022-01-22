@@ -1,16 +1,17 @@
 import {
   Autocomplete,
+  Box,
   FormHelperText,
   TextField,
   Typography,
-} from '@mui/material'
-import { FormTextFieldContainer } from 'components/atoms/layoutElement'
-import React, { FC } from 'react'
-import { MuiAutoCompleteOnChangeEvent } from 'types'
+  useMediaQuery,
+} from '@mui/material';
+import React, { FC } from 'react';
+import { MuiAutoCompleteOnChangeEvent } from 'types';
 
 type GenreFieldProps = {
-  onChange: (event: MuiAutoCompleteOnChangeEvent, value: string | null) => void
-}
+  onChange: (event: MuiAutoCompleteOnChangeEvent, value: string | null) => void;
+};
 
 const GenreField: FC<GenreFieldProps> = ({ onChange }) => {
   const options = [
@@ -21,26 +22,28 @@ const GenreField: FC<GenreFieldProps> = ({ onChange }) => {
     'ミステリー映画',
     '恋愛映画',
     'その他',
-  ]
+  ];
+  const isLargeScreenSize = useMediaQuery('(min-width:600px)');
 
   return (
-    <FormTextFieldContainer>
+    <Box sx={{ mb: '2rem' }}>
       <Typography gutterBottom>ジャンル</Typography>
       <Autocomplete
-        sx={{ width: '650px' }}
+        sx={isLargeScreenSize ? { width: '30rem' } : { width: '15rem' }}
+        fullWidth
         options={options}
         onChange={onChange}
         renderInput={(params) => (
           <TextField
             required
-            placeholder="ジャンルを選択してください"
+            placeholder='ジャンルを選択してください'
             {...params}
-            variant="standard"
+            variant='standard'
           />
         )}
       />
-    </FormTextFieldContainer>
-  )
-}
+    </Box>
+  );
+};
 
-export { GenreField }
+export { GenreField };
