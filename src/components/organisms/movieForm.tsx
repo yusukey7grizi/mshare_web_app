@@ -1,6 +1,5 @@
 import React, { FC, FormEvent, useContext } from 'react';
-import { Box } from '@mui/material';
-import { FormSubmitButton } from 'components/atoms/buttons';
+import { Box, Button, useMediaQuery } from '@mui/material';
 import {
   DescriptionField,
   GenreField,
@@ -31,6 +30,7 @@ const MovieForm: FC = () => {
   const { createMovieInput, setCreateMovieInput } = useContext(AppContext);
   const auth = useAuth();
   const router = useRouter();
+  const isLargeScreenSize = useMediaQuery('(min-width:600px)');
 
   const createOnChangeHandler = (formType: CreateMovieFormInputTypes) => {
     return ({ target: { value } }: MuiOnChangeEvent) => {
@@ -105,7 +105,18 @@ const MovieForm: FC = () => {
       <DescriptionField onChange={createOnChangeHandler('overview')} />
       <GenreField onChange={autoCompleteOnChangeHandler} />
       <YoutubeUrlField onChange={createOnChangeHandler('youtubeLinkUrl')} />
-      <FormSubmitButton text='作成' />
+      <Button
+        type='submit'
+        sx={
+          isLargeScreenSize
+            ? { width: '30rem', height: '3.5rem' }
+            : { width: '15rem' }
+        }
+        color='primary'
+        variant='contained'
+      >
+        作成
+      </Button>
     </Box>
   );
 };

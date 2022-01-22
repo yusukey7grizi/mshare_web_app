@@ -1,39 +1,38 @@
-import { FormHelperText, Typography } from '@mui/material'
-import { FormTextFieldContainer } from 'components/atoms/layoutElement'
-import { AuthFormTextField } from 'components/atoms/textFields'
-import { FC } from 'react'
-import { MuiOnChangeEvent } from 'types'
+import { Box, Typography } from '@mui/material';
+import { AuthFormTextField } from 'components/atoms/textFields';
+import { FC } from 'react';
+import { MuiOnChangeEvent } from 'types';
 
 type PasswordFieldProps = {
-  onChange: (input: MuiOnChangeEvent) => void
-}
+  onChange: (input: MuiOnChangeEvent) => void;
+};
 
 const PasswordField: FC<PasswordFieldProps> = ({ onChange }) => {
   return (
-    <FormTextFieldContainer>
+    <Box>
       <Typography gutterBottom>パスワード</Typography>
       <AuthFormTextField
-        type="password"
+        type='password'
         error={false}
-        placeholder="パスワードを入力してください"
+        placeholder='パスワードを入力してください'
         onChange={onChange}
       />
-    </FormTextFieldContainer>
-  )
-}
+    </Box>
+  );
+};
 
 const ConFirmPasswordField: FC<PasswordFieldProps> = ({ onChange }) => {
   return (
-    <FormTextFieldContainer>
+    <Box>
       <Typography gutterBottom>パスワードの確認</Typography>
       <AuthFormTextField
-        type="password"
+        type='password'
         error={false}
-        placeholder="確認のためパスワードを再度入力してください"
+        placeholder='確認のためパスワードを再度入力してください'
         onChange={onChange}
       />
-    </FormTextFieldContainer>
-  )
-}
+    </Box>
+  );
+};
 
-export { PasswordField, ConFirmPasswordField }
+export { PasswordField, ConFirmPasswordField };

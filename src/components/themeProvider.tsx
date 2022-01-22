@@ -1,11 +1,12 @@
 import { FC } from 'react';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import { green, purple } from '@mui/material/colors';
+import { orange, purple } from '@mui/material/colors';
 
 const theme = createTheme({
   palette: {
     primary: {
-      main: green[500],
+      main: orange['A200'],
+      dark: orange['A400'],
     },
     secondary: {
       main: purple[500],
