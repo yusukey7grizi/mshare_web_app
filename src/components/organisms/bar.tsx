@@ -120,7 +120,7 @@ const Bar: FC = ({ children }) => {
   return (
     <>
       <TopBar isLoggedIn={isLoggedIn} />
-      <Box component='div' sx={{ pt: '7rem', pr: '4rem', pl: '4rem' }}>
+      <Box component='div' sx={{ mt: '8rem' }}>
         {children}
       </Box>
     </>
