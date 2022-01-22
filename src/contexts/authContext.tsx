@@ -7,10 +7,10 @@ import React, {
   useState,
 } from 'react';
 import * as firebase from 'firebase/app';
-import 'firebase/auth';
 import {
   createUserWithEmailAndPassword,
   getAuth,
+  inMemoryPersistence,
   onAuthStateChanged,
   signInWithEmailAndPassword,
   signOut,
@@ -31,21 +31,21 @@ const firebaseConfig = {
 };
 
 type AuthState = {
-  user: User | null
-  logIn: (email: string, password: string) => Promise<boolean>
+  user: User | null;
+  logIn: (email: string, password: string) => Promise<boolean>;
   createUser: (
     email: string,
     password: string,
     username: string
-  ) => Promise<boolean>
-  logOut: () => Promise<boolean>
-  verifyUser: () => Promise<boolean>
-}
+  ) => Promise<boolean>;
+  logOut: () => Promise<boolean>;
+  verifyUser: () => Promise<boolean>;
+};
 
 type VerificationResponse = {
-  status: boolean
-  user: User | null
-}
+  status: boolean;
+  user: User | null;
+};
 
 if (!firebase.getApps.length) {
   firebase.initializeApp(firebaseConfig);
@@ -67,63 +67,65 @@ export const useAuth = () => {
 const useProvideAuth = () => {
   const [user, setUser] = useState<User | null>(null);
   const auth = getAuth();
+  auth.setPersistence(inMemoryPersistence);
 
   // signs in to firebase auth, then requests backend to create session cookie
   const signIn = (email: string, password: string) => {
     return signInWithEmailAndPassword(auth, email, password)
       .then(async (userCredentials: UserCredential) => {
-        const idToken = userCredentials.user.getIdToken()
+        const idToken = await userCredentials.user.getIdToken();
+        console.log(idToken);
         const res = await fetch('http://localhost:8000/auth/login', {
           method: 'POST',
-          body: JSON.stringify({ id: idToken }),
-        })
+          body: JSON.stringify({ idToken: idToken }),
+        });
         if (res.ok) {
-          const data: VerificationResponse = await res.json()
-          if (data.status) await setUser(data.user)
-          return data.status
+          const data: VerificationResponse = await res.json();
+          if (data.status) await setUser(data.user);
+          return data.status;
         } else {
-          return false
+          return false;
         }
       })
       .catch((error) => {
-        console.error(error)
-        return false
-      })
-  }
+        console.error(error);
+        return false;
+      });
+  };
 
   const signUp = (email: string, password: string, username: string) => {
     return createUserWithEmailAndPassword(auth, email, password)
       .then(async (userCredentials: UserCredential) => {
         updateProfile(userCredentials.user, {
           displayName: username,
-        })
+        });
         try {
-          const res = await signIn(email, password)
-          return res
+          const res = await signIn(email, password);
+          return res;
         } catch (error) {
-          console.error(error)
-          return false
+          console.error(error);
+          return false;
         }
       })
       .catch((error) => {
-        console.error(error)
-        return false
-      })
-  }
+        console.error(error);
+        return false;
+      });
+  };
 
   const logOut = () => {
     return signOut(auth)
       .then(async () => {
         const res = await fetch('http://localhost:8000/auth/logout', {
           method: 'POST',
-        })
-        return res.ok
+        });
+        return res.ok;
       })
       .catch((error) => {
-        console.error(error)
-        return false
-      })
-  }
+        console.error(error);
+        return false;
+      });
+  };
 
   // verifies user session token from the cookie and sets user for auth context
   // should be used in the middleware before redirect to private pages
@@ -132,17 +134,17 @@ const useProvideAuth = () => {
       try {
         const res = await fetch('http://localhost:8000/auth/verify', {
           method: 'POST',
-        })
+        });
         if (res.ok) {
-          const data: VerificationResponse = await res.json()
-          if (data.status) await setUser(data.user)
-          return data.status
+          const data: VerificationResponse = await res.json();
+          if (data.status) await setUser(data.user);
+          return data.status;
         }
       } catch (error) {
-        console.error(error)
+        console.error(error);
       }
-    })
-  }
+    });
+  };
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
@@ -164,7 +166,7 @@ const useProvideAuth = () => {
     createUser: signUp,
     logOut: logOut,
     verifyUser: verifyUser,
-  }
+  };
 
   return authState;
 };
