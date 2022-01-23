@@ -1,26 +1,26 @@
-import React, { FC, useState } from 'react'
-import { Box, Typography } from '@mui/material'
-import { ShowMoreButton } from 'components/atoms/buttons'
-import { Movie } from 'types/dataTypes'
-import { MuiDivider } from 'components/atoms/divider'
+import React, { FC, useState } from 'react';
+import { Box, Typography } from '@mui/material';
+import { ShowMoreButton } from 'components/atoms/buttons';
+import { Movie } from 'types/dataTypes';
+import { MuiDivider } from 'components/atoms/divider';
 
 type YouTubeVideoDetailsProps = {
-  movie: Movie
-  grinningScore: number
-}
+  movie: Movie;
+  grinningScore: number;
+};
 
 const YouTubeVideoDetails: FC<YouTubeVideoDetailsProps> = ({
   movie,
   grinningScore,
 }) => {
-  const [isDetailOpened, setIsDetailOpened] = useState<boolean>(false)
-  const { overview, title, createdAt, userName } = movie
+  const [isDetailOpened, setIsDetailOpened] = useState<boolean>(false);
+  const { overview, title, createdAt, userName } = movie;
 
-  const today = new Date(createdAt)
-  const date = String(today.getDate()).padStart(2, '0')
-  const month = String(today.getMonth() + 1).padStart(2, '0')
-  const year = today.getFullYear()
-  const createdDate = `${year}年${month}月${date}日 `
+  const today = new Date(createdAt);
+  const date = String(today.getDate()).padStart(2, '0');
+  const month = String(today.getMonth() + 1).padStart(2, '0');
+  const year = today.getFullYear();
+  const createdDate = `${year}年${month}月${date}日 `;
 
   return (
     <>
@@ -42,13 +42,13 @@ const YouTubeVideoDetails: FC<YouTubeVideoDetailsProps> = ({
       )}
       <ShowMoreButton
         onClick={() => {
-          setIsDetailOpened(!isDetailOpened)
+          setIsDetailOpened(!isDetailOpened);
         }}
         isDetailOpened={isDetailOpened}
       />
       <MuiDivider />
     </>
-  )
-}
+  );
+};
 
-export { YouTubeVideoDetails }
+export { YouTubeVideoDetails };

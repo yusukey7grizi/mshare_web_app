@@ -1,6 +1,6 @@
 import { Box, Typography } from '@mui/material';
 import { MuiDivider } from 'components/atoms/divider';
-import { HomeMovieList } from 'components/organisms/movieList';
+import { MovieList } from 'components/organisms/movieList';
 import { AppContext } from 'contexts/appContext';
 import React, { FC, useContext } from 'react';
 import { Genre } from 'types/dataTypes';
@@ -30,11 +30,7 @@ const DashboardTemplate: FC = () => {
     <>
       {genreList.map((genre) => {
         return (
-          <Box
-            component='div'
-            key={genre[0]}
-            sx={{ justifyContent: 'flex-start' }}
-          >
+          <Box component='div' key={genre[0]}>
             <Typography
               sx={{
                 fontFamily: 'monospace',
@@ -44,9 +40,7 @@ const DashboardTemplate: FC = () => {
             >
               {genre[1]}
             </Typography>
-            <HomeMovieList
-              movieList={handleFilterMovieList(genre[1] as Genre)}
-            />
+            <MovieList movieList={handleFilterMovieList(genre[1] as Genre)} />
             {genreList.length.toString() !== genre[0] && <MuiDivider />}
           </Box>
         );
