@@ -98,6 +98,7 @@ const MovieForm: FC = () => {
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
+        pb: '10rem',
       }}
       onSubmit={(e: FormEvent) => moviePostHandler(e)}
     >
