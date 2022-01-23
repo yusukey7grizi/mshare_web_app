@@ -1,12 +1,11 @@
 import React, { FC, useContext, useEffect, useState } from 'react';
-import { FacialExpressionRatingContainer } from 'components/organisms';
 import { MuiDivider } from 'components/atoms/divider';
 import { MovieListTitle } from 'components/atoms/texts';
 import { AppContext } from 'contexts/appContext';
-import { Box } from '@mui/material';
 import { MovieList } from 'components/organisms/movieList';
-import { YouTubePlayer } from 'components/molecules';
+import { FaceRecognition, YouTubePlayer } from 'components/molecules';
 import { MoviePlayerState } from 'types';
+import { Box } from '@mui/material';
 
 const MovieDetailTemplate: FC = () => {
   const { movie, relatedMovieList } = useContext(AppContext);
@@ -28,19 +27,26 @@ const MovieDetailTemplate: FC = () => {
   return (
     movie && (
       <>
-        <YouTubePlayer
-          grinningScore={grinningScore}
-          movie={movie}
-          setMoviePlayerState={setMoviePlayerState}
-        />
-        <FacialExpressionRatingContainer
-          moviePlayerState={moviePlayerState}
-          movie={movie}
-          grinningScore={grinningScore}
-          setGrinningScore={setGrinningScore}
-        />
-        <MovieListTitle userName={movie.userName} />
+        <Box
+          sx={{
+            display: 'flex',
+            flexDirection: 'column',
+          }}
+        >
+          <YouTubePlayer
+            grinningScore={grinningScore}
+            movie={movie}
+            setMoviePlayerState={setMoviePlayerState}
+          />
+          <FaceRecognition
+            moviePlayerState={moviePlayerState}
+            movie={movie}
+            grinningScore={grinningScore}
+            setGrinningScore={setGrinningScore}
+          />
+        </Box>
         <MuiDivider />
+        <MovieListTitle userName={movie.userName} />
         <MovieList movieList={relatedMovieList} />
       </>
     )

@@ -1,4 +1,4 @@
-import { Typography } from '@mui/material';
+import { Box, Typography, useMediaQuery } from '@mui/material';
 import { ShowMoreButton } from 'components/atoms/buttons';
 import React, { Dispatch, FC, SetStateAction, useState } from 'react';
 import YouTube, { Options } from 'react-youtube';
@@ -29,9 +29,12 @@ const YouTubePlayer: FC<YouTubePlayerProps> = ({
     });
   };
 
+  const isLargeScreenSize = useMediaQuery('(min-width:710px)');
+  const isMediumScreenSize = useMediaQuery('(min-width:400px)');
+
   const options: Options = {
-    height: '450',
-    width: '800',
+    height: isLargeScreenSize ? '350' : isMediumScreenSize ? '330' : '230',
+    width: isLargeScreenSize ? '700' : '100%',
     playerVars: {
       // https://developers.google.com/youtube/player_parameters
       autoplay: 0,
@@ -48,18 +51,16 @@ const YouTubePlayer: FC<YouTubePlayerProps> = ({
   const createdDate = `${year}年${month}月${date}日 `;
 
   return (
-    <>
+    <Box sx={{ margin: isLargeScreenSize ? 'auto' : 'unset' }}>
       <YouTube
         videoId={movie.youtubeTitleId}
         opts={options}
         onStateChange={playerStateChangeHandler}
       />
-      <Typography variant='h4' sx={{ fontWeight: 'bold', pt: '1rem' }}>
+      <Typography sx={{ fontWeight: 'bold', pt: '1rem', fontSize: '1.2rem' }}>
         {title}
       </Typography>
-      <Typography variant='subtitle1' sx={{ fontWeight: 'bold' }}>
-        {userName}
-      </Typography>
+      <Typography variant='subtitle1'>{userName}</Typography>
       <Typography gutterBottom variant='subtitle2'>
         {createdDate}
       </Typography>
@@ -76,7 +77,7 @@ const YouTubePlayer: FC<YouTubePlayerProps> = ({
         }}
         isDetailOpened={isDetailOpened}
       />
-    </>
+    </Box>
   );
 };
 

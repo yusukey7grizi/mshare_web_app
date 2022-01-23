@@ -1,15 +1,21 @@
-import { Box } from '@mui/material';
-import { RandomButton } from 'components/atoms/buttons';
+import { Box, Button } from '@mui/material';
 import { MuiDivider } from 'components/atoms/divider';
 import { MovieListTitle } from 'components/atoms/texts';
-import { GenreField } from 'components/molecules';
-import { MovieDetailContent } from 'components/organisms';
-import { SearchedMovieList as MovieList } from 'components/organisms/searchedMovieList';
-import React, { FC, useContext } from 'react';
-import { MuiAutoCompleteOnChangeEvent, MuiOnClickEvent } from 'types';
+import {
+  FaceRecognition,
+  GenreField,
+  YouTubePlayer,
+} from 'components/molecules';
+import React, { FC, useContext, useEffect, useState } from 'react';
+import {
+  MoviePlayerState,
+  MuiAutoCompleteOnChangeEvent,
+  MuiOnClickEvent,
+} from 'types';
 import { motion } from 'framer-motion';
 import { RandomTitle } from 'components/atoms/titles';
 import { AppContext } from 'contexts/appContext';
+import { MovieList } from 'components/organisms/movieList';
 
 type Props = {
   onSubmit: (e: MuiOnClickEvent) => void;
@@ -18,6 +24,22 @@ type Props = {
 
 const RandomTemplate: FC<Props> = ({ onSubmit, onChange }) => {
   const { randomMovie, relatedMovieList } = useContext(AppContext);
+
+  const [moviePlayerState, setMoviePlayerState] = useState<MoviePlayerState>({
+    playerState: -1,
+    currentTime: 0,
+    duration: 0,
+  });
+  const [grinningScore, setGrinningScore] = useState<number>(
+    randomMovie ? randomMovie.grinningScore : 0
+  );
+
+  useEffect(() => {
+    if (randomMovie) {
+      setGrinningScore(randomMovie.grinningScore);
+    }
+  }, [randomMovie]);
+
   return (
     <>
       <Box
@@ -31,19 +53,38 @@ const RandomTemplate: FC<Props> = ({ onSubmit, onChange }) => {
       >
         <RandomTitle />
         <GenreField onChange={onChange} />
-        <RandomButton />
+        <Button type='submit' sx={{ fontSize: '1.5rem' }}>
+          ガチャる！
+        </Button>
       </Box>
       <MuiDivider />
 
       {randomMovie && (
+        //need the Youtube component and the FaceRecognition component
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ duration: 3 }}
+          transition={{ duration: 6 }}
         >
-          <MovieDetailContent movie={randomMovie} />
+          <Box
+            sx={{
+              display: 'flex',
+              flexDirection: 'column',
+            }}
+          >
+            <YouTubePlayer
+              grinningScore={grinningScore}
+              movie={randomMovie}
+              setMoviePlayerState={setMoviePlayerState}
+            />
+            <FaceRecognition
+              moviePlayerState={moviePlayerState}
+              movie={randomMovie}
+              grinningScore={grinningScore}
+              setGrinningScore={setGrinningScore}
+            />
+          </Box>
           <MovieListTitle userName={randomMovie.userName} />
-          <MuiDivider />
           <MovieList movieList={relatedMovieList} />
         </motion.div>
       )}
