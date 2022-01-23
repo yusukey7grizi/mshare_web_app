@@ -1,4 +1,5 @@
 import { Box, Typography } from '@mui/material';
+import { FontSize } from 'components/constants';
 import { MovieItem } from 'components/molecules';
 import React, { FC } from 'react';
 import { Movie } from 'types/dataTypes';
@@ -18,7 +19,9 @@ const MovieList: FC<Props> = ({ movieList }) => {
     >
       {movieList.slice(0, 9).map((movie) => {
         return movieList.length === 0 ? (
-          <Typography>該当する作品はありません</Typography>
+          <Typography fontSize={FontSize['m']}>
+            該当する作品はありません
+          </Typography>
         ) : (
           <MovieItem key={movie.id} movie={movie} />
         );

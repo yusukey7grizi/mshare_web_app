@@ -16,6 +16,7 @@ import { motion } from 'framer-motion';
 import { RandomTitle } from 'components/atoms/titles';
 import { AppContext } from 'contexts/appContext';
 import { MovieList } from 'components/organisms/movieList';
+import { FontSize } from 'components/constants';
 
 type Props = {
   onSubmit: (e: MuiOnClickEvent) => void;
@@ -53,7 +54,7 @@ const RandomTemplate: FC<Props> = ({ onSubmit, onChange }) => {
       >
         <RandomTitle />
         <GenreField onChange={onChange} />
-        <Button type='submit' sx={{ fontSize: '1.5rem' }}>
+        <Button type='submit' sx={{ fontSize: FontSize['l'] }}>
           ガチャる！
         </Button>
       </Box>

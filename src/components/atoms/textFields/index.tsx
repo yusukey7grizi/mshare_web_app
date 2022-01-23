@@ -18,6 +18,7 @@ type SearchFieldProps = {
 const SearchField: FC<SearchFieldProps> = ({ onKeyPress, onChange }) => {
   return (
     <TextField
+      autoComplete='off'
       onChange={onChange}
       onKeyPress={onKeyPress}
       placeholder='映画を検索する'

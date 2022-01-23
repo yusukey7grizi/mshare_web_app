@@ -1,4 +1,5 @@
 import { Link, Typography, Button } from '@mui/material';
+import { Color, FontSize } from 'components/constants';
 import React, { FC } from 'react';
 
 type SubtitleProps = {
@@ -15,9 +16,10 @@ const BarTitle: FC = () => {
       href='/'
       underline='none'
       component={Button}
-      sx={{ fontWeight: 'bold', color: 'black' }}
+      sx={{ fontWeight: 'bold' }}
       align='center'
-      variant='h4'
+      fontSize={FontSize['l']}
+      color='primary'
     >
       MShare
     </Link>
@@ -35,7 +37,8 @@ const AuthTitle: FC = () => {
 const RandomTitle: FC = () => {
   return (
     <Typography
-      sx={{ pb: '7rem', fontWeight: 'bold', fontSize: '1rem', pt: '2rem' }}
+      fontSize={FontSize['s']}
+      sx={{ pb: '7rem', fontWeight: 'bold', pt: '2rem' }}
       align='center'
       variant='h5'
     >

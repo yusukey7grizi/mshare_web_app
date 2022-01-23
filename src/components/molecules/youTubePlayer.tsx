@@ -1,5 +1,6 @@
 import { Box, Typography, useMediaQuery } from '@mui/material';
 import { ShowMoreButton } from 'components/atoms/buttons';
+import { FontSize } from 'components/constants';
 import React, { Dispatch, FC, SetStateAction, useState } from 'react';
 import YouTube, { Options } from 'react-youtube';
 import { MoviePlayerState } from 'types';
@@ -57,7 +58,10 @@ const YouTubePlayer: FC<YouTubePlayerProps> = ({
         opts={options}
         onStateChange={playerStateChangeHandler}
       />
-      <Typography sx={{ fontWeight: 'bold', pt: '1rem', fontSize: '1.2rem' }}>
+      <Typography
+        fontSize={FontSize['m']}
+        sx={{ fontWeight: 'bold', pt: '1rem' }}
+      >
         {title}
       </Typography>
       <Typography variant='subtitle1'>{userName}</Typography>

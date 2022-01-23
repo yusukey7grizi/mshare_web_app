@@ -3,6 +3,7 @@ import { Link, Button, Typography, IconButton } from '@mui/material';
 import { styled } from '@mui/system';
 import ButtonUnstyled, { ButtonUnstyledProps } from '@mui/base/ButtonUnstyled';
 import GoogleIcon from '@mui/icons-material/Google';
+import { FontSize } from 'components/constants';
 
 type FormButtonProps = {
   text: 'ログイン' | '登録' | '作成' | 'ガチャる！';
@@ -49,7 +50,7 @@ const ShowMoreButton: FC<ShowMoreButtonProps> = ({
       component={Button}
       underline='none'
     >
-      <Typography sx={{ fontSize: '0.5rem' }}>
+      <Typography fontSize={FontSize['xxs']}>
         {isDetailOpened ? 'Show Less' : 'Show More'}
       </Typography>
     </Link>
