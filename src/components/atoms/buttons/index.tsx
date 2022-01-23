@@ -84,12 +84,4 @@ const FormSubmitButton: FC<FormButtonProps> = ({ text }) => {
   return <CustomFormButton>{text}</CustomFormButton>;
 };
 
-const RandomButton: FC = () => {
-  return (
-    <Button type='submit' sx={{ width: '20rem', fontSize: '1.5rem' }}>
-      ガチャる！
-    </Button>
-  );
-};
-
-export { FormSubmitButton, GoogleSignInButton, ShowMoreButton, RandomButton };
+export { FormSubmitButton, GoogleSignInButton, ShowMoreButton };

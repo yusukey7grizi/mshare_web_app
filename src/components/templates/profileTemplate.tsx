@@ -6,9 +6,7 @@ import {
   MovieListTitle,
   UsernameText,
 } from 'components/atoms/texts';
-import { Bar } from 'components/organisms';
 import { SearchedMovieList as MovieList } from 'components/organisms/searchedMovieList';
-import { Movie } from 'types/dataTypes';
 import { AppContext } from 'contexts/appContext';
 
 type Props = {
@@ -20,7 +18,7 @@ const ProfileTemplate: FC<Props> = ({ userName, email }) => {
   const { relatedMovieList } = useContext(AppContext);
 
   return (
-    <Bar>
+    <>
       <Box sx={{ width: '50rem', margin: 'auto' }}>
         <UsernameText userName={userName} />
         <EmailText email={email} />
@@ -28,7 +26,7 @@ const ProfileTemplate: FC<Props> = ({ userName, email }) => {
       <MovieListTitle />
       <MuiDivider />
       <MovieList movieList={relatedMovieList} />
-    </Bar>
+    </>
   );
 };
 
