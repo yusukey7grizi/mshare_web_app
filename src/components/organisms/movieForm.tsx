@@ -109,8 +109,8 @@ const MovieForm: FC = () => {
         type='submit'
         sx={
           isLargeScreenSize
-            ? { width: '30rem', height: '3.5rem' }
-            : { width: '15rem' }
+            ? { width: '30rem', height: '3.5rem', borderRadius: '35rem' }
+            : { width: '15rem', borderRadius: '35rem' }
         }
         color='primary'
         variant='contained'
