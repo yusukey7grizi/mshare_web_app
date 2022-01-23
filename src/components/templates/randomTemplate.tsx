@@ -3,7 +3,7 @@ import { RandomButton } from 'components/atoms/buttons';
 import { MuiDivider } from 'components/atoms/divider';
 import { MovieListTitle } from 'components/atoms/texts';
 import { GenreField } from 'components/molecules';
-import { Bar, MovieDetailContent } from 'components/organisms';
+import { MovieDetailContent } from 'components/organisms';
 import { SearchedMovieList as MovieList } from 'components/organisms/searchedMovieList';
 import React, { FC, useContext } from 'react';
 import { MuiAutoCompleteOnChangeEvent, MuiOnClickEvent } from 'types';
@@ -19,7 +19,7 @@ type Props = {
 const RandomTemplate: FC<Props> = ({ onSubmit, onChange }) => {
   const { randomMovie, relatedMovieList } = useContext(AppContext);
   return (
-    <Bar>
+    <>
       <Box
         component='form'
         sx={{
@@ -47,7 +47,7 @@ const RandomTemplate: FC<Props> = ({ onSubmit, onChange }) => {
           <MovieList movieList={relatedMovieList} />
         </motion.div>
       )}
-    </Bar>
+    </>
   );
 };
 

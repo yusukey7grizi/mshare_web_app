@@ -1,6 +1,5 @@
 import { Box, Typography } from '@mui/material';
 import { MuiDivider } from 'components/atoms/divider';
-import { Bar } from 'components/organisms';
 import { HomeMovieList } from 'components/organisms/movieList';
 import { AppContext } from 'contexts/appContext';
 import React, { FC, useContext } from 'react';
@@ -28,7 +27,7 @@ const DashboardTemplate: FC = () => {
   };
 
   return (
-    <Bar>
+    <>
       {genreList.map((genre) => {
         return (
           <Box
@@ -52,7 +51,7 @@ const DashboardTemplate: FC = () => {
           </Box>
         );
       })}
-    </Bar>
+    </>
   );
 };
 

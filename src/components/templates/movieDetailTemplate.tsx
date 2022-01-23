@@ -1,5 +1,5 @@
-import React, { FC, useContext, useState } from 'react';
-import { Bar, MovieDetailContent } from 'components/organisms';
+import React, { FC, useContext } from 'react';
+import { MovieDetailContent } from 'components/organisms';
 import { SearchedMovieList as MovieList } from 'components/organisms/searchedMovieList';
 import { MuiDivider } from 'components/atoms/divider';
 import { MovieListTitle } from 'components/atoms/texts';
@@ -10,12 +10,12 @@ const MovieDetailTemplate: FC = () => {
 
   return (
     movie && (
-      <Bar>
+      <>
         <MovieDetailContent movie={movie} />
         <MovieListTitle userName={movie.userName} />
         <MuiDivider />
         <MovieList movieList={relatedMovieList} />
-      </Bar>
+      </>
     )
   );
 };
