@@ -1,5 +1,5 @@
 import { Container, Box } from '@mui/material';
-import { FormSubmitButton } from 'components/atoms/buttons';
+import { CustomSubmitButton } from 'components/atoms/buttons';
 import { AuthSwitchLink } from 'components/molecules/AuthSwitchLink';
 import { EmailField } from 'components/molecules/emailField';
 import { PasswordField } from 'components/molecules/passwordField';
@@ -48,7 +48,7 @@ const LogInForm = () => {
       >
         <EmailField onChange={createOnChangeHandler('email')} />
         <PasswordField onChange={createOnChangeHandler('password')} />
-        <FormSubmitButton text='ログイン' />
+        <CustomSubmitButton text='ログイン' />
         <AuthSwitchLink useCase='logIn' />
       </Box>
     </Container>

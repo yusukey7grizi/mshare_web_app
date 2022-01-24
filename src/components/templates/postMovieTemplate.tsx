@@ -1,10 +1,11 @@
 import React, { FC } from 'react';
 import { Typography, useMediaQuery } from '@mui/material';
 import { MovieForm } from 'components/organisms/movieForm';
-import { FontSize } from 'components/constants';
+import { FontSize, MinScreenSize } from 'components/constants';
 
 const PostMovieTemplate: FC = () => {
-  const isLargeScreenSize = useMediaQuery('(min-width:600px)');
+  const isLargeScreenSize = useMediaQuery(MinScreenSize['m']);
+
   return (
     <>
       <Typography

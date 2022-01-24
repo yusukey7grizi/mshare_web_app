@@ -1,12 +1,17 @@
 import { FC } from 'react';
-import { Link, Button, Typography, IconButton } from '@mui/material';
+import {
+  Link,
+  Button,
+  Typography,
+  IconButton,
+  useMediaQuery,
+} from '@mui/material';
 import { styled } from '@mui/system';
-import ButtonUnstyled, { ButtonUnstyledProps } from '@mui/base/ButtonUnstyled';
 import GoogleIcon from '@mui/icons-material/Google';
-import { FontSize } from 'components/constants';
+import { FontSize, MinScreenSize } from 'components/constants';
 
-type FormButtonProps = {
-  text: 'ログイン' | '登録' | '作成' | 'ガチャる！';
+type SubmitButtonProps = {
+  text: 'ログイン' | '登録' | '作成';
 };
 
 type ShowMoreButtonProps = {
@@ -75,14 +80,23 @@ const CustomFormButtonRoot: FC = styled('button')`
   }
 `;
 
-const CustomFormButton: FC<ButtonUnstyledProps> = (props) => {
+const CustomSubmitButton: FC<SubmitButtonProps> = ({ text }) => {
+  const isLargeScreenSize = useMediaQuery(MinScreenSize['m']);
+
   return (
-    <ButtonUnstyled type='submit' component={CustomFormButtonRoot} {...props} />
+    <Button
+      type='submit'
+      sx={
+        isLargeScreenSize
+          ? { width: '30rem', height: '3.5rem', borderRadius: '35rem' }
+          : { width: '15rem', borderRadius: '35rem' }
+      }
+      color='primary'
+      variant='contained'
+    >
+      {text}
+    </Button>
   );
 };
 
-const FormSubmitButton: FC<FormButtonProps> = ({ text }) => {
-  return <CustomFormButton>{text}</CustomFormButton>;
-};
-
-export { FormSubmitButton, GoogleSignInButton, ShowMoreButton };
+export { GoogleSignInButton, ShowMoreButton, CustomSubmitButton };

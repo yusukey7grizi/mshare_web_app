@@ -1,4 +1,5 @@
 import { Grid, Link, Typography } from '@mui/material';
+import { FontSize } from 'components/constants';
 
 type AuthSwitchLinkProps = {
   useCase: 'logIn' | 'register';
@@ -15,7 +16,7 @@ const AuthSwitchLink: React.FC<AuthSwitchLinkProps> = ({ useCase }) => {
 
   return (
     <Grid sx={{ display: 'flex', marginTop: '2rem' }}>
-      <Typography>{text}</Typography>
+      <Typography fontSize={FontSize['s']}>{text}</Typography>
       <Link href={href}>{linkText}</Link>
     </Grid>
   );
