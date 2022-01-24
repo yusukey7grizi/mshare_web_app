@@ -1,4 +1,5 @@
-import { Box, Typography } from '@mui/material';
+import { Typography } from '@mui/material';
+import { FieldContainer } from 'components/atoms/layoutElement';
 import { MovieFormTextField } from 'components/atoms/textFields';
 import React, { FC } from 'react';
 import { MuiOnChangeEvent } from 'types';
@@ -9,7 +10,7 @@ type DescriptionFieldProps = {
 
 const DescriptionField: FC<DescriptionFieldProps> = ({ onChange }) => {
   return (
-    <Box sx={{ mb: '2rem' }}>
+    <FieldContainer>
       <Typography gutterBottom>概要</Typography>
       <MovieFormTextField
         type='text'
@@ -17,7 +18,7 @@ const DescriptionField: FC<DescriptionFieldProps> = ({ onChange }) => {
         placeholder='概要を入力してください'
         onChange={onChange}
       />
-    </Box>
+    </FieldContainer>
   );
 };
 

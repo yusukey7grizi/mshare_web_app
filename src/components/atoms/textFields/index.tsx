@@ -43,6 +43,8 @@ const AuthFormTextField: FC<TextFieldProps> = ({
   type,
   onChange,
 }) => {
+  const isLargeScreenSize = useMediaQuery(MinScreenSize['m']);
+
   return (
     <TextField
       required
@@ -50,7 +52,7 @@ const AuthFormTextField: FC<TextFieldProps> = ({
       error={error}
       placeholder={placeholder}
       InputLabelProps={{ shrink: true }}
-      sx={{ width: '32rem' }}
+      sx={isLargeScreenSize ? { width: '30rem' } : { width: '15rem' }}
       variant='standard'
       onChange={onChange}
     />

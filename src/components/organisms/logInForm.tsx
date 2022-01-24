@@ -1,4 +1,4 @@
-import { Container, Box } from '@mui/material';
+import { Box } from '@mui/material';
 import { CustomSubmitButton } from 'components/atoms/buttons';
 import { AuthSwitchLink } from 'components/molecules/AuthSwitchLink';
 import { EmailField } from 'components/molecules/emailField';
@@ -35,23 +35,21 @@ const LogInForm = () => {
   };
 
   return (
-    <Container>
-      <Box
-        component='form'
-        sx={{
-          marginTop: 8,
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-        }}
-        onSubmit={(e: FormEvent) => logInHandler(e)}
-      >
-        <EmailField onChange={createOnChangeHandler('email')} />
-        <PasswordField onChange={createOnChangeHandler('password')} />
-        <CustomSubmitButton text='ログイン' />
-        <AuthSwitchLink useCase='logIn' />
-      </Box>
-    </Container>
+    <Box
+      component='form'
+      sx={{
+        marginTop: 8,
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+      }}
+      onSubmit={(e: FormEvent) => logInHandler(e)}
+    >
+      <EmailField onChange={createOnChangeHandler('email')} />
+      <PasswordField onChange={createOnChangeHandler('password')} />
+      <CustomSubmitButton text='ログイン' />
+      <AuthSwitchLink useCase='logIn' />
+    </Box>
   );
 };
 

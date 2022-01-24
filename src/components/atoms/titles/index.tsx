@@ -44,7 +44,6 @@ const RandomTitle: FC = () => {
       fontSize={FontSize['s']}
       sx={{ pb: '7rem', fontWeight: 'bold', pt: '2rem' }}
       align='center'
-      variant='h5'
     >
       ランダムガチャ検索で新しい映画と出会おう！
     </Typography>

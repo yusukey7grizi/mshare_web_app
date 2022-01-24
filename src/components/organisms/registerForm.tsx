@@ -1,4 +1,4 @@
-import { Container, Box } from '@mui/material';
+import { Box } from '@mui/material';
 import { CustomSubmitButton } from 'components/atoms/buttons';
 import { AuthSwitchLink } from 'components/molecules/AuthSwitchLink';
 import { ConfirmEmailField, EmailField } from 'components/molecules/emailField';
@@ -50,28 +50,27 @@ const RegisterForm = () => {
   };
 
   return (
-    <Container>
-      <Box
-        component='form'
-        sx={{
-          marginTop: 8,
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-        }}
-        onSubmit={(e: FormEvent) => createUserHandler(e)}
-      >
-        <EmailField onChange={createOnChangeHandler('email')} />
-        <ConfirmEmailField onChange={createOnChangeHandler('confirmEmail')} />
-        <PasswordField onChange={createOnChangeHandler('password')} />
-        <ConFirmPasswordField
-          onChange={createOnChangeHandler('confirmPassword')}
-        />
-        <UsernameField onChange={createOnChangeHandler('username')} />
-        <CustomSubmitButton text='登録' />
-        <AuthSwitchLink useCase='register' />
-      </Box>
-    </Container>
+    <Box
+      component='form'
+      sx={{
+        marginTop: 8,
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        pb: '5rem',
+      }}
+      onSubmit={(e: FormEvent) => createUserHandler(e)}
+    >
+      <EmailField onChange={createOnChangeHandler('email')} />
+      <ConfirmEmailField onChange={createOnChangeHandler('confirmEmail')} />
+      <PasswordField onChange={createOnChangeHandler('password')} />
+      <ConFirmPasswordField
+        onChange={createOnChangeHandler('confirmPassword')}
+      />
+      <UsernameField onChange={createOnChangeHandler('username')} />
+      <CustomSubmitButton text='登録' />
+      <AuthSwitchLink useCase='register' />
+    </Box>
   );
 };
 
