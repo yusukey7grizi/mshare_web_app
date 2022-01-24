@@ -15,6 +15,7 @@ import PersonIcon from '@mui/icons-material/Person';
 import LogoutIcon from '@mui/icons-material/Logout';
 import LoginIcon from '@mui/icons-material/Login';
 import MenuIcon from '@mui/icons-material/Menu';
+import { useRouter } from 'next/router';
 
 type Props = {
   isLoggedIn: boolean;
@@ -24,6 +25,8 @@ type Props = {
 
 const MenuDrawer: FC<Props> = ({ isLoggedIn, authHandler, anchor }) => {
   const [isOpen, setIsOpen] = useState(false);
+  const router = useRouter();
+
   return (
     <>
       <IconButton
@@ -48,20 +51,34 @@ const MenuDrawer: FC<Props> = ({ isLoggedIn, authHandler, anchor }) => {
         }}
       >
         <List sx={{ width: anchor === 'left' ? '15rem' : '100%' }}>
-          <ListItem href='/' button component={Link}>
+          <ListItem
+            onClick={() => {
+              router.push('/');
+            }}
+            button
+            component={Link}
+          >
             <ListItemIcon>
               <HomeIcon />
             </ListItemIcon>
             <ListItemText primary='Home' />
           </ListItem>
-          <ListItem href='/random' button component={Link}>
+          <ListItem
+            onClick={() => {
+              router.push('/random');
+            }}
+            button
+            component={Link}
+          >
             <ListItemIcon>
               <ShuffleIcon />
             </ListItemIcon>
             <ListItemText primary='ガチャ検索' />
           </ListItem>
           <ListItem
-            href={isLoggedIn ? '/movie/post' : '/auth/login'}
+            onClick={() => {
+              router.push(isLoggedIn ? '/movie/post' : '/auth/login');
+            }}
             button
             component={Link}
           >
@@ -71,7 +88,9 @@ const MenuDrawer: FC<Props> = ({ isLoggedIn, authHandler, anchor }) => {
             <ListItemText primary='映画を作成' />
           </ListItem>
           <ListItem
-            href={isLoggedIn ? '/profile' : '/auth/login'}
+            onClick={() => {
+              router.push(isLoggedIn ? '/profile' : '/auth/login');
+            }}
             button
             component={Link}
           >
