@@ -9,6 +9,7 @@ import Cookies from 'js-cookie';
 import { MenuDrawer } from 'components/molecules';
 import CloseIcon from '@mui/icons-material/Close';
 import SearchIcon from '@mui/icons-material/Search';
+import { MinScreenSize } from 'components/constants';
 
 type Props = {
   isLoggedIn: boolean;
@@ -19,7 +20,7 @@ const iconButtonStyle = { width: '3rem', height: '3rem' } as const;
 const TopBar: FC<Props> = ({ isLoggedIn }) => {
   const router = useRouter();
   const auth = useAuth();
-  const isLargeScreenSize = useMediaQuery('(min-width:970px)');
+  const isLargeScreenSize = useMediaQuery(MinScreenSize['xl']);
 
   const [inputValue, setInputValue] = useState<string>('');
   const [isSearchFieldOpen, setIsSearchFieldOpen] = useState<boolean>(false);

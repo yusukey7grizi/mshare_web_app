@@ -1,13 +1,10 @@
 import React, { FC, useContext } from 'react';
-import { Box } from '@mui/material';
+import { Box, Typography } from '@mui/material';
 import { MuiDivider } from 'components/atoms/divider';
-import {
-  EmailText,
-  MovieListTitle,
-  UsernameText,
-} from 'components/atoms/texts';
+import { MovieListTitle } from 'components/atoms/texts';
 import { SearchedMovieList as MovieList } from 'components/organisms/searchedMovieList';
 import { AppContext } from 'contexts/appContext';
+import { FontSize } from 'components/constants';
 
 type Props = {
   userName: string;
@@ -20,8 +17,15 @@ const ProfileTemplate: FC<Props> = ({ userName, email }) => {
   return (
     <>
       <Box sx={{ width: '50rem', margin: 'auto' }}>
-        <UsernameText userName={userName} />
-        <EmailText email={email} />
+        <Typography
+          sx={{ pl: '8rem', fontWeight: 'bold' }}
+          fontSize={FontSize['xl']}
+        >
+          ユーザーネーム: {userName}
+        </Typography>
+        <Typography sx={{ pl: '9rem' }} fontSize={FontSize['m']}>
+          メールアドレス: {email}
+        </Typography>
       </Box>
       <MovieListTitle />
       <MuiDivider />
