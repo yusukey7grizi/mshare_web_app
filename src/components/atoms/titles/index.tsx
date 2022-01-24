@@ -35,7 +35,7 @@ const AuthTitle: FC = () => {
 const RandomTitle: FC = () => {
   return (
     <Typography
-      sx={{ pt: '50px', pb: '7rem', fontWeight: 'bold' }}
+      sx={{ pb: '7rem', fontWeight: 'bold', fontSize: '1rem', pt: '2rem' }}
       align='center'
       variant='h5'
     >

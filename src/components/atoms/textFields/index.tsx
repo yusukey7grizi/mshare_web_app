@@ -1,5 +1,5 @@
 import { FC } from 'react';
-import { InputAdornment, TextField } from '@mui/material';
+import { InputAdornment, TextField, useMediaQuery } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 import { MuiKeyBoardEvent, MuiOnChangeEvent } from 'types';
 
@@ -61,14 +61,17 @@ const MovieFormTextField: FC<TextFieldProps> = ({
   type,
   onChange,
 }) => {
+  const isLargeScreenSize = useMediaQuery('(min-width:600px)');
+
   return (
     <TextField
+      autoComplete='off'
+      sx={isLargeScreenSize ? { width: '30rem' } : { width: '15rem' }}
       required
       type={type}
       error={error}
       placeholder={placeholder}
       InputLabelProps={{ shrink: true }}
-      sx={{ width: '40rem' }}
       variant='standard'
       onChange={onChange}
     />

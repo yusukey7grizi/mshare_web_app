@@ -1,4 +1,4 @@
-import { Box } from '@mui/material';
+import { Box, Typography } from '@mui/material';
 import { MovieItem } from 'components/molecules';
 import React, { FC } from 'react';
 import { Movie } from 'types/dataTypes';
@@ -7,7 +7,7 @@ type Props = {
   movieList: Movie[];
 };
 
-const HomeMovieList: FC<Props> = ({ movieList }) => {
+const MovieList: FC<Props> = ({ movieList }) => {
   return (
     <Box
       sx={{
@@ -17,10 +17,14 @@ const HomeMovieList: FC<Props> = ({ movieList }) => {
       }}
     >
       {movieList.slice(0, 9).map((movie) => {
-        return <MovieItem key={movie.id} movie={movie} />;
+        return movieList.length === 0 ? (
+          <Typography>該当する作品はありません</Typography>
+        ) : (
+          <MovieItem key={movie.id} movie={movie} />
+        );
       })}
     </Box>
   );
 };
 
-export { HomeMovieList };
+export { MovieList };
