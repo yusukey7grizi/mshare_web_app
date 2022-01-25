@@ -1,7 +1,7 @@
 import { styled } from '@mui/system';
 
-const FlexBox = styled('div')({
-  display: 'flex',
+const FieldContainer = styled('div')({
+  paddingBottom: '2rem',
 });
 
-export { FlexBox };
+export { FieldContainer };

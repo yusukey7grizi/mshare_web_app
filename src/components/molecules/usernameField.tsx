@@ -1,4 +1,5 @@
-import { Box, Typography } from '@mui/material';
+import { Typography } from '@mui/material';
+import { FieldContainer } from 'components/atoms/layoutElement';
 import { AuthFormTextField } from 'components/atoms/textFields';
 import { FC } from 'react';
 import { MuiOnChangeEvent } from 'types';
@@ -9,15 +10,15 @@ type UsernameFieldProps = {
 
 const UsernameField: FC<UsernameFieldProps> = ({ onChange }) => {
   return (
-    <Box>
+    <FieldContainer>
       <Typography gutterBottom>プロフィール名</Typography>
       <AuthFormTextField
         type='text'
         error={false}
-        placeholder='プロフィール名を設定してください'
+        placeholder='例 sample_user'
         onChange={onChange}
       />
-    </Box>
+    </FieldContainer>
   );
 };
 

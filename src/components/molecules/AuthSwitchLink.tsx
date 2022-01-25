@@ -1,5 +1,5 @@
-import { Grid, Link, Typography } from '@mui/material';
-import { FontSize } from 'components/constants';
+import { Grid, Link, Typography, useMediaQuery } from '@mui/material';
+import { FontSize, MinScreenSize } from 'components/constants';
 
 type AuthSwitchLinkProps = {
   useCase: 'logIn' | 'register';
@@ -13,11 +13,20 @@ const AuthSwitchLink: React.FC<AuthSwitchLinkProps> = ({ useCase }) => {
     : 'まだアカウントをお持ちではないですか？';
   const linkText = isSignUp ? 'ログイン。' : '新規登録。';
   const href = isSignUp ? '/auth/login' : '/auth/register';
+  const isLargeScreenSize = useMediaQuery(MinScreenSize['s']);
+  const fontSize = isLargeScreenSize ? FontSize['s'] : FontSize['xxs'];
 
   return (
-    <Grid sx={{ display: 'flex', marginTop: '2rem' }}>
-      <Typography fontSize={FontSize['s']}>{text}</Typography>
-      <Link href={href}>{linkText}</Link>
+    <Grid
+      sx={{
+        display: 'flex',
+        marginTop: '2rem',
+      }}
+    >
+      <Typography fontSize={fontSize}>{text}</Typography>
+      <Link fontSize={fontSize} href={href}>
+        {linkText}
+      </Link>
     </Grid>
   );
 };
