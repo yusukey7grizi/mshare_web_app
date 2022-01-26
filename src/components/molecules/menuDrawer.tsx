@@ -1,4 +1,4 @@
-import { FC, useState } from 'react';
+import { FC, useEffect, useState } from 'react';
 import {
   List,
   ListItem,
@@ -26,6 +26,10 @@ type Props = {
 const MenuDrawer: FC<Props> = ({ isLoggedIn, authHandler, anchor }) => {
   const [isOpen, setIsOpen] = useState(false);
   const router = useRouter();
+
+  useEffect(() => {
+    setIsOpen(false);
+  }, [router]);
 
   return (
     <>
