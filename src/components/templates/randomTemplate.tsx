@@ -69,10 +69,12 @@ const RandomTemplate: FC<Props> = ({ onSubmit, onChange }) => {
           transition={{ duration: 6 }}
         >
           <Box
+            component='div'
             sx={{
               display: 'flex',
               flexDirection: 'column',
             }}
+            ref={movieDetailRef}
           >
             <YouTubePlayer
               grinningScore={grinningScore}
