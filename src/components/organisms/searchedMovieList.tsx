@@ -10,7 +10,14 @@ type Props = {
 
 const SearchedMovieList: FC<Props> = ({ movieList }) => {
   return (
-    <Box sx={{ display: 'flex', flexDirection: 'row', flexWrap: 'wrap' }}>
+    <Box
+      sx={{
+        display: 'flex',
+        flexDirection: 'row',
+        flexWrap: 'wrap',
+        justifyContent: 'space-evenly',
+      }}
+    >
       {movieList.length === 0 ? (
         <Typography fontSize={FontSize['m']}>
           該当する作品はありません
