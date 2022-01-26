@@ -1,4 +1,4 @@
-import React, { FC, useState, useEffect, useRef, RefObject } from 'react';
+import React, { FC, useState, useEffect, useRef } from 'react';
 import * as faceapi from 'face-api.js';
 import {
   detectSingleFace,
