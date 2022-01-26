@@ -43,7 +43,7 @@ const FaceRecognition: FC<FaceRecognitionProps> = ({
   const [individualGrinningScore, setIndividualGrinningScore] =
     useState<number>(0);
 
-  const [isDragging, setisDragging] = useState<boolean>(false);
+  const [isDragging, setIsDragging] = useState<boolean>(false);
 
   const isLargeScreen = useMediaQuery(MinScreenSize['l']);
   const cameraSize = isLargeScreen ? '5rem' : '3rem';
@@ -177,11 +177,14 @@ const FaceRecognition: FC<FaceRecognitionProps> = ({
   const handleSetX = () => {
     const currentWidth = webcamRef?.current?.getBoundingClientRect().x;
     const halfScreenWidth = window.innerWidth / 2;
+    const leftX = isLargeScreen
+      ? window.innerWidth - 100
+      : window.innerWidth - 65;
 
     if (currentWidth && currentWidth > halfScreenWidth) {
-      return innerWidth - 90;
+      return leftX;
     } else {
-      return 1;
+      return 2;
     }
   };
 
@@ -192,7 +195,6 @@ const FaceRecognition: FC<FaceRecognitionProps> = ({
       ref={webcamRef}
       autoPlay
       whileTap={{ scale: 1.2 }}
-      whileHover={{ opacity: 0.8 }}
       dragConstraints={movieDetailRef}
       style={{
         width: cameraSize,
@@ -201,8 +203,8 @@ const FaceRecognition: FC<FaceRecognitionProps> = ({
         zIndex: 100,
         position: 'fixed',
       }}
-      onDragStart={() => setisDragging(true)}
-      onDragEnd={() => setisDragging(false)}
+      onDragStart={() => setIsDragging(true)}
+      onDragEnd={() => setIsDragging(false)}
       transition={{ duration: 0.5 }}
     />
   ) : (
