@@ -6,7 +6,7 @@ import {
   GenreField,
   YouTubePlayer,
 } from 'components/molecules';
-import React, { FC, useContext, useEffect, useState } from 'react';
+import React, { FC, useContext, useEffect, useRef, useState } from 'react';
 import {
   MoviePlayerState,
   MuiAutoCompleteOnChangeEvent,
@@ -25,6 +25,7 @@ type Props = {
 
 const RandomTemplate: FC<Props> = ({ onSubmit, onChange }) => {
   const { randomMovie, relatedMovieList } = useContext(AppContext);
+  const movieDetailRef = useRef<HTMLDivElement>(null);
 
   const [moviePlayerState, setMoviePlayerState] = useState<MoviePlayerState>({
     playerState: -1,
@@ -79,6 +80,7 @@ const RandomTemplate: FC<Props> = ({ onSubmit, onChange }) => {
               setMoviePlayerState={setMoviePlayerState}
             />
             <FaceRecognition
+              movieDetailRef={movieDetailRef}
               moviePlayerState={moviePlayerState}
               movie={randomMovie}
               grinningScore={grinningScore}

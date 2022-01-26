@@ -1,4 +1,4 @@
-import React, { FC, useContext, useEffect, useState } from 'react';
+import React, { FC, useContext, useEffect, useRef, useState } from 'react';
 import { MuiDivider } from 'components/atoms/divider';
 import { MovieListTitle } from 'components/atoms/texts';
 import { AppContext } from 'contexts/appContext';
@@ -8,6 +8,7 @@ import { MoviePlayerState } from 'types';
 import { Box } from '@mui/material';
 
 const MovieDetailTemplate: FC = () => {
+  const movieDetailRef = useRef<HTMLDivElement>(null);
   const { movie, relatedMovieList } = useContext(AppContext);
   const [moviePlayerState, setMoviePlayerState] = useState<MoviePlayerState>({
     playerState: -1,
@@ -28,10 +29,12 @@ const MovieDetailTemplate: FC = () => {
     movie && (
       <>
         <Box
+          component='div'
           sx={{
             display: 'flex',
             flexDirection: 'column',
           }}
+          ref={movieDetailRef}
         >
           <YouTubePlayer
             grinningScore={grinningScore}
@@ -39,6 +42,7 @@ const MovieDetailTemplate: FC = () => {
             setMoviePlayerState={setMoviePlayerState}
           />
           <FaceRecognition
+            movieDetailRef={movieDetailRef}
             moviePlayerState={moviePlayerState}
             movie={movie}
             grinningScore={grinningScore}

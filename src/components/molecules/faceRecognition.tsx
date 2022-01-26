@@ -1,4 +1,4 @@
-import React, { FC, useState, useEffect, useRef } from 'react';
+import React, { FC, useState, useEffect, useRef, RefObject } from 'react';
 import * as faceapi from 'face-api.js';
 import {
   detectSingleFace,
@@ -8,13 +8,16 @@ import {
 import useInterval from 'use-interval';
 import { MoviePlayerState } from 'types';
 import { Movie } from 'types/dataTypes';
-import { CardMedia, Typography } from '@mui/material';
+import { useMediaQuery } from '@mui/material';
+import { motion } from 'framer-motion';
+import { MinScreenSize } from 'components/constants';
 
 type FaceRecognitionProps = {
   moviePlayerState: MoviePlayerState;
   movie: Movie;
   grinningScore: number;
   setGrinningScore: (input: number) => void;
+  movieDetailRef: any;
 };
 
 type putMovieBody = {
@@ -28,21 +31,22 @@ const FaceRecognition: FC<FaceRecognitionProps> = ({
   moviePlayerState,
   movie,
   grinningScore,
+  movieDetailRef,
   setGrinningScore,
 }) => {
   const [isRecognitionOn, setIsRecognitionOn] = useState<boolean>(true);
-  // ref for grabbing the webcam video element
   const webcamRef = useRef<HTMLVideoElement>(null);
-  // model loading status, true if completed
   const [isModelReady, setIsModelReady] = useState<boolean>(false);
-  // webcam status, true if allowed by user and started
   const [isWebcamReady, setIsWebcamReady] = useState<boolean>(false);
   const [isScoreUpdated, setIsScoreUpdated] = useState<boolean>(false);
-  // total number of face recognition frames
   const [totalFrame, setTotalFrame] = useState<number>(0);
-  // keepiung track of number of frames with each face expressions
   const [individualGrinningScore, setIndividualGrinningScore] =
     useState<number>(0);
+
+  const [isDragging, setisDragging] = useState<boolean>(false);
+
+  const isLargeScreen = useMediaQuery(MinScreenSize['l']);
+  const cameraSize = isLargeScreen ? '5rem' : '3rem';
 
   useInterval(async () => {
     // console.log(moviePlayerState.playerState);
@@ -170,17 +174,36 @@ const FaceRecognition: FC<FaceRecognitionProps> = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isRecognitionOn]);
 
+  const handleSetX = () => {
+    const currentWidth = webcamRef?.current?.getBoundingClientRect().x;
+    const halfScreenWidth = window.innerWidth / 2;
+
+    if (currentWidth && currentWidth > halfScreenWidth) {
+      return innerWidth - 90;
+    } else {
+      return 1;
+    }
+  };
+
   return isRecognitionOn ? (
-    <CardMedia
-      component='video'
+    <motion.video
+      animate={{ x: isDragging ? 0 : handleSetX() }}
+      drag
       ref={webcamRef}
       autoPlay
-      muted
-      sx={{
+      whileTap={{ scale: 1.2 }}
+      whileHover={{ opacity: 0.8 }}
+      dragConstraints={movieDetailRef}
+      style={{
+        width: cameraSize,
+        height: cameraSize,
         borderRadius: '50%',
-        width: 100,
-        height: 100,
+        zIndex: 100,
+        position: 'fixed',
       }}
+      onDragStart={() => setisDragging(true)}
+      onDragEnd={() => setisDragging(false)}
+      transition={{ duration: 0.5 }}
     />
   ) : (
     <></>
