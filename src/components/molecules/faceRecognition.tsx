@@ -194,6 +194,7 @@ const FaceRecognition: FC<FaceRecognitionProps> = ({
       drag
       ref={webcamRef}
       autoPlay
+      whileHover={{ scale: 1.2 }}
       whileTap={{ scale: 1.2 }}
       dragConstraints={movieDetailRef}
       style={{
