@@ -13,6 +13,7 @@
     "@mui/icons-material": "^5.2.5",
     "@mui/material": "^5.2.4",
     "@mui/styled-engine-sc": "^5.1.0",
+    "axios": "^0.25.0",
     "face-api.js": "^0.22.2",
     "firebase": "^9.6.1",
     "framer-motion": "^5.5.5",

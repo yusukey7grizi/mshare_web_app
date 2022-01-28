@@ -1,7 +1,6 @@
 import React, {
   createContext,
   FC,
-  ReactNode,
   useContext,
   useEffect,
   useState,
@@ -15,10 +14,9 @@ import {
   signInWithEmailAndPassword,
   signOut,
   updateProfile,
-  User,
+  UserInfo,
   UserCredential,
 } from 'firebase/auth';
-import Cookies from 'js-cookie';
 
 const firebaseConfig = {
   apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
@@ -31,7 +29,9 @@ const firebaseConfig = {
 };
 
 type AuthState = {
-  user: User | null;
+  user: UserInfo | null;
+  csrfToken: string;
+  getCsrfToken: () => Promise<void>;
   logIn: (email: string, password: string) => Promise<boolean>;
   createUser: (
     email: string,
@@ -43,8 +43,12 @@ type AuthState = {
 };
 
 type VerificationResponse = {
-  status: boolean;
-  user: User | null;
+  status: string;
+  user: UserInfo | null;
+};
+
+type CSRFResponse = {
+  csrfToken: string;
 };
 
 if (!firebase.getApps.length) {
@@ -55,6 +59,14 @@ const authContext = createContext({} as AuthState);
 
 export const AuthProvider: FC = ({ children }) => {
   const authState: AuthState = useProvideAuth();
+
+  useEffect(() => {
+    const getAndSetCsrfToken = async () => {
+      authState.getCsrfToken();
+      console.log(authState.csrfToken);
+    };
+    getAndSetCsrfToken();
+  }, []);
   return (
     <authContext.Provider value={authState}>{children}</authContext.Provider>
   );
@@ -65,24 +77,44 @@ export const useAuth = () => {
 };
 
 const useProvideAuth = () => {
-  const [user, setUser] = useState<User | null>(null);
+  const [user, setUser] = useState<UserInfo | null>(null);
+  const [csrfToken, setCsrfToken] = useState<string>('');
   const auth = getAuth();
   auth.setPersistence(inMemoryPersistence);
+
+  // retrieve csrf token on the first visit
+  const getCsrfToken = () => {
+    return new Promise<void>(async () => {
+      try {
+        const res = await fetch('http://localhost:8000/auth', {
+          method: 'GET',
+          credentials: 'include',
+        });
+        const data: CSRFResponse = await res.json();
+        await setCsrfToken(data.csrfToken);
+      } catch (error) {
+        console.error(error);
+      }
+    });
+  };
 
   // signs in to firebase auth, then requests backend to create session cookie
   const signIn = (email: string, password: string) => {
     return signInWithEmailAndPassword(auth, email, password)
       .then(async (userCredentials: UserCredential) => {
         const idToken = await userCredentials.user.getIdToken();
-        console.log(idToken);
         const res = await fetch('http://localhost:8000/auth/login', {
           method: 'POST',
           body: JSON.stringify({ idToken: idToken }),
+          credentials: 'include',
+          headers: {
+            'X-CSRF-Token': csrfToken,
+          },
         });
         if (res.ok) {
           const data: VerificationResponse = await res.json();
-          if (data.status) await setUser(data.user);
-          return data.status;
+          await setUser(data.user as UserInfo);
+          return true;
         } else {
           return false;
         }
@@ -118,8 +150,16 @@ const useProvideAuth = () => {
       .then(async () => {
         const res = await fetch('http://localhost:8000/auth/logout', {
           method: 'POST',
+          credentials: 'include',
+          headers: {
+            'X-CSRF-Token': csrfToken,
+          },
         });
-        return res.ok;
+        if (res.ok) {
+          setUser(null);
+          return res.ok;
+        }
+        return false;
       })
       .catch((error) => {
         console.error(error);
@@ -134,11 +174,15 @@ const useProvideAuth = () => {
       try {
         const res = await fetch('http://localhost:8000/auth/verify', {
           method: 'POST',
+          credentials: 'include',
+          headers: {
+            'X-CSRF-Token': csrfToken,
+          },
         });
         if (res.ok) {
           const data: VerificationResponse = await res.json();
-          if (data.status) await setUser(data.user);
-          return data.status;
+          await setUser(data.user as UserInfo);
+          return true;
         }
       } catch (error) {
         console.error(error);
@@ -149,11 +193,9 @@ const useProvideAuth = () => {
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
       if (currentUser) {
-        setUser(currentUser);
-        Cookies.set('uid', currentUser.uid);
+        setUser(currentUser as UserInfo);
       } else {
         setUser(null);
-        Cookies.remove('uid');
       }
     });
 
@@ -162,6 +204,8 @@ const useProvideAuth = () => {
 
   const authState: AuthState = {
     user: user,
+    csrfToken: csrfToken,
+    getCsrfToken: getCsrfToken,
     logIn: signIn,
     createUser: signUp,
     logOut: logOut,
