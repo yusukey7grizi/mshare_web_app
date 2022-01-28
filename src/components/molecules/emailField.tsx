@@ -1,4 +1,5 @@
-import { Box, Typography } from '@mui/material';
+import { Typography } from '@mui/material';
+import { FieldContainer } from 'components/atoms/layoutElement';
 import { AuthFormTextField } from 'components/atoms/textFields';
 import { FC } from 'react';
 import { MuiOnChangeEvent } from 'types';
@@ -9,29 +10,29 @@ type EmailFieldProps = {
 
 const EmailField: FC<EmailFieldProps> = ({ onChange }) => {
   return (
-    <Box>
+    <FieldContainer>
       <Typography gutterBottom>メールアドレス</Typography>
       <AuthFormTextField
         type='email'
         error={false}
-        placeholder='メールアドレスを入力してください'
+        placeholder='例 sample@gmail.com'
         onChange={onChange}
       />
-    </Box>
+    </FieldContainer>
   );
 };
 
 const ConfirmEmailField: FC<EmailFieldProps> = ({ onChange }) => {
   return (
-    <Box>
+    <FieldContainer>
       <Typography gutterBottom>メールアドレスの確認</Typography>
       <AuthFormTextField
         type='email'
         error={false}
-        placeholder='確認のためメールアドレスを再度入力してください'
+        placeholder='例 sample@gmail.com'
         onChange={onChange}
       />
-    </Box>
+    </FieldContainer>
   );
 };
 

@@ -1,4 +1,5 @@
 import { Link, Typography, Button } from '@mui/material';
+import { Color, FontSize } from 'components/constants';
 import React, { FC } from 'react';
 
 type SubtitleProps = {
@@ -15,9 +16,10 @@ const BarTitle: FC = () => {
       href='/'
       underline='none'
       component={Button}
-      sx={{ fontWeight: 'bold', color: 'black' }}
+      sx={{ fontWeight: 'bold' }}
       align='center'
-      variant='h4'
+      fontSize={FontSize['l']}
+      color='primary'
     >
       MShare
     </Link>
@@ -26,8 +28,12 @@ const BarTitle: FC = () => {
 
 const AuthTitle: FC = () => {
   return (
-    <Typography sx={{ marginTop: '50px' }} align='center' variant='h2'>
-      MShare へようこそ
+    <Typography
+      sx={{ marginTop: '50px' }}
+      align='center'
+      fontSize={FontSize['xl']}
+    >
+      MShare へようこそ！
     </Typography>
   );
 };
@@ -35,9 +41,9 @@ const AuthTitle: FC = () => {
 const RandomTitle: FC = () => {
   return (
     <Typography
-      sx={{ pb: '7rem', fontWeight: 'bold', fontSize: '1rem', pt: '2rem' }}
+      fontSize={FontSize['s']}
+      sx={{ pb: '7rem', fontWeight: 'bold', pt: '2rem' }}
       align='center'
-      variant='h5'
     >
       ランダムガチャ検索で新しい映画と出会おう！
     </Typography>

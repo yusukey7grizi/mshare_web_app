@@ -1,5 +1,6 @@
 import { Box, Typography } from '@mui/material';
 import { MuiDivider } from 'components/atoms/divider';
+import { FontSize } from 'components/constants';
 import { MovieList } from 'components/organisms/movieList';
 import { AppContext } from 'contexts/appContext';
 import React, { FC, useContext } from 'react';
@@ -32,9 +33,9 @@ const DashboardTemplate: FC = () => {
         return (
           <Box component='div' key={genre[0]}>
             <Typography
+              fontSize={FontSize['l']}
               sx={{
                 fontFamily: 'monospace',
-                fontSize: '1.5rem',
                 pl: 2,
               }}
             >

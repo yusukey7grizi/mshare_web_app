@@ -2,6 +2,7 @@ import { FC } from 'react';
 import { InputAdornment, TextField, useMediaQuery } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 import { MuiKeyBoardEvent, MuiOnChangeEvent } from 'types';
+import { MinScreenSize } from 'components/constants';
 
 type TextFieldProps = {
   placeholder: string;
@@ -18,6 +19,7 @@ type SearchFieldProps = {
 const SearchField: FC<SearchFieldProps> = ({ onKeyPress, onChange }) => {
   return (
     <TextField
+      autoComplete='off'
       onChange={onChange}
       onKeyPress={onKeyPress}
       placeholder='映画を検索する'
@@ -41,6 +43,8 @@ const AuthFormTextField: FC<TextFieldProps> = ({
   type,
   onChange,
 }) => {
+  const isLargeScreenSize = useMediaQuery(MinScreenSize['m']);
+
   return (
     <TextField
       required
@@ -48,7 +52,7 @@ const AuthFormTextField: FC<TextFieldProps> = ({
       error={error}
       placeholder={placeholder}
       InputLabelProps={{ shrink: true }}
-      sx={{ width: '32rem' }}
+      sx={isLargeScreenSize ? { width: '30rem' } : { width: '15rem' }}
       variant='standard'
       onChange={onChange}
     />
@@ -61,7 +65,7 @@ const MovieFormTextField: FC<TextFieldProps> = ({
   type,
   onChange,
 }) => {
-  const isLargeScreenSize = useMediaQuery('(min-width:600px)');
+  const isLargeScreenSize = useMediaQuery(MinScreenSize['m']);
 
   return (
     <TextField

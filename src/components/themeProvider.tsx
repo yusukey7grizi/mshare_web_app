@@ -11,6 +11,7 @@ const theme = createTheme({
     secondary: {
       main: purple[500],
     },
+    //    divider: orange['A200'],
   },
 });
 

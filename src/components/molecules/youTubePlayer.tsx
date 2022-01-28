@@ -1,5 +1,6 @@
 import { Box, Typography, useMediaQuery } from '@mui/material';
 import { ShowMoreButton } from 'components/atoms/buttons';
+import { FontSize, MinScreenSize } from 'components/constants';
 import React, { Dispatch, FC, SetStateAction, useState } from 'react';
 import YouTube, { Options } from 'react-youtube';
 import { MoviePlayerState } from 'types';
@@ -29,8 +30,8 @@ const YouTubePlayer: FC<YouTubePlayerProps> = ({
     });
   };
 
-  const isLargeScreenSize = useMediaQuery('(min-width:710px)');
-  const isMediumScreenSize = useMediaQuery('(min-width:400px)');
+  const isLargeScreenSize = useMediaQuery(MinScreenSize['l']);
+  const isMediumScreenSize = useMediaQuery(MinScreenSize['s']);
 
   const options: Options = {
     height: isLargeScreenSize ? '350' : isMediumScreenSize ? '330' : '230',
@@ -57,19 +58,24 @@ const YouTubePlayer: FC<YouTubePlayerProps> = ({
         opts={options}
         onStateChange={playerStateChangeHandler}
       />
-      <Typography sx={{ fontWeight: 'bold', pt: '1rem', fontSize: '1.2rem' }}>
+      <Typography
+        fontSize={FontSize['m']}
+        sx={{ fontWeight: 'bold', pt: '1rem' }}
+      >
         {title}
       </Typography>
-      <Typography variant='subtitle1'>{userName}</Typography>
-      <Typography gutterBottom variant='subtitle2'>
+      <Typography fontSize={FontSize['s']}>{userName}</Typography>
+      <Typography gutterBottom fontSize={FontSize['xs']}>
         {createdDate}
       </Typography>
-      <Typography gutterBottom variant='subtitle2'>
+      <Typography gutterBottom fontSize={FontSize['xs']}>
         ニヤッと回数：
         {grinningScore ? `${grinningScore} 回` : '0回'}
       </Typography>
       {isDetailOpened && (
-        <Typography variant='subtitle2'>{`概要： ${overview}`}</Typography>
+        <Typography
+          fontSize={FontSize['xs']}
+        >{`概要： ${overview}`}</Typography>
       )}
       <ShowMoreButton
         onClick={() => {

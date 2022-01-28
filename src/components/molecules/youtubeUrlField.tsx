@@ -1,4 +1,5 @@
-import { Box, Typography } from '@mui/material';
+import { Typography } from '@mui/material';
+import { FieldContainer } from 'components/atoms/layoutElement';
 import { MovieFormTextField } from 'components/atoms/textFields';
 import React, { FC } from 'react';
 import { MuiOnChangeEvent } from 'types';
@@ -9,7 +10,7 @@ type YoutubeUrlFieldProps = {
 
 const YoutubeUrlField: FC<YoutubeUrlFieldProps> = ({ onChange }) => {
   return (
-    <Box sx={{ mb: '2rem' }}>
+    <FieldContainer>
       <Typography gutterBottom>YouTube URL</Typography>
       <MovieFormTextField
         type='url'
@@ -17,7 +18,7 @@ const YoutubeUrlField: FC<YoutubeUrlFieldProps> = ({ onChange }) => {
         placeholder='YouTube URLを入力してください'
         onChange={onChange}
       />
-    </Box>
+    </FieldContainer>
   );
 };
 

@@ -6,6 +6,7 @@ import {
   CardMedia,
   Typography,
 } from '@mui/material';
+import { FontSize } from 'components/constants';
 import { useRouter } from 'next/router';
 import React, { FC, Fragment } from 'react';
 import { Movie } from 'types/dataTypes';
@@ -37,10 +38,10 @@ const MovieItem: FC<MovieItemProps> = ({ movie }) => {
           <CardContent>
             <Typography
               noWrap
+              fontSize={FontSize['s']}
               sx={{
                 fontWeight: 'bold',
                 textOverflow: 'ellipsis',
-                fontSize: '1rem',
               }}
             >
               {movie.title}

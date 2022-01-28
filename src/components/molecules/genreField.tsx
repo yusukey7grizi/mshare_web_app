@@ -1,11 +1,11 @@
 import {
   Autocomplete,
-  Box,
-  FormHelperText,
   TextField,
   Typography,
   useMediaQuery,
 } from '@mui/material';
+import { FieldContainer } from 'components/atoms/layoutElement';
+import { MinScreenSize } from 'components/constants';
 import React, { FC } from 'react';
 import { MuiAutoCompleteOnChangeEvent } from 'types';
 
@@ -23,10 +23,10 @@ const GenreField: FC<GenreFieldProps> = ({ onChange }) => {
     '恋愛映画',
     'その他',
   ];
-  const isLargeScreenSize = useMediaQuery('(min-width:600px)');
+  const isLargeScreenSize = useMediaQuery(MinScreenSize['m']);
 
   return (
-    <Box sx={{ mb: '2rem' }}>
+    <FieldContainer>
       <Typography gutterBottom>ジャンル</Typography>
       <Autocomplete
         sx={isLargeScreenSize ? { width: '30rem' } : { width: '15rem' }}
@@ -42,7 +42,7 @@ const GenreField: FC<GenreFieldProps> = ({ onChange }) => {
           />
         )}
       />
-    </Box>
+    </FieldContainer>
   );
 };
 
