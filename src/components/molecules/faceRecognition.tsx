@@ -8,7 +8,9 @@ import {
 import useInterval from 'use-interval';
 import { MoviePlayerState } from 'types';
 import { Movie } from 'types/dataTypes';
-import { CardMedia, Typography } from '@mui/material';
+import { useMediaQuery } from '@mui/material';
+import { motion } from 'framer-motion';
+import { MinScreenSize } from 'components/constants';
 import { useAuth } from 'contexts/authContext';
 
 type FaceRecognitionProps = {
@@ -16,9 +18,10 @@ type FaceRecognitionProps = {
   movie: Movie;
   grinningScore: number;
   setGrinningScore: (input: number) => void;
+  movieDetailRef: any;
 };
 
-type putMovieBody = {
+type PutMovieBody = {
   grinningScore: number;
 };
 
@@ -29,22 +32,22 @@ const FaceRecognition: FC<FaceRecognitionProps> = ({
   moviePlayerState,
   movie,
   grinningScore,
+  movieDetailRef,
   setGrinningScore,
 }) => {
   const [isRecognitionOn, setIsRecognitionOn] = useState<boolean>(true);
-  // ref for grabbing the webcam video element
   const webcamRef = useRef<HTMLVideoElement>(null);
-  // model loading status, true if completed
   const [isModelReady, setIsModelReady] = useState<boolean>(false);
-  // webcam status, true if allowed by user and started
   const [isWebcamReady, setIsWebcamReady] = useState<boolean>(false);
   const [isScoreUpdated, setIsScoreUpdated] = useState<boolean>(false);
-  // total number of face recognition frames
   const [totalFrame, setTotalFrame] = useState<number>(0);
-  // keepiung track of number of frames with each face expressions
   const [individualGrinningScore, setIndividualGrinningScore] =
     useState<number>(0);
 
+  const [isDragging, setIsDragging] = useState<boolean>(false);
+
+  const isLargeScreen = useMediaQuery(MinScreenSize['l']);
+  const cameraSize = isLargeScreen ? '5rem' : '3rem';
   const auth = useAuth();
 
   useInterval(async () => {
@@ -77,7 +80,7 @@ const FaceRecognition: FC<FaceRecognitionProps> = ({
         case YT.PlayerState.ENDED:
           if (isScoreUpdated) break;
           try {
-            const putBody: putMovieBody = {
+            const putBody: PutMovieBody = {
               grinningScore: grinningScore,
             };
             const res = await fetch(
@@ -146,7 +149,7 @@ const FaceRecognition: FC<FaceRecognitionProps> = ({
 
     const sendScore = async () => {
       if (isScoreUpdated) return;
-      const putBody: putMovieBody = { grinningScore: individualGrinningScore };
+      const putBody: PutMovieBody = { grinningScore: individualGrinningScore };
       try {
         const res = await fetch(`http://localhost:8000/movies/${movie.id}`, {
           method: 'PUT',
@@ -174,17 +177,38 @@ const FaceRecognition: FC<FaceRecognitionProps> = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isRecognitionOn]);
 
+  const handleSetX = () => {
+    const currentX = webcamRef?.current?.getBoundingClientRect().x;
+    const halfScreenWidth = window.innerWidth / 2;
+    const newX = isLargeScreen
+      ? window.innerWidth - 100
+      : window.innerWidth - 65;
+
+    if (currentX && currentX > halfScreenWidth) {
+      return newX;
+    } else {
+      return 2;
+    }
+  };
+
   return isRecognitionOn ? (
-    <CardMedia
-      component='video'
+    <motion.video
+      animate={{ x: isDragging ? 0 : handleSetX() }}
+      drag
       ref={webcamRef}
       autoPlay
-      muted
-      sx={{
+      whileHover={{ scale: 1.2 }}
+      whileTap={{ scale: 1.2 }}
+      dragConstraints={movieDetailRef}
+      style={{
+        width: cameraSize,
+        height: cameraSize,
         borderRadius: '50%',
-        width: 100,
-        height: 100,
+        zIndex: 100,
       }}
+      onDragStart={() => setIsDragging(true)}
+      onDragEnd={() => setIsDragging(false)}
+      transition={{ duration: 0.5 }}
     />
   ) : (
     <></>
