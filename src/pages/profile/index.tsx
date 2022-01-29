@@ -19,7 +19,7 @@ const Profile = () => {
     if (auth.user) {
       fetchUserMovies();
     }
-  });
+  }, []);
 
   return (
     <ProfileTemplate

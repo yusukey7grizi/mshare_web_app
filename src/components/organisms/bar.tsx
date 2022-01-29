@@ -5,7 +5,6 @@ import { BarTitle } from 'components/atoms/titles';
 import { useRouter } from 'next/router';
 import { MuiKeyBoardEvent, MuiOnChangeEvent } from 'types';
 import { useAuth } from 'contexts/authContext';
-import Cookies from 'js-cookie';
 import { MenuDrawer } from 'components/molecules';
 import CloseIcon from '@mui/icons-material/Close';
 import SearchIcon from '@mui/icons-material/Search';
@@ -108,15 +107,16 @@ const TopBar: FC<Props> = ({ isLoggedIn }) => {
 const Bar: FC = ({ children }) => {
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
   const router = useRouter();
+  const auth = useAuth();
 
   useEffect(() => {
-    const signedInUserId = Cookies.get('uid');
+    const signedInUserId = auth.user;
     if (!signedInUserId) {
       setIsLoggedIn(false);
       return;
     }
     setIsLoggedIn(true);
-  }, [router]);
+  }, [router, auth]);
 
   return (
     <>

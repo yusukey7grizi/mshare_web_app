@@ -11,6 +11,7 @@ import { Movie } from 'types/dataTypes';
 import { useMediaQuery } from '@mui/material';
 import { motion } from 'framer-motion';
 import { MinScreenSize } from 'components/constants';
+import { useAuth } from 'contexts/authContext';
 
 type FaceRecognitionProps = {
   moviePlayerState: MoviePlayerState;
@@ -47,6 +48,7 @@ const FaceRecognition: FC<FaceRecognitionProps> = ({
 
   const isLargeScreen = useMediaQuery(MinScreenSize['l']);
   const cameraSize = isLargeScreen ? '5rem' : '3rem';
+  const auth = useAuth();
 
   useInterval(async () => {
     // console.log(moviePlayerState.playerState);
@@ -87,6 +89,7 @@ const FaceRecognition: FC<FaceRecognitionProps> = ({
                 method: 'PUT',
                 headers: {
                   'Content-Type': 'application/json',
+                  'X-CSRF-Token': auth.csrfToken,
                 },
                 body: JSON.stringify(putBody),
               }
