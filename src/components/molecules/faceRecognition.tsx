@@ -20,7 +20,7 @@ type FaceRecognitionProps = {
   movieDetailRef: any;
 };
 
-type putMovieBody = {
+type PutMovieBody = {
   grinningScore: number;
 };
 
@@ -78,7 +78,7 @@ const FaceRecognition: FC<FaceRecognitionProps> = ({
         case YT.PlayerState.ENDED:
           if (isScoreUpdated) break;
           try {
-            const putBody: putMovieBody = {
+            const putBody: PutMovieBody = {
               grinningScore: grinningScore,
             };
             const res = await fetch(
@@ -146,7 +146,7 @@ const FaceRecognition: FC<FaceRecognitionProps> = ({
 
     const sendScore = async () => {
       if (isScoreUpdated) return;
-      const putBody: putMovieBody = { grinningScore: individualGrinningScore };
+      const putBody: PutMovieBody = { grinningScore: individualGrinningScore };
       try {
         const res = await fetch(`http://localhost:8000/movies/${movie.id}`, {
           method: 'PUT',
@@ -202,7 +202,6 @@ const FaceRecognition: FC<FaceRecognitionProps> = ({
         height: cameraSize,
         borderRadius: '50%',
         zIndex: 100,
-        position: 'fixed',
       }}
       onDragStart={() => setIsDragging(true)}
       onDragEnd={() => setIsDragging(false)}
