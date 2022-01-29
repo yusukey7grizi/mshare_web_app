@@ -177,12 +177,10 @@ const FaceRecognition: FC<FaceRecognitionProps> = ({
   const handleSetX = () => {
     const currentWidth = webcamRef?.current?.getBoundingClientRect().x;
     const halfScreenWidth = window.innerWidth / 2;
-    const leftX = isLargeScreen
-      ? window.innerWidth - 100
-      : window.innerWidth - 65;
+    const x = isLargeScreen ? window.innerWidth - 100 : window.innerWidth - 65;
 
     if (currentWidth && currentWidth > halfScreenWidth) {
-      return leftX;
+      return x;
     } else {
       return 2;
     }
