@@ -9,6 +9,7 @@ import useInterval from 'use-interval';
 import { MoviePlayerState } from 'types';
 import { Movie } from 'types/dataTypes';
 import { CardMedia, Typography } from '@mui/material';
+import { useAuth } from 'contexts/authContext';
 
 type FaceRecognitionProps = {
   moviePlayerState: MoviePlayerState;
@@ -43,6 +44,8 @@ const FaceRecognition: FC<FaceRecognitionProps> = ({
   // keepiung track of number of frames with each face expressions
   const [individualGrinningScore, setIndividualGrinningScore] =
     useState<number>(0);
+
+  const auth = useAuth();
 
   useInterval(async () => {
     // console.log(moviePlayerState.playerState);
@@ -83,6 +86,7 @@ const FaceRecognition: FC<FaceRecognitionProps> = ({
                 method: 'PUT',
                 headers: {
                   'Content-Type': 'application/json',
+                  'X-CSRF-Token': auth.csrfToken,
                 },
                 body: JSON.stringify(putBody),
               }

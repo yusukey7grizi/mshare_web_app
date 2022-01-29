@@ -26,7 +26,6 @@ const LogInForm = () => {
     auth
       .logIn(logInUserInput.email, logInUserInput.password)
       .then(() => {
-        console.log('log in successed', auth.user);
         router.push('/');
       })
       .catch((err) => {

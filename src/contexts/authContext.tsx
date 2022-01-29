@@ -1,24 +1,22 @@
 import React, {
   createContext,
   FC,
-  ReactNode,
   useContext,
   useEffect,
   useState,
 } from 'react';
 import * as firebase from 'firebase/app';
-import 'firebase/auth';
 import {
   createUserWithEmailAndPassword,
   getAuth,
+  inMemoryPersistence,
   onAuthStateChanged,
   signInWithEmailAndPassword,
   signOut,
   updateProfile,
-  User,
+  UserInfo,
   UserCredential,
 } from 'firebase/auth';
-import Cookies from 'js-cookie';
 
 const firebaseConfig = {
   apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
@@ -31,14 +29,26 @@ const firebaseConfig = {
 };
 
 type AuthState = {
-  user: User | null;
-  logIn: (email: string, password: string) => Promise<void | User>;
+  user: UserInfo | null;
+  csrfToken: string;
+  getCsrfToken: () => Promise<void>;
+  logIn: (email: string, password: string) => Promise<boolean>;
   createUser: (
     email: string,
     password: string,
     username: string
-  ) => Promise<void | User>;
-  logOut: () => Promise<void>;
+  ) => Promise<boolean>;
+  logOut: () => Promise<boolean>;
+  verifyUser: () => Promise<boolean>;
+};
+
+type VerificationResponse = {
+  status: string;
+  user: UserInfo | null;
+};
+
+type CSRFResponse = {
+  csrfToken: string;
 };
 
 if (!firebase.getApps.length) {
@@ -49,6 +59,14 @@ const authContext = createContext({} as AuthState);
 
 export const AuthProvider: FC = ({ children }) => {
   const authState: AuthState = useProvideAuth();
+
+  useEffect(() => {
+    const getAndSetCsrfToken = async () => {
+      authState.getCsrfToken();
+      console.log(authState.csrfToken);
+    };
+    getAndSetCsrfToken();
+  }, []);
   return (
     <authContext.Provider value={authState}>{children}</authContext.Provider>
   );
@@ -59,54 +77,125 @@ export const useAuth = () => {
 };
 
 const useProvideAuth = () => {
-  const [user, setUser] = useState<User | null>(null);
+  const [user, setUser] = useState<UserInfo | null>(null);
+  const [csrfToken, setCsrfToken] = useState<string>('');
   const auth = getAuth();
+  auth.setPersistence(inMemoryPersistence);
 
+  // retrieve csrf token on the first visit
+  const getCsrfToken = () => {
+    return new Promise<void>(async () => {
+      try {
+        const res = await fetch('http://localhost:8000/auth', {
+          method: 'GET',
+          credentials: 'include',
+        });
+        const data: CSRFResponse = await res.json();
+        await setCsrfToken(data.csrfToken);
+      } catch (error) {
+        console.error(error);
+      }
+    });
+  };
+
+  // signs in to firebase auth, then requests backend to create session cookie
   const signIn = (email: string, password: string) => {
     return signInWithEmailAndPassword(auth, email, password)
-      .then((userCredentials: UserCredential) => {
-        setUser(userCredentials.user);
-        Cookies.set('uid', userCredentials.user.uid);
-        return userCredentials.user;
+      .then(async (userCredentials: UserCredential) => {
+        const idToken = await userCredentials.user.getIdToken();
+        const res = await fetch('http://localhost:8000/auth/login', {
+          method: 'POST',
+          body: JSON.stringify({ idToken: idToken }),
+          credentials: 'include',
+          headers: {
+            'X-CSRF-Token': csrfToken,
+          },
+        });
+        if (res.ok) {
+          const data: VerificationResponse = await res.json();
+          await setUser(data.user as UserInfo);
+          return true;
+        } else {
+          return false;
+        }
       })
       .catch((error) => {
         console.error(error);
+        return false;
       });
   };
 
   const signUp = (email: string, password: string, username: string) => {
     return createUserWithEmailAndPassword(auth, email, password)
-      .then((userCredentials: UserCredential) => {
+      .then(async (userCredentials: UserCredential) => {
         updateProfile(userCredentials.user, {
           displayName: username,
         });
-        setUser(userCredentials.user);
-        Cookies.set('uid', userCredentials.user.uid);
-        return userCredentials.user;
+        try {
+          const res = await signIn(email, password);
+          return res;
+        } catch (error) {
+          console.error(error);
+          return false;
+        }
       })
       .catch((error) => {
         console.error(error);
+        return false;
       });
   };
 
   const logOut = () => {
     return signOut(auth)
-      .then(() => {
-        Cookies.remove('uid');
+      .then(async () => {
+        const res = await fetch('http://localhost:8000/auth/logout', {
+          method: 'POST',
+          credentials: 'include',
+          headers: {
+            'X-CSRF-Token': csrfToken,
+          },
+        });
+        if (res.ok) {
+          setUser(null);
+          return res.ok;
+        }
+        return false;
       })
       .catch((error) => {
         console.error(error);
+        return false;
       });
+  };
+
+  // verifies user session token from the cookie and sets user for auth context
+  // should be used in the middleware before redirect to private pages
+  const verifyUser = () => {
+    return new Promise<boolean>(async () => {
+      try {
+        const res = await fetch('http://localhost:8000/auth/verify', {
+          method: 'POST',
+          credentials: 'include',
+          headers: {
+            'X-CSRF-Token': csrfToken,
+          },
+        });
+        if (res.ok) {
+          const data: VerificationResponse = await res.json();
+          await setUser(data.user as UserInfo);
+          return true;
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    });
   };
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
       if (currentUser) {
-        setUser(currentUser);
-        Cookies.set('uid', currentUser.uid);
+        setUser(currentUser as UserInfo);
       } else {
         setUser(null);
-        Cookies.remove('uid');
       }
     });
 
@@ -115,9 +204,12 @@ const useProvideAuth = () => {
 
   const authState: AuthState = {
     user: user,
+    csrfToken: csrfToken,
+    getCsrfToken: getCsrfToken,
     logIn: signIn,
     createUser: signUp,
     logOut: logOut,
+    verifyUser: verifyUser,
   };
 
   return authState;

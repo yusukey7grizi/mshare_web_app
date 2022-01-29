@@ -41,7 +41,6 @@ const RegisterForm = () => {
         createUserInput.username
       )
       .then(() => {
-        console.log('created user successfully', auth.user);
         router.push('/');
       })
       .catch((err) => {
