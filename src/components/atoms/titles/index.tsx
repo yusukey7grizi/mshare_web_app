@@ -1,5 +1,6 @@
 import { Link, Typography, Button } from '@mui/material';
-import { Color, FontSize } from 'components/constants';
+import { FontSize } from 'components/constants';
+import { useRouter } from 'next/router';
 import React, { FC } from 'react';
 
 type SubtitleProps = {
@@ -11,9 +12,12 @@ const Subtitle: FC<SubtitleProps> = ({ text }) => {
 };
 
 const BarTitle: FC = () => {
+  const router = useRouter();
   return (
     <Link
-      href='/'
+      onClick={() => {
+        router.push('/');
+      }}
       underline='none'
       component={Button}
       sx={{ fontWeight: 'bold' }}

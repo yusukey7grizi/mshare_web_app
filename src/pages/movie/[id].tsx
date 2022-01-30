@@ -7,11 +7,15 @@ const MovieDetail: FC = () => {
   const router = useRouter();
   const { id } = router.query;
   const { data: movie } = useMovie(`http://localhost:8000/movies/${id}`);
-  const { data: movieList } = useRelatedMovieList(
+  const { data: relatedMovieList } = useRelatedMovieList(
     () => `http://localhost:8000/movies?userId=${movie.userId}`
   );
 
-  return <MovieDetailTemplate />;
+  return movie && relatedMovieList ? (
+    <MovieDetailTemplate movie={movie} relatedMovieList={relatedMovieList} />
+  ) : (
+    <></>
+  );
 };
 
 export default MovieDetail;

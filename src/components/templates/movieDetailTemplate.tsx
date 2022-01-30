@@ -6,10 +6,16 @@ import { MovieList } from 'components/organisms/movieList';
 import { FaceRecognition, YouTubePlayer } from 'components/molecules';
 import { MoviePlayerState } from 'types';
 import { Box } from '@mui/material';
+import { Movie } from 'types/dataTypes';
 
-const MovieDetailTemplate: FC = () => {
+type Props = {
+  movie: Movie;
+  relatedMovieList: Movie[];
+};
+
+const MovieDetailTemplate: FC<Props> = ({ movie, relatedMovieList }) => {
   const movieDetailRef = useRef<HTMLDivElement>(null);
-  const { movie, relatedMovieList } = useContext(AppContext);
+
   const [moviePlayerState, setMoviePlayerState] = useState<MoviePlayerState>({
     playerState: -1,
     currentTime: 0,
