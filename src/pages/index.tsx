@@ -8,7 +8,7 @@ const Home: NextPage = () => {
   const { setMovieList, movieList } = useContext(AppContext);
 
   const { data } = useMovieList('http://localhost:8000/movies');
-  return <DashboardTemplate />;
+  return data ? <DashboardTemplate movieList={data} /> : <></>;
 };
 
 export default Home;

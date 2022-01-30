@@ -14,6 +14,10 @@ type UseMovieList = {
   isError: boolean;
 };
 
+interface CallBackType {
+  (url: string): void;
+}
+
 const useMovie = (url: string): UseMovie => {
   const fetcher = (url: string) => axios.get(url).then((res) => res.data);
   const { data, error } = useSWR(url, fetcher);
@@ -34,4 +38,14 @@ const useMovieList = (url: string): UseMovieList => {
   };
 };
 
-export { useMovie, useMovieList };
+const useRelatedMovieList = (callback: CallBackType): UseMovieList => {
+  const fetcher = (url: string) => axios.get(url).then((res) => res.data);
+  const { data, error } = useSWR(callback, fetcher);
+  return {
+    data: data,
+    isLoading: !error && !data,
+    isError: error,
+  };
+};
+
+export { useMovie, useMovieList, useRelatedMovieList };

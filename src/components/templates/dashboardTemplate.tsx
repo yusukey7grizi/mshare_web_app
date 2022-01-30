@@ -4,11 +4,13 @@ import { FontSize } from 'components/constants';
 import { MovieList } from 'components/organisms/movieList';
 import { AppContext } from 'contexts/appContext';
 import React, { FC, useContext } from 'react';
-import { Genre } from 'types/dataTypes';
+import { Genre, Movie } from 'types/dataTypes';
 
-const DashboardTemplate: FC = () => {
-  const { movieList } = useContext(AppContext);
+type Props = {
+  movieList: Movie[];
+};
 
+const DashboardTemplate: FC<Props> = ({ movieList }) => {
   const genre = {
     1: 'アクション映画',
     2: 'ホラー映画',
