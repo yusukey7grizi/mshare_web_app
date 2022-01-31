@@ -89,6 +89,7 @@ const RandomTemplate: FC<Props> = ({ onSubmit, onChange }) => {
               setGrinningScore={setGrinningScore}
             />
           </Box>
+          <MuiDivider />
           <MovieListTitle userName={randomMovie.userName} />
           <MovieList movieList={relatedMovieList} />
         </motion.div>

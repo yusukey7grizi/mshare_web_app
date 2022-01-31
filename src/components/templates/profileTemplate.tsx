@@ -1,8 +1,7 @@
-import React, { FC, useContext } from 'react';
+import React, { FC } from 'react';
 import { Box, Typography, useMediaQuery } from '@mui/material';
 import { MuiDivider } from 'components/atoms/divider';
 import { MovieListTitle } from 'components/atoms/texts';
-import { AppContext } from 'contexts/appContext';
 import { FontSize, MinScreenSize } from 'components/constants';
 import { MovieList } from 'components/organisms/movieList';
 import { Movie } from 'types/dataTypes';

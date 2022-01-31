@@ -3,8 +3,9 @@ import type { NextPage } from 'next';
 import { useMovieList } from 'utils';
 
 const Home: NextPage = () => {
-  const { data } = useMovieList('http://localhost:8000/movies');
-  return data ? <DashboardTemplate movieList={data} /> : <></>;
+  const { data: movieList } = useMovieList('http://localhost:8000/movies');
+
+  return movieList ? <DashboardTemplate movieList={movieList} /> : <></>;
 };
 
 export default Home;
