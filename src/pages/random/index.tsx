@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { ErrorPage } from 'components/templates/404Template';
 import { RandomTemplate } from 'components/templates/randomTemplate';
 import { AppContext } from 'contexts/appContext';
 import React, { useContext, useState } from 'react';
@@ -40,7 +41,7 @@ const Random = () => {
   };
 
   return isError ? (
-    <></>
+    <ErrorPage />
   ) : (
     <RandomTemplate
       onChange={handleOnChangeGenre}
