@@ -1,4 +1,4 @@
-import { ErrorPage } from 'components/templates/404Template';
+import { ErrorPage } from 'components/templates/errorTemplate';
 import { SearchTemplate } from 'components/templates/searchTemplate';
 import { useRouter } from 'next/router';
 import React, { FC } from 'react';
