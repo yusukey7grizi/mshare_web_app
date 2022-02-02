@@ -3,6 +3,7 @@ import { MovieDetailTemplate } from 'components/templates/movieDetailTemplate';
 import { useRouter } from 'next/router';
 import { useMovie, useRelatedMovieList } from 'utils';
 import { ErrorPage } from 'components/templates/404Template';
+import { LoadingPage } from 'components/templates/loadingTemplate';
 
 const MovieDetail: FC = () => {
   const router = useRouter();
@@ -24,7 +25,7 @@ const MovieDetail: FC = () => {
     return <ErrorPage />;
   }
   if (isMovieLoading || isRelatedMovieListLoading) {
-    return <></>;
+    return <LoadingPage />;
   }
   return (
     <MovieDetailTemplate movie={movie} relatedMovieList={relatedMovieList} />
