@@ -1,4 +1,4 @@
-import { ErrorPage } from 'components/templates/404Template';
+import { ErrorPage } from 'components/templates/errorTemplate';
 import { DashboardTemplate } from 'components/templates/dashboardTemplate';
 import { LoadingPage } from 'components/templates/loadingTemplate';
 import type { NextPage } from 'next';

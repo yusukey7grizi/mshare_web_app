@@ -2,7 +2,7 @@ import React, { FC } from 'react';
 import { MovieDetailTemplate } from 'components/templates/movieDetailTemplate';
 import { useRouter } from 'next/router';
 import { useMovie, useRelatedMovieList } from 'utils';
-import { ErrorPage } from 'components/templates/404Template';
+import { ErrorPage } from 'components/templates/errorTemplate';
 import { LoadingPage } from 'components/templates/loadingTemplate';
 
 const MovieDetail: FC = () => {
