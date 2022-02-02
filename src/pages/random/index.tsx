@@ -12,24 +12,22 @@ const Random = () => {
   const getRandomMovieHandler = async (e: MuiOnClickEvent) => {
     e.preventDefault();
     setRandomMovie(null);
-    try {
-      axios
-        .get(`http://localhost:8000/movies/random?genre=${genre}`)
-        .then((res) => {
-          setRandomMovie(res.data);
-          try {
-            axios
-              .get(`http://localhost:8000/movies?userId=${res.data.userId}`)
-              .then((res) => {
-                setRelatedMovieList(res.data);
-              });
-          } catch (error) {
+    axios
+      .get(`http://localhost:8000/movies/random?genre=${genre}`)
+      .then((res) => {
+        setRandomMovie(res.data);
+        axios
+          .get(`http://localhost:8000/movies?userId=${res.data.userId}`)
+          .then((res) => {
+            setRelatedMovieList(res.data);
+          })
+          .catch(() => {
             setIsError(true);
-          }
-        });
-    } catch (error) {
-      setIsError(true);
-    }
+          });
+      })
+      .catch(() => {
+        setIsError(true);
+      });
   };
 
   const handleOnChangeGenre = (
