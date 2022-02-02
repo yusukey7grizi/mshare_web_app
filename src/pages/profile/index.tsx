@@ -1,5 +1,5 @@
-import { ErrorPage } from 'components/templates/404Template';
 import { LoadingPage } from 'components/templates/loadingTemplate';
+import { ErrorPage } from 'components/templates/errorTemplate';
 import { ProfileTemplate } from 'components/templates/profileTemplate';
 import { useAuth } from 'contexts/authContext';
 import React from 'react';

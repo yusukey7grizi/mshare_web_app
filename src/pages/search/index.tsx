@@ -1,5 +1,5 @@
-import { ErrorPage } from 'components/templates/404Template';
 import { LoadingPage } from 'components/templates/loadingTemplate';
+import { ErrorPage } from 'components/templates/errorTemplate';
 import { SearchTemplate } from 'components/templates/searchTemplate';
 import { useRouter } from 'next/router';
 import React, { FC } from 'react';
