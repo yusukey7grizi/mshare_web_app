@@ -80,23 +80,24 @@ const FaceRecognition: FC<FaceRecognitionProps> = ({
         // when the video ends
         case YT.PlayerState.ENDED:
           if (isScoreUpdated) break;
-          try {
-            const putBody: PutMovieBody = {
-              grinningScore: grinningScore,
-            };
-            axios
-              .post(`http://localhost:8000/movies/${movie.id}`, putBody, {
-                headers: {
-                  'Content-Type': 'application/json',
-                  'X-CSRF-Token': auth.csrfToken,
-                },
-              })
-              .then(() => {
-                setIsScoreUpdated(true);
-              });
-          } catch (error) {
-            console.error(error);
-          }
+
+          const putBody: PutMovieBody = {
+            grinningScore: grinningScore,
+          };
+          axios
+            .post(`http://localhost:8000/movies/${movie.id}`, putBody, {
+              headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-Token': auth.csrfToken,
+              },
+            })
+            .then(() => {
+              setIsScoreUpdated(true);
+            })
+            .catch(() => {
+              console.error;
+            });
+
           break;
         // default case CUE, PAUSED, BUFFERING
         default:
@@ -146,15 +147,14 @@ const FaceRecognition: FC<FaceRecognitionProps> = ({
     const sendScore = async () => {
       if (isScoreUpdated) return;
       const putBody: PutMovieBody = { grinningScore: individualGrinningScore };
-      try {
-        axios.post(`http://localhost:8000/movies/${movie.id}`, putBody, {
+
+      axios
+        .post(`http://localhost:8000/movies/${movie.id}`, putBody, {
           headers: {
             'Content-Type': 'application/json',
           },
-        });
-      } catch (error) {
-        console.error;
-      }
+        })
+        .catch(() => console.error);
     };
 
     // if recognition is allowed, start setting up face detection
