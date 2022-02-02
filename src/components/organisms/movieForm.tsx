@@ -60,7 +60,6 @@ const MovieForm: FC = () => {
     ).get('v');
 
     if (!(auth.user?.uid && auth.user?.displayName && youtubeTitleId)) {
-      console.log(auth.user?.uid, auth.user?.displayName, youtubeTitleId);
       return;
     }
 
