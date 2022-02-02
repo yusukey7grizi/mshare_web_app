@@ -73,18 +73,20 @@ const MovieForm: FC = () => {
       youtubeTitleId: youtubeTitleId,
     };
 
-    try {
-      axios.post('http://localhost:8000/movies', data, {
+    axios
+      .post('http://localhost:8000/movies', data, {
         headers: {
           'Content-Type': 'application/json',
           'X-CSRF-Token': auth.csrfToken,
         },
         withCredentials: true,
+      })
+      .then(() => {
+        router.push('/');
+      })
+      .catch(() => {
+        console.error;
       });
-      router.push('/');
-    } catch (error) {
-      console.error(error);
-    }
   };
 
   return (
