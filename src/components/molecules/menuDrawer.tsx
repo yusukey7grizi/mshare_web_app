@@ -27,6 +27,10 @@ const MenuDrawer: FC<Props> = ({ isLoggedIn, authHandler, anchor }) => {
   const [isOpen, setIsOpen] = useState(false);
   const router = useRouter();
 
+  const getColor = (path: string) => {
+    return path === router.asPath ? 'primary' : 'inherit';
+  };
+
   useEffect(() => {
     setIsOpen(false);
   }, [router]);
@@ -63,9 +67,14 @@ const MenuDrawer: FC<Props> = ({ isLoggedIn, authHandler, anchor }) => {
             component={Link}
           >
             <ListItemIcon>
-              <HomeIcon />
+              <HomeIcon color={getColor('/')} />
             </ListItemIcon>
-            <ListItemText primary='Home' />
+            <ListItemText
+              primaryTypographyProps={{
+                color: getColor('/'),
+              }}
+              primary='Home'
+            />
           </ListItem>
           <ListItem
             onClick={() => {
@@ -75,9 +84,14 @@ const MenuDrawer: FC<Props> = ({ isLoggedIn, authHandler, anchor }) => {
             component={Link}
           >
             <ListItemIcon>
-              <ShuffleIcon />
+              <ShuffleIcon color={getColor('/random')} />
             </ListItemIcon>
-            <ListItemText primary='ガチャ検索' />
+            <ListItemText
+              primaryTypographyProps={{
+                color: getColor('/random'),
+              }}
+              primary='ガチャ検索'
+            />
           </ListItem>
           <ListItem
             onClick={() => {
@@ -87,9 +101,14 @@ const MenuDrawer: FC<Props> = ({ isLoggedIn, authHandler, anchor }) => {
             component={Link}
           >
             <ListItemIcon>
-              <AddIcon />
+              <AddIcon color={getColor('/movie/post')} />
             </ListItemIcon>
-            <ListItemText primary='映画を作成' />
+            <ListItemText
+              primaryTypographyProps={{
+                color: getColor('/movie/post'),
+              }}
+              primary='映画を作成'
+            />
           </ListItem>
           <ListItem
             onClick={() => {
@@ -99,9 +118,14 @@ const MenuDrawer: FC<Props> = ({ isLoggedIn, authHandler, anchor }) => {
             component={Link}
           >
             <ListItemIcon>
-              <PersonIcon />
+              <PersonIcon color={getColor('/profile')} />
             </ListItemIcon>
-            <ListItemText primary='マイページ' />
+            <ListItemText
+              primaryTypographyProps={{
+                color: getColor('/profile'),
+              }}
+              primary='マイページ'
+            />
           </ListItem>
           <ListItem onClick={authHandler} button component={Link}>
             <ListItemIcon>
