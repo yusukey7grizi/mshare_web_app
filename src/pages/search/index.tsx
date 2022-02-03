@@ -1,3 +1,4 @@
+import { ErrorPage } from 'components/templates/errorTemplate';
 import { SearchTemplate } from 'components/templates/searchTemplate';
 import { useRouter } from 'next/router';
 import React, { FC } from 'react';
@@ -11,13 +12,15 @@ const Search: FC = () => {
   const url = isTitle
     ? `http://localhost:8000/movies?title=${input}`
     : `http://localhost:8000/movies?genre=${input}`;
-  const { data: searchedMovieList } = useMovieList(url);
+  const { data: searchedMovieList, isError, isLoading } = useMovieList(url);
 
-  return searchedMovieList ? (
-    <SearchTemplate searchedMovieList={searchedMovieList} />
-  ) : (
-    <></>
-  );
+  if (isLoading) {
+    return <></>;
+  }
+  if (isError) {
+    return <ErrorPage />;
+  }
+  return <SearchTemplate searchedMovieList={searchedMovieList} />;
 };
 
 export default Search;
