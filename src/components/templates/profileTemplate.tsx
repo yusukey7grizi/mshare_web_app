@@ -1,18 +1,18 @@
-import React, { FC, useContext } from 'react';
+import React, { FC } from 'react';
 import { Box, Typography, useMediaQuery } from '@mui/material';
 import { MuiDivider } from 'components/atoms/divider';
 import { MovieListTitle } from 'components/atoms/texts';
-import { AppContext } from 'contexts/appContext';
 import { FontSize, MinScreenSize } from 'components/constants';
 import { MovieList } from 'components/organisms/movieList';
+import { Movie } from 'types/dataTypes';
 
 type Props = {
   userName: string;
   email: string;
+  movieList: Movie[];
 };
 
-const ProfileTemplate: FC<Props> = ({ userName, email }) => {
-  const { relatedMovieList } = useContext(AppContext);
+const ProfileTemplate: FC<Props> = ({ userName, email, movieList }) => {
   const isLargeScreenSize = useMediaQuery(MinScreenSize['s']);
   const fontSize = isLargeScreenSize ? FontSize['m'] : FontSize['xs'];
 
@@ -41,7 +41,7 @@ const ProfileTemplate: FC<Props> = ({ userName, email }) => {
       </Box>
       <MovieListTitle />
       <MuiDivider />
-      <MovieList movieList={relatedMovieList} />
+      <MovieList movieList={movieList} />
     </Box>
   );
 };

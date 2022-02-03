@@ -1,10 +1,11 @@
 import { SearchedMovieList } from 'components/organisms/searchedMovieList';
-import { AppContext } from 'contexts/appContext';
-import React, { FC, useContext } from 'react';
+import React, { FC } from 'react';
+import { Movie } from 'types/dataTypes';
 
-const SearchTemplate: FC = () => {
-  const { searchedMovieList } = useContext(AppContext);
-
+type Props = {
+  searchedMovieList: Movie[];
+};
+const SearchTemplate: FC<Props> = ({ searchedMovieList }) => {
   return (
     <>
       <SearchedMovieList movieList={searchedMovieList} />

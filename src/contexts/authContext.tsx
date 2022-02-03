@@ -61,11 +61,7 @@ export const AuthProvider: FC = ({ children }) => {
   const authState: AuthState = useProvideAuth();
 
   useEffect(() => {
-    const getAndSetCsrfToken = async () => {
-      authState.getCsrfToken();
-      console.log(authState.csrfToken);
-    };
-    getAndSetCsrfToken();
+    authState.getCsrfToken();
   }, []);
   return (
     <authContext.Provider value={authState}>{children}</authContext.Provider>

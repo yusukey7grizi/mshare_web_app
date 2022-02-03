@@ -12,6 +12,7 @@ import { useMediaQuery } from '@mui/material';
 import { motion } from 'framer-motion';
 import { MinScreenSize } from 'components/constants';
 import { useAuth } from 'contexts/authContext';
+import axios from 'axios';
 
 type FaceRecognitionProps = {
   moviePlayerState: MoviePlayerState;
@@ -79,28 +80,24 @@ const FaceRecognition: FC<FaceRecognitionProps> = ({
         // when the video ends
         case YT.PlayerState.ENDED:
           if (isScoreUpdated) break;
-          try {
-            const putBody: PutMovieBody = {
-              grinningScore: grinningScore,
-            };
-            const res = await fetch(
-              `http://localhost:8000/movies/${movie.id}`,
-              {
-                method: 'PUT',
-                headers: {
-                  'Content-Type': 'application/json',
-                  'X-CSRF-Token': auth.csrfToken,
-                },
-                body: JSON.stringify(putBody),
-              }
-            );
-            if (res.ok) {
-              console.log('score updated successfully');
+
+          const putBody: PutMovieBody = {
+            grinningScore: grinningScore,
+          };
+          axios
+            .post(`http://localhost:8000/movies/${movie.id}`, putBody, {
+              headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-Token': auth.csrfToken,
+              },
+            })
+            .then(() => {
               setIsScoreUpdated(true);
-            }
-          } catch (error) {
-            console.error(error);
-          }
+            })
+            .catch(() => {
+              console.error;
+            });
+
           break;
         // default case CUE, PAUSED, BUFFERING
         default:
@@ -150,20 +147,14 @@ const FaceRecognition: FC<FaceRecognitionProps> = ({
     const sendScore = async () => {
       if (isScoreUpdated) return;
       const putBody: PutMovieBody = { grinningScore: individualGrinningScore };
-      try {
-        const res = await fetch(`http://localhost:8000/movies/${movie.id}`, {
-          method: 'PUT',
+
+      axios
+        .post(`http://localhost:8000/movies/${movie.id}`, putBody, {
           headers: {
             'Content-Type': 'application/json',
           },
-          body: JSON.stringify(putBody),
-        });
-        if (res.ok) {
-          console.log('put success', res);
-        }
-      } catch (error) {
-        console.error;
-      }
+        })
+        .catch(() => console.error);
     };
 
     // if recognition is allowed, start setting up face detection

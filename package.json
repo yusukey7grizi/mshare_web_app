@@ -24,6 +24,7 @@
     "react-webcam": "^6.0.0",
     "react-youtube": "^7.13.1",
     "styled-components": "^5.3.3",
+    "swr": "^1.2.0",
     "use-interval": "^1.4.0"
   },
   "devDependencies": {

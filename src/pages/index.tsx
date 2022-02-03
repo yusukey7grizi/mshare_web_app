@@ -1,26 +1,11 @@
-// if logged in, show log in or register
-// else dashboard
 import { DashboardTemplate } from 'components/templates/dashboardTemplate';
-import { AppContext } from 'contexts/appContext';
 import type { NextPage } from 'next';
-import { useContext, useEffect } from 'react';
+import { useMovieList } from 'utils';
 
 const Home: NextPage = () => {
-  const { setMovieList, movieList } = useContext(AppContext);
+  const { data: movieList } = useMovieList('http://localhost:8000/movies');
 
-  useEffect(() => {
-    const fetchAllMovies = async () => {
-      const res = await fetch('http://localhost:8000/movies');
-      const data = await res.json();
-      setMovieList(data);
-    };
-    if (movieList.length === 0) {
-      fetchAllMovies();
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  return <DashboardTemplate />;
+  return movieList ? <DashboardTemplate movieList={movieList} /> : <></>;
 };
 
 export default Home;

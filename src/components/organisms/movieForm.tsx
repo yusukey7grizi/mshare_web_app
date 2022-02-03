@@ -11,6 +11,7 @@ import { MuiAutoCompleteOnChangeEvent, MuiOnChangeEvent } from 'types';
 import { useAuth } from 'contexts/authContext';
 import { useRouter } from 'next/router';
 import { CustomSubmitButton } from 'components/atoms/buttons';
+import axios from 'axios';
 
 type CreateMovieFormInputTypes =
   | 'title'
@@ -53,15 +54,12 @@ const MovieForm: FC = () => {
 
   const moviePostHandler = async (event: FormEvent) => {
     event.preventDefault();
-    console.log('Posting new movie');
 
-    const youtubeUrlParams = new URLSearchParams(
+    const youtubeTitleId = new URLSearchParams(
       createMovieInput.youtubeLinkUrl.split('?')[1]
-    );
-    const youtubeTitleId = youtubeUrlParams.get('v');
+    ).get('v');
 
     if (!(auth.user?.uid && auth.user?.displayName && youtubeTitleId)) {
-      console.log(auth.user?.uid, auth.user?.displayName, youtubeTitleId);
       return;
     }
 
@@ -74,21 +72,20 @@ const MovieForm: FC = () => {
       youtubeTitleId: youtubeTitleId,
     };
 
-    try {
-      const res = await fetch('http://localhost:8000/movies', {
-        method: 'POST',
+    axios
+      .post('http://localhost:8000/movies', data, {
         headers: {
           'Content-Type': 'application/json',
+          'X-CSRF-Token': auth.csrfToken,
         },
-        body: JSON.stringify(data),
-      });
-      if (res.ok) {
-        console.log('request ok');
+        withCredentials: true,
+      })
+      .then(() => {
         router.push('/');
-      }
-    } catch (error) {
-      console.error(error);
-    }
+      })
+      .catch(() => {
+        console.error;
+      });
   };
 
   return (
