@@ -19,7 +19,6 @@ const ProfileTemplate: FC<Props> = ({ userName, email, movieList }) => {
 
   return (
     <Bar>
-      {' '}
       <Box
         sx={{
           display: 'flex',
