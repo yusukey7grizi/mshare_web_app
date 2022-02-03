@@ -1,3 +1,4 @@
+import { LoadingPage } from 'components/templates/loadingTemplate';
 import { ErrorPage } from 'components/templates/errorTemplate';
 import { ProfileTemplate } from 'components/templates/profileTemplate';
 import { useAuth } from 'contexts/authContext';
@@ -13,7 +14,7 @@ const Profile = () => {
   } = useMovieList(`http://localhost:8000/movies?userId=${auth.user?.uid}`);
 
   if (isLoading) {
-    return <></>;
+    return <LoadingPage />;
   }
   if (isError) {
     return <ErrorPage />;

@@ -1,5 +1,6 @@
 import { ErrorPage } from 'components/templates/errorTemplate';
 import { DashboardTemplate } from 'components/templates/dashboardTemplate';
+import { LoadingPage } from 'components/templates/loadingTemplate';
 import type { NextPage } from 'next';
 import { useMovieList } from 'utils';
 
@@ -11,7 +12,7 @@ const Home: NextPage = () => {
   } = useMovieList('http://localhost:8000/movies');
 
   if (isLoading) {
-    return <></>;
+    return <LoadingPage />;
   }
   if (isError) {
     return <ErrorPage />;

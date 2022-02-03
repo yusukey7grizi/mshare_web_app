@@ -1,3 +1,4 @@
+import { LoadingPage } from 'components/templates/loadingTemplate';
 import { ErrorPage } from 'components/templates/errorTemplate';
 import { SearchTemplate } from 'components/templates/searchTemplate';
 import { useRouter } from 'next/router';
@@ -15,7 +16,7 @@ const Search: FC = () => {
   const { data: searchedMovieList, isError, isLoading } = useMovieList(url);
 
   if (isLoading) {
-    return <></>;
+    return <LoadingPage />;
   }
   if (isError) {
     return <ErrorPage />;
