@@ -17,6 +17,7 @@ import { RandomTitle } from 'components/atoms/titles';
 import { AppContext } from 'contexts/appContext';
 import { MovieList } from 'components/organisms/movieList';
 import { FontSize } from 'components/constants';
+import { Bar } from 'components/organisms';
 
 type Props = {
   onSubmit: (e: MuiOnClickEvent) => void;
@@ -43,7 +44,7 @@ const RandomTemplate: FC<Props> = ({ onSubmit, onChange }) => {
   }, [randomMovie]);
 
   return (
-    <>
+    <Bar>
       <Box
         component='form'
         sx={{
@@ -94,7 +95,7 @@ const RandomTemplate: FC<Props> = ({ onSubmit, onChange }) => {
           <MovieList movieList={relatedMovieList} />
         </motion.div>
       )}
-    </>
+    </Bar>
   );
 };
 

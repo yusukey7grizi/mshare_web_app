@@ -2,12 +2,13 @@ import React, { FC } from 'react';
 import { Typography, useMediaQuery } from '@mui/material';
 import { MovieForm } from 'components/organisms/movieForm';
 import { FontSize, MinScreenSize } from 'components/constants';
+import { Bar } from 'components/organisms';
 
 const PostMovieTemplate: FC = () => {
   const isLargeScreenSize = useMediaQuery(MinScreenSize['m']);
 
   return (
-    <>
+    <Bar>
       <Typography
         fontFamily='monospace'
         sx={{
@@ -20,7 +21,7 @@ const PostMovieTemplate: FC = () => {
         自分だけのオリジナル映画を共有しよう　！
       </Typography>
       <MovieForm />
-    </>
+    </Bar>
   );
 };
 

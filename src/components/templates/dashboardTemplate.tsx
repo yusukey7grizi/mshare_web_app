@@ -1,9 +1,9 @@
 import { Box, Typography } from '@mui/material';
 import { MuiDivider } from 'components/atoms/divider';
 import { FontSize } from 'components/constants';
+import { Bar } from 'components/organisms';
 import { MovieList } from 'components/organisms/movieList';
-import { AppContext } from 'contexts/appContext';
-import React, { FC, useContext } from 'react';
+import React, { FC } from 'react';
 import { Genre, Movie } from 'types/dataTypes';
 
 type Props = {
@@ -30,7 +30,7 @@ const DashboardTemplate: FC<Props> = ({ movieList }) => {
   };
 
   return (
-    <>
+    <Bar>
       {genreList.map((genre) => {
         return (
           <Box component='div' key={genre[0]}>
@@ -48,7 +48,7 @@ const DashboardTemplate: FC<Props> = ({ movieList }) => {
           </Box>
         );
       })}
-    </>
+    </Bar>
   );
 };
 
