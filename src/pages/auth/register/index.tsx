@@ -1,8 +1,8 @@
-import React from 'react'
-import { RegisterTemplate } from 'components/templates/registerTemplate'
+import React from 'react';
+import { RegisterTemplate } from 'components/templates/registerTemplate';
 
 const Register = () => {
-  return <RegisterTemplate />
-}
+  return <RegisterTemplate />;
+};
 
-export default Register
+export default Register;

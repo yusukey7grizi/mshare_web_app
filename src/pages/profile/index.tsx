@@ -4,6 +4,7 @@ import { ProfileTemplate } from 'components/templates/profileTemplate';
 import { useAuth } from 'contexts/authContext';
 import React from 'react';
 import { useMovieList } from 'utils';
+import { AuthCheckWrapper } from 'components/organisms';
 
 const Profile = () => {
   const auth = useAuth();
@@ -20,11 +21,13 @@ const Profile = () => {
     return <ErrorPage />;
   }
   return (
-    <ProfileTemplate
-      email={auth.user?.email || ''}
-      userName={auth.user?.displayName || ''}
-      movieList={movieList}
-    />
+    <AuthCheckWrapper>
+      <ProfileTemplate
+        email={auth.user?.email || ''}
+        userName={auth.user?.displayName || ''}
+        movieList={movieList}
+      />
+    </AuthCheckWrapper>
   );
 };
 

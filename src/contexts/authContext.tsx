@@ -18,6 +18,8 @@ import {
   UserCredential,
 } from 'firebase/auth';
 
+import { VerificationResponse, CsrfResponse } from 'types';
+
 const firebaseConfig = {
   apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
   authDomain: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN,
@@ -42,14 +44,14 @@ type AuthState = {
   verifyUser: () => Promise<boolean>;
 };
 
-type VerificationResponse = {
-  status: string;
-  user: UserInfo | null;
-};
+// type VerificationResponse = {
+//   status: string;
+//   user: UserInfo | null;
+// };
 
-type CSRFResponse = {
-  csrfToken: string;
-};
+// type CSRFResponse = {
+//   csrfToken: string;
+// };
 
 if (!firebase.getApps.length) {
   firebase.initializeApp(firebaseConfig);
@@ -80,17 +82,17 @@ const useProvideAuth = () => {
 
   // retrieve csrf token on the first visit
   const getCsrfToken = () => {
-    return new Promise<void>(async () => {
-      try {
-        const res = await fetch('http://localhost:8000/auth', {
-          method: 'GET',
-          credentials: 'include',
-        });
-        const data: CSRFResponse = await res.json();
-        await setCsrfToken(data.csrfToken);
-      } catch (error) {
-        console.error(error);
-      }
+    return new Promise<void>((resolve, reject) => {
+      fetch('http://localhost:8000/auth', {
+        method: 'GET',
+        credentials: 'include',
+      })
+        .then((res) => res.json())
+        .then((data: CsrfResponse) => {
+          setCsrfToken(data.csrfToken);
+          resolve();
+        })
+        .catch((error) => reject(error));
     });
   };
 
@@ -166,23 +168,26 @@ const useProvideAuth = () => {
   // verifies user session token from the cookie and sets user for auth context
   // should be used in the middleware before redirect to private pages
   const verifyUser = () => {
-    return new Promise<boolean>(async () => {
-      try {
-        const res = await fetch('http://localhost:8000/auth/verify', {
-          method: 'POST',
-          credentials: 'include',
-          headers: {
-            'X-CSRF-Token': csrfToken,
-          },
+    return new Promise<boolean>((resolve, reject) => {
+      // try {
+      fetch('http://localhost:8000/auth/verify', {
+        method: 'POST',
+        credentials: 'include',
+        headers: {
+          'X-CSRF-Token': csrfToken,
+        },
+      })
+        .then((res) => res.json())
+        .then((data: VerificationResponse) => {
+          if (data.user) {
+            setUser(data.user);
+            resolve(true);
+          }
+          resolve(false);
+        })
+        .catch((error) => {
+          reject(error);
         });
-        if (res.ok) {
-          const data: VerificationResponse = await res.json();
-          await setUser(data.user as UserInfo);
-          return true;
-        }
-      } catch (error) {
-        console.error(error);
-      }
     });
   };
 
