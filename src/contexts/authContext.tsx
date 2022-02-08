@@ -18,7 +18,6 @@ import {
   UserCredential,
 } from 'firebase/auth';
 
-import { VerificationResponse, CsrfResponse } from 'types';
 import axios from 'axios';
 
 const firebaseConfig = {
@@ -45,14 +44,14 @@ type AuthState = {
   verifyUser: () => Promise<boolean>;
 };
 
-// type VerificationResponse = {
-//   status: string;
-//   user: UserInfo | null;
-// };
+type VerificationResponse = {
+  status: string;
+  user: UserInfo | null;
+};
 
-// type CSRFResponse = {
-//   csrfToken: string;
-// };
+type CsrfResponse = {
+  csrfToken: string;
+};
 
 if (!firebase.getApps.length) {
   firebase.initializeApp(firebaseConfig);
