@@ -18,6 +18,8 @@ import {
   UserCredential,
 } from 'firebase/auth';
 
+import axios from 'axios';
+
 const firebaseConfig = {
   apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
   authDomain: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN,
@@ -47,7 +49,7 @@ type VerificationResponse = {
   user: UserInfo | null;
 };
 
-type CSRFResponse = {
+type CsrfResponse = {
   csrfToken: string;
 };
 
@@ -79,111 +81,104 @@ const useProvideAuth = () => {
   auth.setPersistence(inMemoryPersistence);
 
   // retrieve csrf token on the first visit
-  const getCsrfToken = () => {
-    return new Promise<void>(async () => {
-      try {
-        const res = await fetch('http://localhost:8000/auth', {
-          method: 'GET',
-          credentials: 'include',
-        });
-        const data: CSRFResponse = await res.json();
+  const getCsrfToken = async () => {
+    try {
+      const res = await axios.get<CsrfResponse>('http://localhost:8000/auth', {
+        withCredentials: true,
+      });
+      if (res.status == 200) {
+        const { data } = await res;
         await setCsrfToken(data.csrfToken);
-      } catch (error) {
-        console.error(error);
       }
-    });
+      return;
+    } catch (error) {
+      console.error(error);
+      return;
+    }
   };
 
   // signs in to firebase auth, then requests backend to create session cookie
-  const signIn = (email: string, password: string) => {
-    return signInWithEmailAndPassword(auth, email, password)
-      .then(async (userCredentials: UserCredential) => {
-        const idToken = await userCredentials.user.getIdToken();
-        const res = await fetch('http://localhost:8000/auth/login', {
-          method: 'POST',
-          body: JSON.stringify({ idToken: idToken }),
-          credentials: 'include',
-          headers: {
-            'X-CSRF-Token': csrfToken,
-          },
-        });
-        if (res.ok) {
-          const data: VerificationResponse = await res.json();
-          await setUser(data.user as UserInfo);
-          return true;
-        } else {
-          return false;
-        }
-      })
-      .catch((error) => {
-        console.error(error);
-        return false;
-      });
+  const signIn = async (email: string, password: string) => {
+    try {
+      const userCredentials = await signInWithEmailAndPassword(
+        auth,
+        email,
+        password
+      );
+      const idToken = await userCredentials.user.getIdToken();
+      const res = await axios.post<VerificationResponse>(
+        'http://localhost:8000/auth/login',
+        { idToken: idToken },
+        { headers: { 'X-CSRF-Token': csrfToken }, withCredentials: true }
+      );
+      if (res.status == 200) {
+        const { data } = await res;
+        await setUser(data.user);
+        return true;
+      }
+      return false;
+    } catch (error) {
+      console.error(error);
+      return false;
+    }
   };
 
-  const signUp = (email: string, password: string, username: string) => {
-    return createUserWithEmailAndPassword(auth, email, password)
-      .then(async (userCredentials: UserCredential) => {
-        updateProfile(userCredentials.user, {
-          displayName: username,
-        });
-        try {
-          const res = await signIn(email, password);
-          return res;
-        } catch (error) {
-          console.error(error);
-          return false;
-        }
-      })
-      .catch((error) => {
-        console.error(error);
-        return false;
+  const signUp = async (email: string, password: string, username: string) => {
+    try {
+      const userCredentials = await createUserWithEmailAndPassword(
+        auth,
+        email,
+        password
+      );
+      await updateProfile(userCredentials.user, {
+        displayName: username,
       });
+      const res = await signIn(email, password);
+      return res;
+    } catch (error) {
+      console.error(error);
+      return false;
+    }
   };
 
-  const logOut = () => {
-    return signOut(auth)
-      .then(async () => {
-        const res = await fetch('http://localhost:8000/auth/logout', {
-          method: 'POST',
-          credentials: 'include',
-          headers: {
-            'X-CSRF-Token': csrfToken,
-          },
-        });
-        if (res.ok) {
-          setUser(null);
-          return res.ok;
-        }
-        return false;
-      })
-      .catch((error) => {
-        console.error(error);
-        return false;
-      });
+  const logOut = async () => {
+    try {
+      await signOut(auth);
+      const res = await axios.post(
+        'http://localhost:8000/auth/logout',
+        {},
+        { headers: { 'X-CSRF-Token': csrfToken }, withCredentials: true }
+      );
+      if (res.status == 200) {
+        await setUser(null);
+        return true;
+      }
+      return false;
+    } catch (error) {
+      console.error(error);
+      return false;
+    }
   };
 
   // verifies user session token from the cookie and sets user for auth context
   // should be used in the middleware before redirect to private pages
-  const verifyUser = () => {
-    return new Promise<boolean>(async () => {
-      try {
-        const res = await fetch('http://localhost:8000/auth/verify', {
-          method: 'POST',
-          credentials: 'include',
-          headers: {
-            'X-CSRF-Token': csrfToken,
-          },
-        });
-        if (res.ok) {
-          const data: VerificationResponse = await res.json();
-          await setUser(data.user as UserInfo);
-          return true;
-        }
-      } catch (error) {
-        console.error(error);
+  const verifyUser = async () => {
+    try {
+      const res = await axios.post<VerificationResponse>(
+        'http://localhost:8000/auth/verify',
+        {},
+        { headers: { 'X-CSRF-Token': csrfToken }, withCredentials: true }
+      );
+      if (res.status == 200) {
+        const { data } = await res;
+        await setUser(data.user);
+        return true;
       }
-    });
+      return false;
+    } catch (error) {
+      console.error(error);
+      return false;
+    }
   };
 
   useEffect(() => {
