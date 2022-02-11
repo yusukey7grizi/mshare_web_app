@@ -1,72 +1,66 @@
-import React, { FC, FormEvent, useContext } from 'react'
-import { Box } from '@mui/material'
-import { FormSubmitButton } from 'components/atoms/buttons'
+import React, { FC, FormEvent, useContext } from 'react';
+import { Box } from '@mui/material';
 import {
   DescriptionField,
   GenreField,
   YoutubeUrlField,
-} from 'components/molecules'
-import { TitleField } from 'components/molecules/titleField'
-import { AppContext } from 'contexts/appContext'
-import {
-  CreateMovieInput,
-  MuiAutoCompleteOnChangeEvent,
-  MuiOnChangeEvent,
-} from 'types'
-import { useAuth } from 'contexts/authContext'
-import { useRouter } from 'next/router'
+} from 'components/molecules';
+import { TitleField } from 'components/molecules/titleField';
+import { AppContext } from 'contexts/appContext';
+import { MuiAutoCompleteOnChangeEvent, MuiOnChangeEvent } from 'types';
+import { useAuth } from 'contexts/authContext';
+import { useRouter } from 'next/router';
+import { CustomSubmitButton } from 'components/atoms/buttons';
+import axios from 'axios';
 
 type CreateMovieFormInputTypes =
   | 'title'
   | 'overview'
   | 'youtubeLinkUrl'
-  | 'genre'
+  | 'genre';
 
 interface PostMovieBody {
-  title: string
-  overview: string
-  userId: string
-  userName: string
-  genre: string
-  youtubeTitleId: string
+  title: string;
+  overview: string;
+  userId: string;
+  userName: string;
+  genre: string;
+  youtubeTitleId: string;
 }
 
 const MovieForm: FC = () => {
-  const { createMovieInput, setCreateMovieInput } = useContext(AppContext)
-  const auth = useAuth()
-  const router = useRouter()
+  const { createMovieInput, setCreateMovieInput } = useContext(AppContext);
+  const auth = useAuth();
+  const router = useRouter();
 
   const createOnChangeHandler = (formType: CreateMovieFormInputTypes) => {
     return ({ target: { value } }: MuiOnChangeEvent) => {
-      createMovieInput[formType] = value
-      setCreateMovieInput(createMovieInput)
-    }
-  }
+      createMovieInput[formType] = value;
+      setCreateMovieInput(createMovieInput);
+    };
+  };
 
   const autoCompleteOnChangeHandler = (
-    event: MuiAutoCompleteOnChangeEvent,
+    _: MuiAutoCompleteOnChangeEvent,
     value: string | null
   ) => {
     if (!value) {
-      return
+      return;
     }
-    const updatedInput = createMovieInput
-    updatedInput['genre'] = value
-    setCreateMovieInput({ ...createMovieInput, ...updatedInput })
-  }
+    const updatedInput = createMovieInput;
+    updatedInput['genre'] = value;
+    setCreateMovieInput({ ...createMovieInput, ...updatedInput });
+  };
 
   const moviePostHandler = async (event: FormEvent) => {
-    event.preventDefault()
-    console.log('Posting new movie')
+    event.preventDefault();
 
-    const youtubeUrlParams = new URLSearchParams(
+    const youtubeTitleId = new URLSearchParams(
       createMovieInput.youtubeLinkUrl.split('?')[1]
-    )
-    const youtubeTitleId = youtubeUrlParams.get('v')
+    ).get('v');
 
     if (!(auth.user?.uid && auth.user?.displayName && youtubeTitleId)) {
-      console.log(auth.user?.uid, auth.user?.displayName, youtubeTitleId)
-      return
+      return;
     }
 
     const data: PostMovieBody = {
@@ -76,24 +70,23 @@ const MovieForm: FC = () => {
       userName: auth.user.displayName,
       genre: createMovieInput.genre,
       youtubeTitleId: youtubeTitleId,
-    }
+    };
 
-    try {
-      const res = await fetch('http://localhost:8000/movies', {
-        method: 'POST',
+    axios
+      .post('http://localhost:8000/movies', data, {
         headers: {
           'Content-Type': 'application/json',
+          'X-CSRF-Token': auth.csrfToken,
         },
-        body: JSON.stringify(data),
+        withCredentials: true,
       })
-      if (res.ok) {
-        console.log('request ok')
-        router.push('/')
-      }
-    } catch (error) {
-      console.error(error)
-    }
-  }
+      .then(() => {
+        router.push('/');
+      })
+      .catch(() => {
+        console.error;
+      });
+  };
 
   return (
     <Box
@@ -102,6 +95,7 @@ const MovieForm: FC = () => {
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
+        pb: '10rem',
       }}
       onSubmit={(e: FormEvent) => moviePostHandler(e)}
     >
@@ -109,9 +103,9 @@ const MovieForm: FC = () => {
       <DescriptionField onChange={createOnChangeHandler('overview')} />
       <GenreField onChange={autoCompleteOnChangeHandler} />
       <YoutubeUrlField onChange={createOnChangeHandler('youtubeLinkUrl')} />
-      <FormSubmitButton text='作成' />
+      <CustomSubmitButton text='作成' />
     </Box>
-  )
-}
+  );
+};
 
-export { MovieForm }
+export { MovieForm };

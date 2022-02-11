@@ -1,25 +1,23 @@
-// if logged in, show log in or register
-// else dashboard
-import { DashboardTemplate } from 'components/templates/dashboardTemplate'
-import { AppContext } from 'contexts/appContext'
-import type { NextPage } from 'next'
-import { useContext, useEffect } from 'react'
+import { ErrorPage } from 'components/templates/errorTemplate';
+import { DashboardTemplate } from 'components/templates/dashboardTemplate';
+import { LoadingPage } from 'components/templates/loadingTemplate';
+import type { NextPage } from 'next';
+import { useMovieList } from 'utils';
 
 const Home: NextPage = () => {
-  const { setMovieList, movieList } = useContext(AppContext)
+  const {
+    data: movieList,
+    isError,
+    isLoading,
+  } = useMovieList('http://localhost:8000/movies');
 
-  useEffect(() => {
-    const fetchAllMovies = async () => {
-      const res = await fetch('http://localhost:8000/movies')
-      const data = await res.json()
-      setMovieList(data)
-    }
-    if (movieList.length === 0) {
-      fetchAllMovies()
-    }
-  }, [])
+  if (isLoading) {
+    return <LoadingPage />;
+  }
+  if (isError) {
+    return <ErrorPage />;
+  }
+  return <DashboardTemplate movieList={movieList} />;
+};
 
-  return <DashboardTemplate />
-}
-
-export default Home
+export default Home;

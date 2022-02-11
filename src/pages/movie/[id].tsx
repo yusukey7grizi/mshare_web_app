@@ -1,43 +1,35 @@
-// show youtube video with iframe
-// show video details
-
-import React, { FC, useEffect, useState } from 'react'
-import { MovieDetailTemplate } from 'components/templates/movieDetailTemplate'
-import { useRouter } from 'next/router'
-import { Movie } from 'types/dataTypes'
+import React, { FC } from 'react';
+import { MovieDetailTemplate } from 'components/templates/movieDetailTemplate';
+import { useRouter } from 'next/router';
+import { useMovie, useRelatedMovieList } from 'utils';
+import { ErrorPage } from 'components/templates/errorTemplate';
+import { LoadingPage } from 'components/templates/loadingTemplate';
 
 const MovieDetail: FC = () => {
-  const router = useRouter()
-  const { id } = router.query
+  const router = useRouter();
+  const { id } = router.query;
+  const {
+    data: movie,
+    isError: isMovieError,
+    isLoading: isMovieLoading,
+  } = useMovie(`http://localhost:8000/movies/${id}`);
+  const {
+    data: relatedMovieList,
+    isError: isRelatedMovieListError,
+    isLoading: isRelatedMovieListLoading,
+  } = useRelatedMovieList(
+    () => `http://localhost:8000/movies?userId=${movie.userId}`
+  );
 
-  const [movie, setMovie] = useState<Movie>({} as Movie)
-  const [relatedMovieList, setRelatedMovieList] = useState<Movie[]>([])
+  if (isMovieError || isRelatedMovieListError) {
+    return <ErrorPage />;
+  }
+  if (isMovieLoading || isRelatedMovieListLoading) {
+    return <LoadingPage />;
+  }
+  return (
+    <MovieDetailTemplate movie={movie} relatedMovieList={relatedMovieList} />
+  );
+};
 
-  useEffect(() => {
-    // api fetching here
-    const fetchOneMovie = async () => {
-      try {
-        const res = await fetch(`http://localhost:8000/movies/${id}`)
-        const data: Movie = await res.json()
-        setMovie(data)
-        const { userId } = data
-        const relatedMoviesRes = await fetch(
-          `http://localhost:8000/movies?userId=${userId}`,
-        )
-        const relatedMoviesData = await relatedMoviesRes.json()
-        setRelatedMovieList(relatedMoviesData)
-      } catch (error) {
-        console.log(error)
-      }
-    }
-    if (id) fetchOneMovie()
-  }, [router])
-
-  const filteredList = relatedMovieList.filter(({ id }) => {
-    return id !== Number(router.query.id)
-  })
-
-  return <MovieDetailTemplate relatedMovieList={filteredList} movie={movie} />
-}
-
-export default MovieDetail
+export default MovieDetail;

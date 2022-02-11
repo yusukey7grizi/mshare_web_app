@@ -1,47 +1,53 @@
-import { RandomTemplate } from 'components/templates/randomTemplate'
-import React, { useState } from 'react'
-import { MuiAutoCompleteOnChangeEvent, MuiOnClickEvent } from 'types'
-import { Movie } from 'types/dataTypes'
+import axios from 'axios';
+import { ErrorPage } from 'components/templates/errorTemplate';
+import { RandomTemplate } from 'components/templates/randomTemplate';
+import { AppContext } from 'contexts/appContext';
+import React, { useContext, useState } from 'react';
+import { MuiAutoCompleteOnChangeEvent, MuiOnClickEvent } from 'types';
 
 const Random = () => {
-  const [randomMovie, setRandomMovie] = useState<Movie | null>(null)
-  const [relatedMovieList, setRelatedMovieList] = useState([])
-  const [genre, setGenre] = useState('')
+  const { setRandomMovie, setRelatedMovieList } = useContext(AppContext);
+  const [genre, setGenre] = useState<string>('');
+  const [isError, setIsError] = useState<boolean>(false);
 
   const getRandomMovieHandler = async (e: MuiOnClickEvent) => {
-    e.preventDefault()
-    setRandomMovie(null)
-    const res = await fetch(
-      `http://localhost:8000/movies/random?genre=${genre}`,
-    )
-    const data = await res.json()
-    setRandomMovie(data)
-
-    const { userId } = data
-    const relatedMoviesRes = await fetch(
-      `http://localhost:8000/movies?userId=${userId}`,
-    )
-    const relatedMoviesData = await relatedMoviesRes.json()
-    setRelatedMovieList(relatedMoviesData)
-  }
+    e.preventDefault();
+    setRandomMovie(null);
+    axios
+      .get(`http://localhost:8000/movies/random?genre=${genre}`)
+      .then((res) => {
+        setRandomMovie(res.data);
+        axios
+          .get(`http://localhost:8000/movies?userId=${res.data.userId}`)
+          .then((res) => {
+            setRelatedMovieList(res.data);
+          })
+          .catch(() => {
+            setIsError(true);
+          });
+      })
+      .catch(() => {
+        setIsError(true);
+      });
+  };
 
   const handleOnChangeGenre = (
-    event: MuiAutoCompleteOnChangeEvent,
-    value: string | null,
+    _: MuiAutoCompleteOnChangeEvent,
+    value: string | null
   ) => {
     if (value) {
-      setGenre(value)
+      setGenre(value);
     }
-  }
+  };
 
-  return (
+  return isError ? (
+    <ErrorPage />
+  ) : (
     <RandomTemplate
-      relatedMovieList={relatedMovieList}
       onChange={handleOnChangeGenre}
-      movie={randomMovie}
       onSubmit={getRandomMovieHandler}
     />
-  )
-}
+  );
+};
 
-export default Random
+export default Random;

@@ -1,25 +1,25 @@
-import { FormHelperText, Typography } from '@mui/material'
-import { FormTextFieldContainer } from 'components/atoms/layoutElement'
-import { AuthFormTextField } from 'components/atoms/textFields'
-import { FC } from 'react'
-import { MuiOnChangeEvent } from 'types'
+import { Typography } from '@mui/material';
+import { FieldContainer } from 'components/atoms/layoutElement';
+import { AuthFormTextField } from 'components/atoms/textFields';
+import { FC } from 'react';
+import { MuiOnChangeEvent } from 'types';
 
 type UsernameFieldProps = {
-  onChange: (input: MuiOnChangeEvent) => void
-}
+  onChange: (input: MuiOnChangeEvent) => void;
+};
 
 const UsernameField: FC<UsernameFieldProps> = ({ onChange }) => {
   return (
-    <FormTextFieldContainer>
+    <FieldContainer>
       <Typography gutterBottom>プロフィール名</Typography>
       <AuthFormTextField
-        type="text"
+        type='text'
         error={false}
-        placeholder="プロフィール名を設定してください"
+        placeholder='例 sample_user'
         onChange={onChange}
       />
-    </FormTextFieldContainer>
-  )
-}
+    </FieldContainer>
+  );
+};
 
-export { UsernameField }
+export { UsernameField };

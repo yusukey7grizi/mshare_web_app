@@ -1,29 +1,27 @@
-import { SearchTemplate } from 'components/templates/searchTemplate'
-import { AppContext } from 'contexts/appContext'
-import { useRouter } from 'next/router'
-import React, { FC, useContext, useEffect, useState } from 'react'
-import { Movie } from 'types/dataTypes'
+import { LoadingPage } from 'components/templates/loadingTemplate';
+import { ErrorPage } from 'components/templates/errorTemplate';
+import { SearchTemplate } from 'components/templates/searchTemplate';
+import { useRouter } from 'next/router';
+import React, { FC } from 'react';
+import { useMovieList } from 'utils';
 
 const Search: FC = () => {
-  const router = useRouter()
-  const [searchedMovieList, setSearchedMovieList] = useState<Movie[]>([])
-  const { input, useCase } = router.query
-  const isTitle = useCase === 'title'
+  const router = useRouter();
+  const { input, useCase } = router.query;
+  const isTitle = useCase === 'title';
 
-  useEffect(() => {
-    const fetchPartialMovies = async () => {
-      const url = isTitle
-        ? `http://localhost:8000/movies?title=${input}`
-        : `http://localhost:8000/movies?genre=${input}`
+  const url = isTitle
+    ? `http://localhost:8000/movies?title=${input}`
+    : `http://localhost:8000/movies?genre=${input}`;
+  const { data: searchedMovieList, isError, isLoading } = useMovieList(url);
 
-      const res = await fetch(url)
-      const data = await res.json()
-      setSearchedMovieList(data)
-    }
-    fetchPartialMovies()
-  }, [input])
+  if (isLoading) {
+    return <LoadingPage />;
+  }
+  if (isError) {
+    return <ErrorPage />;
+  }
+  return <SearchTemplate searchedMovieList={searchedMovieList} />;
+};
 
-  return <SearchTemplate searchedMovieList={searchedMovieList} />
-}
-
-export default Search
+export default Search;

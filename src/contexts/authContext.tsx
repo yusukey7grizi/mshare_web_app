@@ -1,124 +1,207 @@
 import React, {
   createContext,
   FC,
-  ReactNode,
   useContext,
   useEffect,
   useState,
-} from 'react'
-import * as firebase from 'firebase/app'
-import 'firebase/auth'
+} from 'react';
+import * as firebase from 'firebase/app';
 import {
   createUserWithEmailAndPassword,
   getAuth,
+  inMemoryPersistence,
   onAuthStateChanged,
   signInWithEmailAndPassword,
   signOut,
   updateProfile,
-  User,
+  UserInfo,
   UserCredential,
-} from 'firebase/auth'
-import { NextRouter, useRouter } from 'next/router'
-import Cookies from 'js-cookie'
+} from 'firebase/auth';
+
+import axios from 'axios';
 
 const firebaseConfig = {
-  apiKey: 'AIzaSyC_N3NsHmcxdR17UOvtezZurnDDaxVhpTE',
-  authDomain: 'mshare-authentication.firebaseapp.com',
-  projectId: 'mshare-authentication',
-  storageBucket: 'mshare-authentication.appspot.com',
-  messagingSenderId: '786116129507',
-  appId: '1:786116129507:web:f6f88b477b63a64012cbd6',
-  measurementId: 'G-0CXZSTY13R',
-}
+  apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
+  authDomain: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN,
+  projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID,
+  storageBucket: process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: process.env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID,
+  appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID,
+  measurementId: process.env.NEXT_PUBLIC_FIREBASE_MEASSUMENT_ID,
+};
 
 type AuthState = {
-  user: User | null
-  logIn: (email: string, password: string) => Promise<void | User>
+  user: UserInfo | null;
+  csrfToken: string;
+  getCsrfToken: () => Promise<void>;
+  logIn: (email: string, password: string) => Promise<boolean>;
   createUser: (
     email: string,
     password: string,
-    username: string,
-  ) => Promise<void | User>
-  logOut: () => Promise<void>
-}
+    username: string
+  ) => Promise<boolean>;
+  logOut: () => Promise<boolean>;
+  verifyUser: () => Promise<boolean>;
+};
+
+type VerificationResponse = {
+  status: string;
+  user: UserInfo | null;
+};
+
+type CsrfResponse = {
+  csrfToken: string;
+};
 
 if (!firebase.getApps.length) {
-  firebase.initializeApp(firebaseConfig)
+  firebase.initializeApp(firebaseConfig);
 }
 
-const authContext = createContext({} as AuthState)
+const authContext = createContext({} as AuthState);
 
 export const AuthProvider: FC = ({ children }) => {
-  const authState: AuthState = useProvideAuth()
+  const authState: AuthState = useProvideAuth();
+
+  useEffect(() => {
+    authState.getCsrfToken();
+  }, []);
   return (
     <authContext.Provider value={authState}>{children}</authContext.Provider>
-  )
-}
+  );
+};
 
 export const useAuth = () => {
-  return useContext(authContext)
-}
+  return useContext(authContext);
+};
 
 const useProvideAuth = () => {
-  const [user, setUser] = useState<User | null>(null)
-  const auth = getAuth()
+  const [user, setUser] = useState<UserInfo | null>(null);
+  const [csrfToken, setCsrfToken] = useState<string>('');
+  const auth = getAuth();
+  auth.setPersistence(inMemoryPersistence);
 
-  const signIn = (email: string, password: string) => {
-    return signInWithEmailAndPassword(auth, email, password)
-      .then((userCredentials: UserCredential) => {
-        setUser(userCredentials.user)
-        Cookies.set('uid', userCredentials.user.uid)
-        return userCredentials.user
-      })
-      .catch((error) => {
-        console.error(error)
-      })
-  }
+  // retrieve csrf token on the first visit
+  const getCsrfToken = async () => {
+    try {
+      const res = await axios.get<CsrfResponse>('http://localhost:8000/auth', {
+        withCredentials: true,
+      });
+      if (res.status == 200) {
+        const { data } = await res;
+        await setCsrfToken(data.csrfToken);
+      }
+      return;
+    } catch (error) {
+      console.error(error);
+      return;
+    }
+  };
 
-  const signUp = (email: string, password: string, username: string) => {
-    return createUserWithEmailAndPassword(auth, email, password)
-      .then((userCredentials: UserCredential) => {
-        updateProfile(userCredentials.user, {
-          displayName: username,
-        })
-        setUser(userCredentials.user)
-        Cookies.set('uid', userCredentials.user.uid)
-        return userCredentials.user
-      })
-      .catch((error) => {
-        console.error(error)
-      })
-  }
+  // signs in to firebase auth, then requests backend to create session cookie
+  const signIn = async (email: string, password: string) => {
+    try {
+      const userCredentials = await signInWithEmailAndPassword(
+        auth,
+        email,
+        password
+      );
+      const idToken = await userCredentials.user.getIdToken();
+      const res = await axios.post<VerificationResponse>(
+        'http://localhost:8000/auth/login',
+        { idToken: idToken },
+        { headers: { 'X-CSRF-Token': csrfToken }, withCredentials: true }
+      );
+      if (res.status == 200) {
+        const { data } = await res;
+        await setUser(data.user);
+        return true;
+      }
+      return false;
+    } catch (error) {
+      console.error(error);
+      return false;
+    }
+  };
 
-  const logOut = () => {
-    return signOut(auth)
-      .then(() => {
-        Cookies.remove('uid')
-      })
-      .catch((error) => {
-        console.error(error)
-      })
-  }
+  const signUp = async (email: string, password: string, username: string) => {
+    try {
+      const userCredentials = await createUserWithEmailAndPassword(
+        auth,
+        email,
+        password
+      );
+      await updateProfile(userCredentials.user, {
+        displayName: username,
+      });
+      const res = await signIn(email, password);
+      return res;
+    } catch (error) {
+      console.error(error);
+      return false;
+    }
+  };
+
+  const logOut = async () => {
+    try {
+      await signOut(auth);
+      const res = await axios.post(
+        'http://localhost:8000/auth/logout',
+        {},
+        { headers: { 'X-CSRF-Token': csrfToken }, withCredentials: true }
+      );
+      if (res.status == 200) {
+        await setUser(null);
+        return true;
+      }
+      return false;
+    } catch (error) {
+      console.error(error);
+      return false;
+    }
+  };
+
+  // verifies user session token from the cookie and sets user for auth context
+  // should be used in the middleware before redirect to private pages
+  const verifyUser = async () => {
+    try {
+      const res = await axios.post<VerificationResponse>(
+        'http://localhost:8000/auth/verify',
+        {},
+        { headers: { 'X-CSRF-Token': csrfToken }, withCredentials: true }
+      );
+      if (res.status == 200) {
+        const { data } = await res;
+        await setUser(data.user);
+        return true;
+      }
+      return false;
+    } catch (error) {
+      console.error(error);
+      return false;
+    }
+  };
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
       if (currentUser) {
-        setUser(currentUser)
-        Cookies.set('uid', currentUser.uid)
+        setUser(currentUser as UserInfo);
       } else {
-        setUser(null)
-        Cookies.remove('uid')
+        setUser(null);
       }
-    })
+    });
 
-    return () => unsubscribe()
-  })
+    return () => unsubscribe();
+  });
+
   const authState: AuthState = {
     user: user,
+    csrfToken: csrfToken,
+    getCsrfToken: getCsrfToken,
     logIn: signIn,
     createUser: signUp,
     logOut: logOut,
-  }
+    verifyUser: verifyUser,
+  };
 
-  return authState
-}
+  return authState;
+};

@@ -1,39 +1,39 @@
-import { FormHelperText, Typography } from '@mui/material'
-import { FormTextFieldContainer } from 'components/atoms/layoutElement'
-import { AuthFormTextField } from 'components/atoms/textFields'
-import { FC } from 'react'
-import { MuiOnChangeEvent } from 'types'
+import { Typography } from '@mui/material';
+import { FieldContainer } from 'components/atoms/layoutElement';
+import { AuthFormTextField } from 'components/atoms/textFields';
+import { FC } from 'react';
+import { MuiOnChangeEvent } from 'types';
 
 type EmailFieldProps = {
-  onChange: (input: MuiOnChangeEvent) => void
-}
+  onChange: (input: MuiOnChangeEvent) => void;
+};
 
 const EmailField: FC<EmailFieldProps> = ({ onChange }) => {
   return (
-    <FormTextFieldContainer>
+    <FieldContainer>
       <Typography gutterBottom>メールアドレス</Typography>
       <AuthFormTextField
-        type="email"
+        type='email'
         error={false}
-        placeholder="メールアドレスを入力してください"
+        placeholder='例 sample@gmail.com'
         onChange={onChange}
       />
-    </FormTextFieldContainer>
-  )
-}
+    </FieldContainer>
+  );
+};
 
 const ConfirmEmailField: FC<EmailFieldProps> = ({ onChange }) => {
   return (
-    <FormTextFieldContainer>
+    <FieldContainer>
       <Typography gutterBottom>メールアドレスの確認</Typography>
       <AuthFormTextField
-        type="email"
+        type='email'
         error={false}
-        placeholder="確認のためメールアドレスを再度入力してください"
+        placeholder='例 sample@gmail.com'
         onChange={onChange}
       />
-    </FormTextFieldContainer>
-  )
-}
+    </FieldContainer>
+  );
+};
 
-export { EmailField, ConfirmEmailField }
+export { EmailField, ConfirmEmailField };

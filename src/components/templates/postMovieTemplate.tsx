@@ -1,17 +1,28 @@
-import React, { FC } from 'react'
-import { Typography } from '@mui/material'
-import { Bar } from 'components/organisms'
-import { MovieForm } from 'components/organisms/movieForm'
+import React, { FC } from 'react';
+import { Typography, useMediaQuery } from '@mui/material';
+import { MovieForm } from 'components/organisms/movieForm';
+import { FontSize, MinScreenSize } from 'components/constants';
+import { Bar } from 'components/organisms';
 
 const PostMovieTemplate: FC = () => {
+  const isLargeScreenSize = useMediaQuery(MinScreenSize['m']);
+
   return (
     <Bar>
-      <Typography sx={{ p: 5 }} variant="h4">
-        自分だけのオリジナル映画を共有しよう
+      <Typography
+        fontFamily='monospace'
+        sx={{
+          p: 5,
+        }}
+        fontSize={isLargeScreenSize ? FontSize['xl'] : FontSize['s']}
+        gutterBottom
+        align='center'
+      >
+        自分だけのオリジナル映画を共有しよう　！
       </Typography>
       <MovieForm />
     </Bar>
-  )
-}
+  );
+};
 
-export { PostMovieTemplate }
+export { PostMovieTemplate };

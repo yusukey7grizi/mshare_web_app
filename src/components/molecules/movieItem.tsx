@@ -5,30 +5,31 @@ import {
   CardContent,
   CardMedia,
   Typography,
-} from '@mui/material'
-import { useRouter } from 'next/router'
-import MovieDetail from 'pages/movie/[id]'
-import React, { FC, Fragment } from 'react'
-import { Movie } from 'types/dataTypes'
+} from '@mui/material';
+import { FontSize } from 'components/constants';
+import { useRouter } from 'next/router';
+import React, { FC, Fragment } from 'react';
+import { Movie } from 'types/dataTypes';
 
 type MovieItemProps = {
-  movie: Movie
-}
+  movie: Movie;
+};
 
 const MovieItem: FC<MovieItemProps> = ({ movie }) => {
-  const router = useRouter()
+  const router = useRouter();
 
   const cardOnClickHandler = () => {
-    router.push(`/movie/${movie.id}`)
-  }
+    router.push(`/movie/${movie.id}`);
+  };
 
   return (
     <Box sx={{ p: 2 }}>
       <Card component={Fragment}>
         <CardActionArea
           sx={{ width: '16rem', height: '12.8rem' }}
-          // href={`/movie/${movie.id}`}
-          onClick={cardOnClickHandler}
+          onClick={() => {
+            setTimeout(cardOnClickHandler, 1500);
+          }}
         >
           <CardMedia
             component='img'
@@ -37,6 +38,7 @@ const MovieItem: FC<MovieItemProps> = ({ movie }) => {
           <CardContent>
             <Typography
               noWrap
+              fontSize={FontSize['s']}
               sx={{
                 fontWeight: 'bold',
                 textOverflow: 'ellipsis',
@@ -44,14 +46,14 @@ const MovieItem: FC<MovieItemProps> = ({ movie }) => {
             >
               {movie.title}
             </Typography>
-            <Typography sx={{ fontSize: '0.5rem' }}>
+            <Typography sx={{ fontSize: '0.8rem' }}>
               {movie.userName}
             </Typography>
           </CardContent>
         </CardActionArea>
       </Card>
     </Box>
-  )
-}
+  );
+};
 
-export { MovieItem }
+export { MovieItem };
