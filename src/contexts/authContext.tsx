@@ -19,6 +19,7 @@ import {
 } from 'firebase/auth';
 
 import axios from 'axios';
+import { axiosDefaultInstance } from 'utils/axiosConfig';
 
 const firebaseConfig = {
   apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
@@ -83,7 +84,7 @@ const useProvideAuth = () => {
   // retrieve csrf token on the first visit
   const getCsrfToken = async () => {
     try {
-      const res = await axios.get<CsrfResponse>('http://localhost:8000/auth', {
+      const res = await axiosDefaultInstance.get<CsrfResponse>('/auth', {
         withCredentials: true,
       });
       if (res.status == 200) {
@@ -106,8 +107,8 @@ const useProvideAuth = () => {
         password
       );
       const idToken = await userCredentials.user.getIdToken();
-      const res = await axios.post<VerificationResponse>(
-        'http://localhost:8000/auth/login',
+      const res = await axiosDefaultInstance.post<VerificationResponse>(
+        '/auth/login',
         { idToken: idToken },
         { headers: { 'X-CSRF-Token': csrfToken }, withCredentials: true }
       );
@@ -144,8 +145,8 @@ const useProvideAuth = () => {
   const logOut = async () => {
     try {
       await signOut(auth);
-      const res = await axios.post(
-        'http://localhost:8000/auth/logout',
+      const res = await axiosDefaultInstance.post(
+        '/auth/logout',
         {},
         { headers: { 'X-CSRF-Token': csrfToken }, withCredentials: true }
       );
@@ -164,8 +165,8 @@ const useProvideAuth = () => {
   // should be used in the middleware before redirect to private pages
   const verifyUser = async () => {
     try {
-      const res = await axios.post<VerificationResponse>(
-        'http://localhost:8000/auth/verify',
+      const res = await axiosDefaultInstance.post<VerificationResponse>(
+        '/auth/verify',
         {},
         { headers: { 'X-CSRF-Token': csrfToken }, withCredentials: true }
       );

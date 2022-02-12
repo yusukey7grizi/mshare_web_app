@@ -5,11 +5,7 @@ import type { NextPage } from 'next';
 import { useMovieList } from 'utils';
 
 const Home: NextPage = () => {
-  const {
-    data: movieList,
-    isError,
-    isLoading,
-  } = useMovieList('http://localhost:8000/movies');
+  const { data: movieList, isError, isLoading } = useMovieList('/movies');
 
   if (isLoading) {
     return <LoadingPage />;
