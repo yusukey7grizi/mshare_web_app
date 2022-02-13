@@ -12,6 +12,7 @@ import { useAuth } from 'contexts/authContext';
 import { useRouter } from 'next/router';
 import { CustomSubmitButton } from 'components/atoms/buttons';
 import axios from 'axios';
+import { axiosDefaultInstance } from 'utils/axiosConfig';
 
 type CreateMovieFormInputTypes =
   | 'title'
@@ -72,8 +73,8 @@ const MovieForm: FC = () => {
       youtubeTitleId: youtubeTitleId,
     };
 
-    axios
-      .post('http://localhost:8000/movies', data, {
+    axiosDefaultInstance
+      .post('/movies', data, {
         headers: {
           'Content-Type': 'application/json',
           'X-CSRF-Token': auth.csrfToken,

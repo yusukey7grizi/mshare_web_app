@@ -4,6 +4,7 @@ import { RandomTemplate } from 'components/templates/randomTemplate';
 import { AppContext } from 'contexts/appContext';
 import React, { useContext, useState } from 'react';
 import { MuiAutoCompleteOnChangeEvent, MuiOnClickEvent } from 'types';
+import { axiosDefaultInstance } from 'utils/axiosConfig';
 
 const Random = () => {
   const { setRandomMovie, setRelatedMovieList } = useContext(AppContext);
@@ -13,12 +14,12 @@ const Random = () => {
   const getRandomMovieHandler = async (e: MuiOnClickEvent) => {
     e.preventDefault();
     setRandomMovie(null);
-    axios
-      .get(`http://localhost:8000/movies/random?genre=${genre}`)
+    axiosDefaultInstance
+      .get(`/movies/random?genre=${genre}`)
       .then((res) => {
         setRandomMovie(res.data);
-        axios
-          .get(`http://localhost:8000/movies?userId=${res.data.userId}`)
+        axiosDefaultInstance
+          .get(`/movies?userId=${res.data.userId}`)
           .then((res) => {
             setRelatedMovieList(res.data);
           })

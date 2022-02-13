@@ -12,7 +12,7 @@ const Profile = () => {
     data: movieList,
     isError,
     isLoading,
-  } = useMovieList(`http://localhost:8000/movies?userId=${auth.user?.uid}`);
+  } = useMovieList(`/movies?userId=${auth.user?.uid}`);
 
   if (isLoading) {
     return <LoadingPage />;

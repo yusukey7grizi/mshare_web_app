@@ -10,9 +10,7 @@ const Search: FC = () => {
   const { input, useCase } = router.query;
   const isTitle = useCase === 'title';
 
-  const url = isTitle
-    ? `http://localhost:8000/movies?title=${input}`
-    : `http://localhost:8000/movies?genre=${input}`;
+  const url = isTitle ? `/movies?title=${input}` : `/movies?genre=${input}`;
   const { data: searchedMovieList, isError, isLoading } = useMovieList(url);
 
   if (isLoading) {

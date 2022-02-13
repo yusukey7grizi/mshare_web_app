@@ -12,14 +12,12 @@ const MovieDetail: FC = () => {
     data: movie,
     isError: isMovieError,
     isLoading: isMovieLoading,
-  } = useMovie(`http://localhost:8000/movies/${id}`);
+  } = useMovie(`/movies/${id}`);
   const {
     data: relatedMovieList,
     isError: isRelatedMovieListError,
     isLoading: isRelatedMovieListLoading,
-  } = useRelatedMovieList(
-    () => `http://localhost:8000/movies?userId=${movie.userId}`
-  );
+  } = useRelatedMovieList(() => `/movies?userId=${movie.userId}`);
 
   if (isMovieError || isRelatedMovieListError) {
     return <ErrorPage />;

@@ -13,6 +13,7 @@ import { motion } from 'framer-motion';
 import { MinScreenSize } from 'components/constants';
 import { useAuth } from 'contexts/authContext';
 import axios from 'axios';
+import { axiosDefaultInstance } from 'utils/axiosConfig';
 
 type FaceRecognitionProps = {
   moviePlayerState: MoviePlayerState;
@@ -84,12 +85,13 @@ const FaceRecognition: FC<FaceRecognitionProps> = ({
           const putBody: PutMovieBody = {
             grinningScore: grinningScore,
           };
-          axios
-            .post(`http://localhost:8000/movies/${movie.id}`, putBody, {
+          axiosDefaultInstance
+            .put(`/movies/${movie.id}`, putBody, {
               headers: {
                 'Content-Type': 'application/json',
                 'X-CSRF-Token': auth.csrfToken,
               },
+              withCredentials: true,
             })
             .then(() => {
               setIsScoreUpdated(true);
@@ -146,13 +148,15 @@ const FaceRecognition: FC<FaceRecognitionProps> = ({
 
     const sendScore = async () => {
       if (isScoreUpdated) return;
-      const putBody: PutMovieBody = { grinningScore: individualGrinningScore };
+      const putBody: PutMovieBody = { grinningScore: grinningScore };
 
-      axios
-        .post(`http://localhost:8000/movies/${movie.id}`, putBody, {
+      axiosDefaultInstance
+        .put(`/movies/${movie.id}`, putBody, {
           headers: {
             'Content-Type': 'application/json',
+            'X-CSRF-Token': auth.csrfToken,
           },
+          withCredentials: true,
         })
         .catch(() => console.error);
     };
