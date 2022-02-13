@@ -40,10 +40,8 @@ const RegisterForm = () => {
         createUserInput.password,
         createUserInput.username
       )
-      .then((res) => {
-        if (res) {
-          router.push(auth.redirectUrl ? auth.redirectUrl : '/');
-        }
+      .then(() => {
+        router.push('/');
       })
       .catch((err) => {
         console.log(err);

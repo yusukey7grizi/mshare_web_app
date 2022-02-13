@@ -95,7 +95,7 @@ const MenuDrawer: FC<Props> = ({ isLoggedIn, authHandler, anchor }) => {
           </ListItem>
           <ListItem
             onClick={() => {
-              router.push('/movie/post');
+              router.push(isLoggedIn ? '/movie/post' : '/auth/login');
             }}
             button
             component={Link}
@@ -112,7 +112,7 @@ const MenuDrawer: FC<Props> = ({ isLoggedIn, authHandler, anchor }) => {
           </ListItem>
           <ListItem
             onClick={() => {
-              router.push('/profile');
+              router.push(isLoggedIn ? '/profile' : '/auth/login');
             }}
             button
             component={Link}

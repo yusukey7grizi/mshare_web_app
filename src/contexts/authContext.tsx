@@ -3,7 +3,6 @@ import React, {
   FC,
   useContext,
   useEffect,
-  useRef,
   useState,
 } from 'react';
 import * as firebase from 'firebase/app';
@@ -16,11 +15,11 @@ import {
   signOut,
   updateProfile,
   UserInfo,
+  UserCredential,
 } from 'firebase/auth';
 
+import axios from 'axios';
 import { axiosDefaultInstance } from 'utils/axiosConfig';
-import { useRouter } from 'next/router';
-import { PhotoSizeSelectActualRounded } from '@mui/icons-material';
 
 const firebaseConfig = {
   apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
@@ -32,14 +31,10 @@ const firebaseConfig = {
   measurementId: process.env.NEXT_PUBLIC_FIREBASE_MEASSUMENT_ID,
 };
 
-const ProtectedPaths = ['/profile', '/movie/post'];
-const AuthPaths = ['/auth/login', '/auth/register'];
-
 type AuthState = {
   user: UserInfo | null;
   csrfToken: string;
-  isProcessing: boolean;
-  redirectUrl: string;
+  getCsrfToken: () => Promise<void>;
   logIn: (email: string, password: string) => Promise<boolean>;
   createUser: (
     email: string,
@@ -52,16 +47,7 @@ type AuthState = {
 
 type VerificationResponse = {
   status: string;
-  user: AdminSdkUserInfo | null;
-};
-
-type AdminSdkUserInfo = {
-  displayName: string;
-  email: string;
-  phoneNumber: string;
-  photoUrl: string;
-  providerId: string;
-  rawId: string;
+  user: UserInfo | null;
 };
 
 type CsrfResponse = {
@@ -77,6 +63,9 @@ const authContext = createContext({} as AuthState);
 export const AuthProvider: FC = ({ children }) => {
   const authState: AuthState = useProvideAuth();
 
+  useEffect(() => {
+    authState.getCsrfToken();
+  }, []);
   return (
     <authContext.Provider value={authState}>{children}</authContext.Provider>
   );
@@ -89,12 +78,8 @@ export const useAuth = () => {
 const useProvideAuth = () => {
   const [user, setUser] = useState<UserInfo | null>(null);
   const [csrfToken, setCsrfToken] = useState<string>('');
-  const [isProcessing, setIsProcessing] = useState<boolean>(true);
-  const [redirectUrl, setRedirectUrl] = useState<string>('');
   const auth = getAuth();
   auth.setPersistence(inMemoryPersistence);
-  const router = useRouter();
-  const { asPath } = router;
 
   // retrieve csrf token on the first visit
   const getCsrfToken = async () => {
@@ -103,14 +88,13 @@ const useProvideAuth = () => {
         withCredentials: true,
       });
       if (res.status == 200) {
-        const { csrfToken } = await res.data;
-        await setCsrfToken(csrfToken);
-        return true;
+        const { data } = await res;
+        await setCsrfToken(data.csrfToken);
       }
-      return false;
+      return;
     } catch (error) {
       console.error(error);
-      return true;
+      return;
     }
   };
 
@@ -129,14 +113,11 @@ const useProvideAuth = () => {
         { headers: { 'X-CSRF-Token': csrfToken }, withCredentials: true }
       );
       if (res.status == 200) {
-        const { user } = await res.data;
-        if (user) {
-          await setUser({ uid: user?.rawId, photoURL: user.photoUrl, ...user });
-        }
+        const { data } = await res;
+        await setUser(data.user);
         return true;
-      } else {
-        return false;
       }
+      return false;
     } catch (error) {
       console.error(error);
       return false;
@@ -172,9 +153,8 @@ const useProvideAuth = () => {
       if (res.status == 200) {
         await setUser(null);
         return true;
-      } else {
-        return false;
       }
+      return false;
     } catch (error) {
       console.error(error);
       return false;
@@ -191,10 +171,8 @@ const useProvideAuth = () => {
         { headers: { 'X-CSRF-Token': csrfToken }, withCredentials: true }
       );
       if (res.status == 200) {
-        const { user } = await res.data;
-        if (user) {
-          await setUser({ uid: user?.rawId, photoURL: user.photoUrl, ...user });
-        }
+        const { data } = await res;
+        await setUser(data.user);
         return true;
       }
       return false;
@@ -204,10 +182,8 @@ const useProvideAuth = () => {
     }
   };
 
-  const secondCall = useRef(false);
-
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
+    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
       if (currentUser) {
         setUser(currentUser as UserInfo);
       } else {
@@ -215,44 +191,13 @@ const useProvideAuth = () => {
       }
     });
 
-    const subscribe = async () => {
-      if (!csrfToken) {
-        // first useEffect call after refresh
-        console.log('retrieving csrf token');
-        await getCsrfToken();
-        secondCall.current = await true;
-      } else if (
-        !AuthPaths.includes(asPath) &&
-        secondCall.current &&
-        !ProtectedPaths.includes(asPath)
-      ) {
-        // second useEffect call after refresh
-        await verifyUser();
-        secondCall.current = await false;
-      } else if (ProtectedPaths.includes(asPath)) {
-        // all path change to protectected paths
-        const res = await verifyUser();
-        if (await res) {
-          console.log('user is signed in');
-          await setIsProcessing(false);
-        } else {
-          console.log('not logged in');
-          await setRedirectUrl(asPath);
-          await router.push('/auth/login');
-        }
-      }
-    };
-
-    subscribe();
-
     return () => unsubscribe();
-  }, [csrfToken, asPath]);
+  });
 
   const authState: AuthState = {
     user: user,
     csrfToken: csrfToken,
-    isProcessing: isProcessing,
-    redirectUrl: redirectUrl,
+    getCsrfToken: getCsrfToken,
     logIn: signIn,
     createUser: signUp,
     logOut: logOut,
