@@ -122,6 +122,7 @@ const useProvideAuth = () => {
       if (res.status == 200) {
         const { data } = await res;
         await setUser(data.user);
+        await setSessionPersisted('persisted');
         return true;
       } else {
         return false;
@@ -160,6 +161,7 @@ const useProvideAuth = () => {
       );
       if (res.status == 200) {
         await setUser(null);
+        await setSessionPersisted('expired');
         return true;
       } else {
         return false;

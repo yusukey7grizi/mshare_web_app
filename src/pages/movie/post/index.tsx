@@ -4,7 +4,7 @@ import { AuthCheckWrapper } from 'components/organisms';
 
 const PostMovie: FC = () => {
   return (
-    <AuthCheckWrapper url='/movies/post'>
+    <AuthCheckWrapper url='/movie/post'>
       <PostMovieTemplate />
     </AuthCheckWrapper>
   );

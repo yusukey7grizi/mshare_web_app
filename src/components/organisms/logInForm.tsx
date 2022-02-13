@@ -12,6 +12,7 @@ import { MuiOnChangeEvent } from 'types';
 const LogInForm = () => {
   const { logInUserInput, setLogInUserInput } = useContext(AppContext);
   const auth = useAuth();
+  console.log(auth.redirectUrl);
   const router = useRouter();
 
   const createOnChangeHandler = (formType: 'email' | 'password') => {
