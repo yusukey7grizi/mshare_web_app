@@ -1,6 +1,6 @@
 import { FC } from 'react';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import { orange, purple } from '@mui/material/colors';
+import { orange, red } from '@mui/material/colors';
 
 const theme = createTheme({
   palette: {
@@ -9,9 +9,9 @@ const theme = createTheme({
       dark: orange['A400'],
     },
     secondary: {
-      main: purple[500],
+      main: red[500],
+      dark: red[700],
     },
-    //    divider: orange['A200'],
   },
 });
 

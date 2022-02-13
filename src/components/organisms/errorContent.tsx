@@ -4,10 +4,11 @@ import { FontSize } from 'components/constants';
 import SentimentVeryDissatisfiedIcon from '@mui/icons-material/SentimentVeryDissatisfied';
 
 type Props = {
-  title: '500 Internal Server Error' | '404 Not Found';
+  title: '500 Internal Server Error' | '404 Not Found' | 'No Results Found';
   subtitle:
     | 'アクセスしようとしたページは表示できませんでした'
-    | 'お探しのページが見つかりませんでした';
+    | 'お探しのページが見つかりませんでした'
+    | '該当する作品がありませんでした';
 };
 
 const ErrorContent: FC<Props> = ({ title, subtitle }) => {

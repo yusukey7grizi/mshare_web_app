@@ -1,8 +1,7 @@
 import React, { FC } from 'react';
-import { Box, Typography } from '@mui/material';
+import { Box } from '@mui/material';
 import { MovieItem } from 'components/molecules';
 import { Movie } from 'types/dataTypes';
-import { FontSize } from 'components/constants';
 
 type Props = {
   movieList: Movie[];
@@ -18,15 +17,9 @@ const SearchedMovieList: FC<Props> = ({ movieList }) => {
         justifyContent: 'space-evenly',
       }}
     >
-      {movieList.length === 0 ? (
-        <Typography fontSize={FontSize['m']}>
-          該当する作品はありません
-        </Typography>
-      ) : (
-        movieList.map((movie) => {
-          return <MovieItem key={movie.id} movie={movie} />;
-        })
-      )}
+      {movieList.map((movie) => {
+        return <MovieItem key={movie.id} movie={movie} />;
+      })}
     </Box>
   );
 };

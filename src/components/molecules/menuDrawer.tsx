@@ -129,9 +129,18 @@ const MenuDrawer: FC<Props> = ({ isLoggedIn, authHandler, anchor }) => {
           </ListItem>
           <ListItem onClick={authHandler} button component={Link}>
             <ListItemIcon>
-              {isLoggedIn ? <LogoutIcon /> : <LoginIcon />}
+              {isLoggedIn ? <LogoutIcon /> : <LoginIcon color='secondary' />}
             </ListItemIcon>
-            <ListItemText primary={isLoggedIn ? 'ログアウト' : 'ログイン'} />
+            <ListItemText
+              primaryTypographyProps={
+                isLoggedIn
+                  ? {}
+                  : {
+                      color: 'secondary',
+                    }
+              }
+              primary={isLoggedIn ? 'ログアウト' : 'ログイン / 新規登録'}
+            />
           </ListItem>
         </List>
       </SwipeableDrawer>
