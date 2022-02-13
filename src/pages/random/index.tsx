@@ -1,4 +1,3 @@
-import axios from 'axios';
 import { ErrorPage } from 'components/templates/errorTemplate';
 import { RandomTemplate } from 'components/templates/randomTemplate';
 import { AppContext } from 'contexts/appContext';

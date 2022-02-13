@@ -1,4 +1,4 @@
-import { FC, useState, useEffect, useContext } from 'react';
+import { FC, useState, useContext } from 'react';
 import { Box, Toolbar, AppBar, IconButton, useMediaQuery } from '@mui/material';
 import { SearchField } from 'components/atoms/textFields';
 import { BarTitle } from 'components/atoms/titles';
