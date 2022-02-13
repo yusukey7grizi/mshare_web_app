@@ -10,10 +10,10 @@ import { ResultNotFound } from 'components/templates/noResultTemplate';
 const Search: FC = () => {
   const { setSearchInput } = useContext(AppContext);
   const router = useRouter();
-  const { input, useCase } = router.query;
+  const { input, genre, useCase } = router.query;
   const isTitle = useCase === 'title';
 
-  const url = isTitle ? `/movies?title=${input}` : `/movies?genre=${input}`;
+  const url = isTitle ? `/movies?title=${input}` : `/movies?genre=${genre}`;
   const { data: searchedMovieList, isError, isLoading } = useMovieList(url);
 
   useEffect(() => {
@@ -29,10 +29,24 @@ const Search: FC = () => {
   if (isError) {
     return <ErrorPage />;
   }
-  if (!input || searchedMovieList.length === 0) {
-    return <ResultNotFound />;
+  if (isTitle && input && searchedMovieList.length > 0) {
+    return (
+      <SearchTemplate
+        input={input as string}
+        searchedMovieList={searchedMovieList}
+      />
+    );
   }
-  return <SearchTemplate searchedMovieList={searchedMovieList} />;
+  if (!isTitle && genre && searchedMovieList.length > 0) {
+    return (
+      <SearchTemplate
+        genre={genre as string}
+        searchedMovieList={searchedMovieList}
+      />
+    );
+  }
+
+  return <ResultNotFound />;
 };
 
 export default Search;
