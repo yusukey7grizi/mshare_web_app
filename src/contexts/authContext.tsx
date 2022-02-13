@@ -203,6 +203,7 @@ const useProvideAuth = () => {
 
     const subscribe = async () => {
       if (!csrfToken) {
+        // first useEffect call after refresh
         console.log('retrieving csrf token');
         await getCsrfToken();
         secondCall.current = await true;
@@ -211,9 +212,11 @@ const useProvideAuth = () => {
         secondCall.current &&
         !ProtectedPaths.includes(asPath)
       ) {
+        // second useEffect call after refresh
         await verifyUser();
         secondCall.current = await false;
       } else if (ProtectedPaths.includes(asPath)) {
+        // all path change to protectected paths
         const res = await verifyUser();
         if (await res) {
           console.log('user is signed in');
