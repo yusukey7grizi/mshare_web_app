@@ -1,5 +1,6 @@
 import { Grid, Link, Typography, useMediaQuery } from '@mui/material';
 import { FontSize, MinScreenSize } from 'components/constants';
+import { useRouter } from 'next/router';
 
 type AuthSwitchLinkProps = {
   useCase: 'logIn' | 'register';
@@ -7,12 +8,13 @@ type AuthSwitchLinkProps = {
 
 const AuthSwitchLink: React.FC<AuthSwitchLinkProps> = ({ useCase }) => {
   const isSignUp = useCase === 'register';
+  const router = useRouter();
 
   const text = isSignUp
     ? '既にアカウントをお持ちですか？'
     : 'まだアカウントをお持ちではないですか？';
   const linkText = isSignUp ? 'ログイン。' : '新規登録。';
-  const href = isSignUp ? '/auth/login' : '/auth/register';
+  const path = isSignUp ? '/auth/login' : '/auth/register';
   const isLargeScreenSize = useMediaQuery(MinScreenSize['s']);
   const fontSize = isLargeScreenSize ? FontSize['s'] : FontSize['xxs'];
 
@@ -21,10 +23,17 @@ const AuthSwitchLink: React.FC<AuthSwitchLinkProps> = ({ useCase }) => {
       sx={{
         display: 'flex',
         marginTop: '2rem',
+        flexDirection: isLargeScreenSize ? 'unset' : 'column',
       }}
     >
       <Typography fontSize={fontSize}>{text}</Typography>
-      <Link fontSize={fontSize} href={href}>
+      <Link
+        margin='auto'
+        fontSize={fontSize}
+        onClick={() => {
+          router.push(path);
+        }}
+      >
         {linkText}
       </Link>
     </Grid>
