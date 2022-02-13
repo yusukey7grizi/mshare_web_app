@@ -11,6 +11,7 @@ import { MuiAutoCompleteOnChangeEvent, MuiOnChangeEvent } from 'types';
 import { useAuth } from 'contexts/authContext';
 import { useRouter } from 'next/router';
 import { CustomSubmitButton } from 'components/atoms/buttons';
+import axios from 'axios';
 import { axiosDefaultInstance } from 'utils/axiosConfig';
 
 type CreateMovieFormInputTypes =

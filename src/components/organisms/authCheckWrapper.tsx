@@ -1,11 +1,37 @@
-import React, { FC } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import { useAuth } from 'contexts/authContext';
+import { useRouter } from 'next/router';
 import { LoadingPage } from 'components/templates/loadingTemplate';
 
 const AuthCheckWrapper: FC = ({ children }) => {
   const auth = useAuth();
+  const router = useRouter();
+  const [verificationState, setVerificationState] = useState<
+    'verified' | 'processing' | 'failed'
+  >('processing');
 
-  return auth.isProcessing ? <LoadingPage></LoadingPage> : <>{children}</>;
+  useEffect(() => {
+    const verify = async () => {
+      try {
+        const res = await auth.verifyUser();
+        // console.log(res);
+        (await res)
+          ? setVerificationState('verified')
+          : setVerificationState('failed');
+      } catch (error) {
+        setVerificationState('failed');
+      }
+    };
+    verify();
+  }, []);
+  switch (verificationState) {
+    case 'verified':
+      return <>{children}</>;
+    case 'failed':
+      router.push('/auth/login');
+    default:
+      return <LoadingPage></LoadingPage>;
+  }
 };
 
 export { AuthCheckWrapper };
