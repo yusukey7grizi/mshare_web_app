@@ -8,6 +8,7 @@ import { AuthCheckWrapper } from 'components/organisms';
 
 const Profile = () => {
   const auth = useAuth();
+  console.log(auth.user);
   const {
     data: movieList,
     isError,

@@ -20,6 +20,7 @@ import {
 
 import { axiosDefaultInstance } from 'utils/axiosConfig';
 import { useRouter } from 'next/router';
+import { PhotoSizeSelectActualRounded } from '@mui/icons-material';
 
 const firebaseConfig = {
   apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
@@ -51,7 +52,16 @@ type AuthState = {
 
 type VerificationResponse = {
   status: string;
-  user: UserInfo | null;
+  user: AdminSdkUserInfo | null;
+};
+
+type AdminSdkUserInfo = {
+  displayName: string;
+  email: string;
+  phoneNumber: string;
+  photoUrl: string;
+  providerId: string;
+  rawId: string;
 };
 
 type CsrfResponse = {
@@ -119,8 +129,10 @@ const useProvideAuth = () => {
         { headers: { 'X-CSRF-Token': csrfToken }, withCredentials: true }
       );
       if (res.status == 200) {
-        const { data } = await res;
-        await setUser(data.user);
+        const { user } = await res.data;
+        if (user) {
+          await setUser({ uid: user?.rawId, photoURL: user.photoUrl, ...user });
+        }
         return true;
       } else {
         return false;
@@ -179,8 +191,10 @@ const useProvideAuth = () => {
         { headers: { 'X-CSRF-Token': csrfToken }, withCredentials: true }
       );
       if (res.status == 200) {
-        const { data } = await res;
-        await setUser(data.user);
+        const { user } = await res.data;
+        if (user) {
+          await setUser({ uid: user?.rawId, photoURL: user.photoUrl, ...user });
+        }
         return true;
       }
       return false;

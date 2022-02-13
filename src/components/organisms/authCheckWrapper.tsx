@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useRef, useState } from 'react';
+import React, { FC } from 'react';
 import { useAuth } from 'contexts/authContext';
 import { LoadingPage } from 'components/templates/loadingTemplate';
 
