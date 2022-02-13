@@ -12,7 +12,6 @@ import { useMediaQuery } from '@mui/material';
 import { motion } from 'framer-motion';
 import { MinScreenSize } from 'components/constants';
 import { useAuth } from 'contexts/authContext';
-import axios from 'axios';
 import { axiosDefaultInstance } from 'utils/axiosConfig';
 
 type FaceRecognitionProps = {

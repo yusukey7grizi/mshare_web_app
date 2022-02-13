@@ -15,11 +15,10 @@ import {
   signOut,
   updateProfile,
   UserInfo,
-  UserCredential,
 } from 'firebase/auth';
 
-import axios from 'axios';
 import { axiosDefaultInstance } from 'utils/axiosConfig';
+import { useRouter } from 'next/router';
 
 const firebaseConfig = {
   apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
@@ -34,6 +33,7 @@ const firebaseConfig = {
 type AuthState = {
   user: UserInfo | null;
   csrfToken: string;
+  refreshed: boolean;
   getCsrfToken: () => Promise<void>;
   logIn: (email: string, password: string) => Promise<boolean>;
   createUser: (
@@ -63,9 +63,9 @@ const authContext = createContext({} as AuthState);
 export const AuthProvider: FC = ({ children }) => {
   const authState: AuthState = useProvideAuth();
 
-  useEffect(() => {
-    authState.getCsrfToken();
-  }, []);
+  // useEffect(() => {
+  //   authState.getCsrfToken();
+  // }, []);
   return (
     <authContext.Provider value={authState}>{children}</authContext.Provider>
   );
@@ -78,6 +78,7 @@ export const useAuth = () => {
 const useProvideAuth = () => {
   const [user, setUser] = useState<UserInfo | null>(null);
   const [csrfToken, setCsrfToken] = useState<string>('');
+  const [refreshed, setRefreshed] = useState<boolean>(true);
   const auth = getAuth();
   auth.setPersistence(inMemoryPersistence);
 
@@ -116,8 +117,9 @@ const useProvideAuth = () => {
         const { data } = await res;
         await setUser(data.user);
         return true;
+      } else {
+        return false;
       }
-      return false;
     } catch (error) {
       console.error(error);
       return false;
@@ -153,8 +155,9 @@ const useProvideAuth = () => {
       if (res.status == 200) {
         await setUser(null);
         return true;
+      } else {
+        return false;
       }
-      return false;
     } catch (error) {
       console.error(error);
       return false;
@@ -183,7 +186,7 @@ const useProvideAuth = () => {
   };
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+    const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
       if (currentUser) {
         setUser(currentUser as UserInfo);
       } else {
@@ -191,12 +194,31 @@ const useProvideAuth = () => {
       }
     });
 
+    const subscribe = async () => {
+      if (!csrfToken) {
+        await getCsrfToken();
+        return;
+      } else {
+        const res = await verifyUser();
+        if (res) {
+          console.log('signed in from previous session');
+          setRefreshed(false);
+        } else {
+          console.log('not logged in');
+          setRefreshed(false);
+        }
+      }
+    };
+
+    subscribe();
+
     return () => unsubscribe();
-  });
+  }, [csrfToken]);
 
   const authState: AuthState = {
     user: user,
     csrfToken: csrfToken,
+    refreshed: refreshed,
     getCsrfToken: getCsrfToken,
     logIn: signIn,
     createUser: signUp,

@@ -1,4 +1,3 @@
-import axios from 'axios';
 import useSWR from 'swr';
 import { Movie } from 'types/dataTypes';
 import { axiosDefaultInstance } from './axiosConfig';

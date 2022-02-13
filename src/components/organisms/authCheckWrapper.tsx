@@ -22,7 +22,11 @@ const AuthCheckWrapper: FC = ({ children }) => {
         setVerificationState('failed');
       }
     };
-    verify();
+    if (!auth.refreshed) {
+      verify();
+    } else {
+      setVerificationState('verified');
+    }
   }, []);
   switch (verificationState) {
     case 'verified':
