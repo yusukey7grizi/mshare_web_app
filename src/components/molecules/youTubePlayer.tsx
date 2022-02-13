@@ -42,6 +42,8 @@ const YouTubePlayer: FC<YouTubePlayerProps> = ({
     },
   };
 
+  const width = isLargeScreenSize ? '43rem' : '100%';
+
   const [isDetailOpened, setIsDetailOpened] = useState<boolean>(false);
   const { overview, title, createdAt, userName } = movie;
 
@@ -60,20 +62,23 @@ const YouTubePlayer: FC<YouTubePlayerProps> = ({
       />
       <Typography
         fontSize={FontSize['m']}
-        sx={{ fontWeight: 'bold', pt: '1rem' }}
+        sx={{ fontWeight: 'bold', pt: '1rem', width: width }}
       >
         {title}
       </Typography>
-      <Typography fontSize={FontSize['s']}>{userName}</Typography>
+      <Typography sx={{ width: width }} fontSize={FontSize['s']}>
+        {userName}
+      </Typography>
       <Typography gutterBottom fontSize={FontSize['xs']}>
         {createdDate}
       </Typography>
-      <Typography gutterBottom fontSize={FontSize['xs']}>
+      <Typography sx={{ width: width }} gutterBottom fontSize={FontSize['xs']}>
         ニヤッと回数：
         {grinningScore ? `${grinningScore} 回` : '0回'}
       </Typography>
       {isDetailOpened && (
         <Typography
+          sx={{ width: width }}
           fontSize={FontSize['xs']}
         >{`概要： ${overview}`}</Typography>
       )}
