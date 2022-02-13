@@ -21,7 +21,7 @@ const Profile = () => {
     return <ErrorPage />;
   }
   return (
-    <AuthCheckWrapper url='/profile'>
+    <AuthCheckWrapper>
       <ProfileTemplate
         email={auth.user?.email || ''}
         userName={auth.user?.displayName || ''}

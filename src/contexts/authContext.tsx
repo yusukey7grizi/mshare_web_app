@@ -1,10 +1,9 @@
 import React, {
   createContext,
-  Dispatch,
   FC,
-  SetStateAction,
   useContext,
   useEffect,
+  useRef,
   useState,
 } from 'react';
 import * as firebase from 'firebase/app';
@@ -20,6 +19,7 @@ import {
 } from 'firebase/auth';
 
 import { axiosDefaultInstance } from 'utils/axiosConfig';
+import { useRouter } from 'next/router';
 
 const firebaseConfig = {
   apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
@@ -31,16 +31,14 @@ const firebaseConfig = {
   measurementId: process.env.NEXT_PUBLIC_FIREBASE_MEASSUMENT_ID,
 };
 
+const ProtectedPaths = ['/profile', '/movie/post'];
+const AuthPaths = ['/auth/login', '/auth/register'];
+
 type AuthState = {
   user: UserInfo | null;
   csrfToken: string;
-  sessionPersisted: 'persisted' | 'processing' | 'expired';
-  setSessionPesisted: Dispatch<
-    SetStateAction<'persisted' | 'processing' | 'expired'>
-  >;
+  isProcessing: boolean;
   redirectUrl: string;
-  setRedirectUrl: Dispatch<SetStateAction<string>>;
-  getCsrfToken: () => Promise<void>;
   logIn: (email: string, password: string) => Promise<boolean>;
   createUser: (
     email: string,
@@ -81,12 +79,12 @@ export const useAuth = () => {
 const useProvideAuth = () => {
   const [user, setUser] = useState<UserInfo | null>(null);
   const [csrfToken, setCsrfToken] = useState<string>('');
-  const [sessionPersisted, setSessionPersisted] = useState<
-    'persisted' | 'processing' | 'expired'
-  >('processing');
+  const [isProcessing, setIsProcessing] = useState<boolean>(true);
   const [redirectUrl, setRedirectUrl] = useState<string>('');
   const auth = getAuth();
   auth.setPersistence(inMemoryPersistence);
+  const router = useRouter();
+  const { asPath } = router;
 
   // retrieve csrf token on the first visit
   const getCsrfToken = async () => {
@@ -95,13 +93,14 @@ const useProvideAuth = () => {
         withCredentials: true,
       });
       if (res.status == 200) {
-        const { data } = await res;
-        await setCsrfToken(data.csrfToken);
+        const { csrfToken } = await res.data;
+        await setCsrfToken(csrfToken);
+        return true;
       }
-      return;
+      return false;
     } catch (error) {
       console.error(error);
-      return;
+      return true;
     }
   };
 
@@ -122,7 +121,6 @@ const useProvideAuth = () => {
       if (res.status == 200) {
         const { data } = await res;
         await setUser(data.user);
-        await setSessionPersisted('persisted');
         return true;
       } else {
         return false;
@@ -161,7 +159,6 @@ const useProvideAuth = () => {
       );
       if (res.status == 200) {
         await setUser(null);
-        await setSessionPersisted('expired');
         return true;
       } else {
         return false;
@@ -193,6 +190,8 @@ const useProvideAuth = () => {
     }
   };
 
+  const secondCall = useRef(false);
+
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
       if (currentUser) {
@@ -204,16 +203,25 @@ const useProvideAuth = () => {
 
     const subscribe = async () => {
       if (!csrfToken) {
+        console.log('retrieving csrf token');
         await getCsrfToken();
-        return;
-      } else {
+        secondCall.current = await true;
+      } else if (
+        !AuthPaths.includes(asPath) &&
+        secondCall.current &&
+        !ProtectedPaths.includes(asPath)
+      ) {
+        await verifyUser();
+        secondCall.current = await false;
+      } else if (ProtectedPaths.includes(asPath)) {
         const res = await verifyUser();
-        if (res) {
-          console.log('signed in from previous session');
-          setSessionPersisted('persisted');
+        if (await res) {
+          console.log('user is signed in');
+          await setIsProcessing(false);
         } else {
           console.log('not logged in');
-          setSessionPersisted('expired');
+          await setRedirectUrl(asPath);
+          await router.push('/auth/login');
         }
       }
     };
@@ -221,16 +229,13 @@ const useProvideAuth = () => {
     subscribe();
 
     return () => unsubscribe();
-  }, [csrfToken]);
+  }, [csrfToken, asPath]);
 
   const authState: AuthState = {
     user: user,
     csrfToken: csrfToken,
-    sessionPersisted: sessionPersisted,
-    setSessionPesisted: setSessionPersisted,
+    isProcessing: isProcessing,
     redirectUrl: redirectUrl,
-    setRedirectUrl: setRedirectUrl,
-    getCsrfToken: getCsrfToken,
     logIn: signIn,
     createUser: signUp,
     logOut: logOut,
