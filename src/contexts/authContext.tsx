@@ -34,8 +34,12 @@ const firebaseConfig = {
 type AuthState = {
   user: UserInfo | null;
   csrfToken: string;
-  sessionPersisted: boolean;
-  setSessionPesisted: Dispatch<SetStateAction<boolean>>;
+  sessionPersisted: 'persisted' | 'processing' | 'expired';
+  setSessionPesisted: Dispatch<
+    SetStateAction<'persisted' | 'processing' | 'expired'>
+  >;
+  redirectUrl: string;
+  setRedirectUrl: Dispatch<SetStateAction<string>>;
   getCsrfToken: () => Promise<void>;
   logIn: (email: string, password: string) => Promise<boolean>;
   createUser: (
@@ -77,7 +81,10 @@ export const useAuth = () => {
 const useProvideAuth = () => {
   const [user, setUser] = useState<UserInfo | null>(null);
   const [csrfToken, setCsrfToken] = useState<string>('');
-  const [sessionPersisted, setSessionPersisted] = useState<boolean>(false);
+  const [sessionPersisted, setSessionPersisted] = useState<
+    'persisted' | 'processing' | 'expired'
+  >('processing');
+  const [redirectUrl, setRedirectUrl] = useState<string>('');
   const auth = getAuth();
   auth.setPersistence(inMemoryPersistence);
 
@@ -201,9 +208,10 @@ const useProvideAuth = () => {
         const res = await verifyUser();
         if (res) {
           console.log('signed in from previous session');
-          setSessionPersisted(true);
+          setSessionPersisted('persisted');
         } else {
           console.log('not logged in');
+          setSessionPersisted('expired');
         }
       }
     };
@@ -218,6 +226,8 @@ const useProvideAuth = () => {
     csrfToken: csrfToken,
     sessionPersisted: sessionPersisted,
     setSessionPesisted: setSessionPersisted,
+    redirectUrl: redirectUrl,
+    setRedirectUrl: setRedirectUrl,
     getCsrfToken: getCsrfToken,
     logIn: signIn,
     createUser: signUp,

@@ -3,7 +3,11 @@ import { useAuth } from 'contexts/authContext';
 import { useRouter } from 'next/router';
 import { LoadingPage } from 'components/templates/loadingTemplate';
 
-const AuthCheckWrapper: FC = ({ children }) => {
+type AuthCheckWrapperProps = {
+  url: string;
+};
+
+const AuthCheckWrapper: FC<AuthCheckWrapperProps> = ({ children, url }) => {
   const auth = useAuth();
   const router = useRouter();
   const [verificationState, setVerificationState] = useState<
@@ -22,19 +26,16 @@ const AuthCheckWrapper: FC = ({ children }) => {
         setVerificationState('failed');
       }
     };
-    if (auth.sessionPersisted) {
-      setVerificationState('verified');
-      auth.setSessionPesisted(false);
-      console.log('verified persisted user in the context useEffect');
-    } else if (auth.user && verificationState == 'processing') {
-      console.log('verifying current user');
+    if (auth.sessionPersisted != 'processing') {
       verify();
     }
   }, [auth.sessionPersisted]);
   switch (verificationState) {
     case 'verified':
+      auth.setRedirectUrl('');
       return <>{children}</>;
     case 'failed':
+      auth.setRedirectUrl(url);
       router.push('/auth/login');
     default:
       return <LoadingPage></LoadingPage>;
