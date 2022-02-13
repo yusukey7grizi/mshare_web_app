@@ -20,7 +20,6 @@ import {
 
 import { axiosDefaultInstance } from 'utils/axiosConfig';
 import { useRouter } from 'next/router';
-import { PhotoSizeSelectActualRounded } from '@mui/icons-material';
 
 const firebaseConfig = {
   apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
@@ -218,7 +217,6 @@ const useProvideAuth = () => {
     const subscribe = async () => {
       if (!csrfToken) {
         // first useEffect call after refresh
-        console.log('retrieving csrf token');
         await getCsrfToken();
         secondCall.current = await true;
       } else if (
@@ -233,10 +231,8 @@ const useProvideAuth = () => {
         // all path change to protectected paths
         const res = await verifyUser();
         if (await res) {
-          console.log('user is signed in');
           await setIsProcessing(false);
         } else {
-          console.log('not logged in');
           await setRedirectUrl(asPath);
           await router.push('/auth/login');
         }
