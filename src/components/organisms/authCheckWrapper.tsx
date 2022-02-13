@@ -22,12 +22,15 @@ const AuthCheckWrapper: FC = ({ children }) => {
         setVerificationState('failed');
       }
     };
-    if (!auth.refreshed) {
-      verify();
-    } else {
+    if (auth.sessionPersisted) {
       setVerificationState('verified');
+      auth.setSessionPesisted(false);
+      console.log('verified persisted user in the context useEffect');
+    } else if (auth.user && verificationState == 'processing') {
+      console.log('verifying current user');
+      verify();
     }
-  }, []);
+  }, [auth.sessionPersisted]);
   switch (verificationState) {
     case 'verified':
       return <>{children}</>;

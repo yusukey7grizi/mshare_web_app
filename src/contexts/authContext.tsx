@@ -1,6 +1,8 @@
 import React, {
   createContext,
+  Dispatch,
   FC,
+  SetStateAction,
   useContext,
   useEffect,
   useState,
@@ -18,7 +20,6 @@ import {
 } from 'firebase/auth';
 
 import { axiosDefaultInstance } from 'utils/axiosConfig';
-import { useRouter } from 'next/router';
 
 const firebaseConfig = {
   apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
@@ -33,7 +34,8 @@ const firebaseConfig = {
 type AuthState = {
   user: UserInfo | null;
   csrfToken: string;
-  refreshed: boolean;
+  sessionPersisted: boolean;
+  setSessionPesisted: Dispatch<SetStateAction<boolean>>;
   getCsrfToken: () => Promise<void>;
   logIn: (email: string, password: string) => Promise<boolean>;
   createUser: (
@@ -63,9 +65,6 @@ const authContext = createContext({} as AuthState);
 export const AuthProvider: FC = ({ children }) => {
   const authState: AuthState = useProvideAuth();
 
-  // useEffect(() => {
-  //   authState.getCsrfToken();
-  // }, []);
   return (
     <authContext.Provider value={authState}>{children}</authContext.Provider>
   );
@@ -78,7 +77,7 @@ export const useAuth = () => {
 const useProvideAuth = () => {
   const [user, setUser] = useState<UserInfo | null>(null);
   const [csrfToken, setCsrfToken] = useState<string>('');
-  const [refreshed, setRefreshed] = useState<boolean>(true);
+  const [sessionPersisted, setSessionPersisted] = useState<boolean>(false);
   const auth = getAuth();
   auth.setPersistence(inMemoryPersistence);
 
@@ -202,10 +201,9 @@ const useProvideAuth = () => {
         const res = await verifyUser();
         if (res) {
           console.log('signed in from previous session');
-          setRefreshed(false);
+          setSessionPersisted(true);
         } else {
           console.log('not logged in');
-          setRefreshed(false);
         }
       }
     };
@@ -218,7 +216,8 @@ const useProvideAuth = () => {
   const authState: AuthState = {
     user: user,
     csrfToken: csrfToken,
-    refreshed: refreshed,
+    sessionPersisted: sessionPersisted,
+    setSessionPesisted: setSessionPersisted,
     getCsrfToken: getCsrfToken,
     logIn: signIn,
     createUser: signUp,
