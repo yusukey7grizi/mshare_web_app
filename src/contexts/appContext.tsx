@@ -21,6 +21,8 @@ type AppState = {
   randomMovie: Maybe<Movie>;
   setSearchedMovieList: (input: Movie[]) => void;
   searchedMovieList: Movie[];
+  searchInput: string;
+  setSearchInput: (input: string) => void;
 };
 
 export const AppContext = createContext({} as AppState);
@@ -48,6 +50,7 @@ const AppProvider: FC = ({ children }) => {
   const [searchedMovieList, setSearchedMovieList] = useState<Movie[]>([]);
   const [movie, setMovie] = useState<Maybe<Movie>>(null);
   const [randomMovie, setRandomMovie] = useState<Maybe<Movie>>(null);
+  const [searchInput, setSearchInput] = useState<string>('');
 
   return (
     <AppContext.Provider
@@ -68,6 +71,8 @@ const AppProvider: FC = ({ children }) => {
         randomMovie: randomMovie,
         setSearchedMovieList: setSearchedMovieList,
         searchedMovieList: searchedMovieList,
+        setSearchInput: setSearchInput,
+        searchInput: searchInput,
       }}
     >
       {children}

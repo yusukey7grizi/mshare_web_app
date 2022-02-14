@@ -1,6 +1,6 @@
-import axios from 'axios';
 import useSWR from 'swr';
 import { Movie } from 'types/dataTypes';
+import { axiosDefaultInstance } from './axiosConfig';
 
 type UseMovie = {
   data: Movie;
@@ -19,7 +19,8 @@ interface CallBackType {
 }
 
 const useMovie = (url: string): UseMovie => {
-  const fetcher = (url: string) => axios.get(url).then((res) => res.data);
+  const fetcher = (url: string) =>
+    axiosDefaultInstance.get(url).then((res) => res.data);
   const { data, error } = useSWR(url, fetcher);
   return {
     data: data,
@@ -29,7 +30,8 @@ const useMovie = (url: string): UseMovie => {
 };
 
 const useMovieList = (url: string): UseMovieList => {
-  const fetcher = (url: string) => axios.get(url).then((res) => res.data);
+  const fetcher = (url: string) =>
+    axiosDefaultInstance.get(url).then((res) => res.data);
   const { data, error } = useSWR(url, fetcher);
   return {
     data: data,
@@ -39,7 +41,8 @@ const useMovieList = (url: string): UseMovieList => {
 };
 
 const useRelatedMovieList = (callback: CallBackType): UseMovieList => {
-  const fetcher = (url: string) => axios.get(url).then((res) => res.data);
+  const fetcher = (url: string) =>
+    axiosDefaultInstance.get(url).then((res) => res.data);
   const { data, error } = useSWR(callback, fetcher);
   return {
     data: data,

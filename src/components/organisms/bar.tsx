@@ -1,4 +1,4 @@
-import { FC, useState, useEffect } from 'react';
+import { FC, useState, useContext } from 'react';
 import { Box, Toolbar, AppBar, IconButton, useMediaQuery } from '@mui/material';
 import { SearchField } from 'components/atoms/textFields';
 import { BarTitle } from 'components/atoms/titles';
@@ -9,26 +9,27 @@ import { MenuDrawer } from 'components/molecules';
 import CloseIcon from '@mui/icons-material/Close';
 import SearchIcon from '@mui/icons-material/Search';
 import { MinScreenSize } from 'components/constants';
-
-type Props = {
-  isLoggedIn: boolean;
-};
+import { AppContext } from 'contexts/appContext';
 
 const iconButtonStyle = { width: '3rem', height: '3rem' } as const;
 
-const TopBar: FC<Props> = ({ isLoggedIn }) => {
+const TopBar: FC = () => {
   const router = useRouter();
   const auth = useAuth();
+  const { setSearchInput, searchInput } = useContext(AppContext);
   const isLargeScreenSize = useMediaQuery(MinScreenSize['xl']);
 
-  const [inputValue, setInputValue] = useState<string>('');
   const [isSearchFieldOpen, setIsSearchFieldOpen] = useState<boolean>(false);
 
+  const isLoggedIn = !!auth.user;
+
   const searchHandler = ({ key }: MuiKeyBoardEvent) => {
-    if (key === 'Enter') {
+    const isNonEmptyString = !!searchInput.replace(/\s/g, '');
+
+    if (key === 'Enter' && isNonEmptyString) {
       router.push({
         pathname: '/search',
-        query: { input: inputValue, useCase: 'title' },
+        query: { input: searchInput, useCase: 'title' },
       });
     }
   };
@@ -37,14 +38,18 @@ const TopBar: FC<Props> = ({ isLoggedIn }) => {
     if (!value) {
       return;
     }
-    setInputValue(value);
+    setSearchInput(value);
   };
 
   const logOutHandler = () => {
-    router.push('/auth/login');
-    auth.logOut().catch((err) => {
-      console.error(err);
-    });
+    auth
+      .logOut()
+      .then(() => {
+        router.push('/auth/login');
+      })
+      .catch((err) => {
+        console.error(err);
+      });
   };
 
   const logInHandler = () => {
@@ -70,20 +75,25 @@ const TopBar: FC<Props> = ({ isLoggedIn }) => {
             >
               <CloseIcon />
             </IconButton>
-            <SearchField onKeyPress={searchHandler} onChange={handleOnChange} />
+            <SearchField
+              defaultValue={searchInput}
+              onKeyPress={searchHandler}
+              onChange={handleOnChange}
+            />
           </>
         ) : (
           <>
             <Box>
               <MenuDrawer
+                isLoggedIn={isLoggedIn}
                 anchor={isLargeScreenSize ? 'left' : 'top'}
                 authHandler={isLoggedIn ? logOutHandler : logInHandler}
-                isLoggedIn
               />
               <BarTitle />
             </Box>
             {isLargeScreenSize ? (
               <SearchField
+                defaultValue={searchInput}
                 onKeyPress={searchHandler}
                 onChange={handleOnChange}
               />
@@ -105,22 +115,9 @@ const TopBar: FC<Props> = ({ isLoggedIn }) => {
 };
 
 const Bar: FC = ({ children }) => {
-  const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
-  const router = useRouter();
-  const auth = useAuth();
-
-  useEffect(() => {
-    const signedInUserId = auth.user;
-    if (!signedInUserId) {
-      setIsLoggedIn(false);
-      return;
-    }
-    setIsLoggedIn(true);
-  }, [router, auth]);
-
   return (
     <>
-      <TopBar isLoggedIn={isLoggedIn} />
+      <TopBar />
       <Box component='div' sx={{ mt: '8rem' }}>
         {children}
       </Box>

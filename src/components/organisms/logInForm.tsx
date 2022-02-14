@@ -25,8 +25,10 @@ const LogInForm = () => {
     event.preventDefault();
     auth
       .logIn(logInUserInput.email, logInUserInput.password)
-      .then(() => {
-        router.push('/');
+      .then((res) => {
+        if (res) {
+          router.push(auth.redirectUrl ? auth.redirectUrl : '/');
+        }
       })
       .catch((err) => {
         console.log(err);

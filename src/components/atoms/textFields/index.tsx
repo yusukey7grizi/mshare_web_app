@@ -14,11 +14,17 @@ type TextFieldProps = {
 type SearchFieldProps = {
   onKeyPress: ({ key }: MuiKeyBoardEvent) => void;
   onChange: ({ target: { value } }: MuiOnChangeEvent) => void;
+  defaultValue: string;
 };
 
-const SearchField: FC<SearchFieldProps> = ({ onKeyPress, onChange }) => {
+const SearchField: FC<SearchFieldProps> = ({
+  onKeyPress,
+  onChange,
+  defaultValue,
+}) => {
   return (
     <TextField
+      defaultValue={defaultValue}
       autoComplete='off'
       onChange={onChange}
       onKeyPress={onKeyPress}
@@ -47,6 +53,7 @@ const AuthFormTextField: FC<TextFieldProps> = ({
 
   return (
     <TextField
+      autoComplete='off'
       required
       type={type}
       error={error}

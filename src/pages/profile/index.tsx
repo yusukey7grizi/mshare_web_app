@@ -12,7 +12,7 @@ const Profile = () => {
     data: movieList,
     isError,
     isLoading,
-  } = useMovieList(`http://localhost:8000/movies?userId=${auth.user?.uid}`);
+  } = useMovieList(`/movies?userId=${auth.user?.uid}`);
 
   if (isLoading) {
     return <LoadingPage />;
@@ -22,11 +22,13 @@ const Profile = () => {
   }
   return (
     <AuthCheckWrapper>
-      <ProfileTemplate
-        email={auth.user?.email || ''}
-        userName={auth.user?.displayName || ''}
-        movieList={movieList}
-      />
+      {auth.user && (
+        <ProfileTemplate
+          email={auth.user.email || ''}
+          userName={auth.user.displayName || ''}
+          movieList={movieList || []}
+        />
+      )}
     </AuthCheckWrapper>
   );
 };
