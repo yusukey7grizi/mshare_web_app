@@ -11,7 +11,6 @@ import {
   createUserWithEmailAndPassword,
   getAuth,
   inMemoryPersistence,
-  onAuthStateChanged,
   signInWithEmailAndPassword,
   signOut,
   updateProfile,
@@ -206,14 +205,6 @@ const useProvideAuth = () => {
   const secondCall = useRef(false);
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
-      if (currentUser) {
-        setUser(currentUser as UserInfo);
-      } else {
-        setUser(null);
-      }
-    });
-
     const subscribe = async () => {
       if (!csrfToken) {
         // first useEffect call after refresh
@@ -240,8 +231,7 @@ const useProvideAuth = () => {
     };
 
     subscribe();
-
-    return () => unsubscribe();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [csrfToken, asPath]);
 
   const authState: AuthState = {
