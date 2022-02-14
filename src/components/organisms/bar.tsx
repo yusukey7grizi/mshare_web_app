@@ -42,10 +42,14 @@ const TopBar: FC = () => {
   };
 
   const logOutHandler = () => {
-    router.push('/auth/login');
-    auth.logOut().catch((err) => {
-      console.error(err);
-    });
+    auth
+      .logOut()
+      .then(() => {
+        router.push('/auth/login');
+      })
+      .catch((err) => {
+        console.error(err);
+      });
   };
 
   const logInHandler = () => {
