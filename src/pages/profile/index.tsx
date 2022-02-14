@@ -22,11 +22,13 @@ const Profile = () => {
   }
   return (
     <AuthCheckWrapper>
-      <ProfileTemplate
-        email={auth.user?.email || ''}
-        userName={auth.user?.displayName || ''}
-        movieList={movieList}
-      />
+      {auth.user && (
+        <ProfileTemplate
+          email={auth.user.email || ''}
+          userName={auth.user.displayName || ''}
+          movieList={movieList || []}
+        />
+      )}
     </AuthCheckWrapper>
   );
 };

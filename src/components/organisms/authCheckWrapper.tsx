@@ -5,7 +5,7 @@ import { LoadingPage } from 'components/templates/loadingTemplate';
 const AuthCheckWrapper: FC = ({ children }) => {
   const auth = useAuth();
 
-  return auth.isProcessing ? <LoadingPage></LoadingPage> : <>{children}</>;
+  return auth.isProcessing ? <LoadingPage /> : <>{children}</>;
 };
 
 export { AuthCheckWrapper };
