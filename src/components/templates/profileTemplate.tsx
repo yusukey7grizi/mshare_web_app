@@ -2,7 +2,7 @@ import React, { FC } from 'react';
 import { Box, Typography, useMediaQuery } from '@mui/material';
 import { MuiDivider } from 'components/atoms/divider';
 import { MovieListTitle } from 'components/atoms/texts';
-import { FontSize, MinScreenSize } from 'components/constants';
+import { FontSize, ScreenSize } from 'components/constants';
 import { MovieList } from 'components/organisms/movieList';
 import { Movie } from 'types/dataTypes';
 import { Bar } from 'components/organisms';
@@ -14,8 +14,8 @@ type Props = {
 };
 
 const ProfileTemplate: FC<Props> = ({ userName, email, movieList }) => {
-  const isLargeScreenSize = useMediaQuery(MinScreenSize['s']);
-  const fontSize = isLargeScreenSize ? FontSize['m'] : FontSize['xs'];
+  const isLargerThanIphone = useMediaQuery(ScreenSize.largerThanIphone);
+  const fontSize = isLargerThanIphone ? FontSize['m'] : FontSize['xs'];
 
   return (
     <Bar>

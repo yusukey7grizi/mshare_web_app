@@ -8,8 +8,9 @@ import { useAuth } from 'contexts/authContext';
 import { MenuDrawer } from 'components/molecules';
 import CloseIcon from '@mui/icons-material/Close';
 import SearchIcon from '@mui/icons-material/Search';
-import { MinScreenSize } from 'components/constants';
+import { ScreenSize } from 'components/constants';
 import { AppContext } from 'contexts/appContext';
+import { FlexBox } from 'components/atoms/layoutElement';
 
 const iconButtonStyle = { width: '3rem', height: '3rem' } as const;
 
@@ -17,7 +18,7 @@ const TopBar: FC = () => {
   const router = useRouter();
   const auth = useAuth();
   const { setSearchInput, searchInput } = useContext(AppContext);
-  const isLargeScreenSize = useMediaQuery(MinScreenSize['xl']);
+  const isLargerThanIpad = useMediaQuery(ScreenSize.largerThanIpad);
 
   const [isSearchFieldOpen, setIsSearchFieldOpen] = useState<boolean>(false);
 
@@ -83,15 +84,15 @@ const TopBar: FC = () => {
           </>
         ) : (
           <>
-            <Box>
+            <FlexBox>
               <MenuDrawer
                 isLoggedIn={isLoggedIn}
-                anchor={isLargeScreenSize ? 'left' : 'top'}
+                anchor={isLargerThanIpad ? 'left' : 'top'}
                 authHandler={isLoggedIn ? logOutHandler : logInHandler}
               />
               <BarTitle />
-            </Box>
-            {isLargeScreenSize ? (
+            </FlexBox>
+            {isLargerThanIpad ? (
               <SearchField
                 defaultValue={searchInput}
                 onKeyPress={searchHandler}

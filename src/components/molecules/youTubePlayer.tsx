@@ -1,6 +1,6 @@
 import { Box, Typography, useMediaQuery } from '@mui/material';
 import { ShowMoreButton } from 'components/atoms/buttons';
-import { FontSize, MinScreenSize } from 'components/constants';
+import { FontSize, ScreenSize } from 'components/constants';
 import { useAuth } from 'contexts/authContext';
 import React, { Dispatch, FC, SetStateAction, useState } from 'react';
 import YouTube, { Options } from 'react-youtube';
@@ -28,13 +28,14 @@ const YouTubePlayer: FC<YouTubePlayerProps> = ({
   const [isDetailOpened, setIsDetailOpened] = useState<boolean>(false);
   const { overview, title, createdAt, userName } = movie;
 
-  const isLargeScreenSize = useMediaQuery(MinScreenSize['l']);
-  const isMediumScreenSize = useMediaQuery(MinScreenSize['s']);
-  const width = isLargeScreenSize ? '43rem' : '100%';
+  const isLargerThanIpad = useMediaQuery(ScreenSize.largerThanIpad);
+  const isLargerThanIphone = useMediaQuery(ScreenSize.largerThanIphone);
+
+  const width = isLargerThanIpad ? '43rem' : '100%';
 
   const options: Options = {
-    height: isLargeScreenSize ? '350' : isMediumScreenSize ? '330' : '230',
-    width: isLargeScreenSize ? '700' : '100%',
+    height: isLargerThanIpad ? '350' : isLargerThanIphone ? '330' : '230',
+    width: isLargerThanIpad ? '700' : '100%',
     playerVars: {
       // https://developers.google.com/youtube/player_parameters
       autoplay: 0,
@@ -74,7 +75,7 @@ const YouTubePlayer: FC<YouTubePlayerProps> = ({
   };
 
   return (
-    <Box sx={{ margin: isLargeScreenSize ? 'auto' : 'unset' }}>
+    <Box sx={{ margin: isLargerThanIpad ? 'auto' : 'unset' }}>
       <YouTube
         onPause={handleSendScore}
         videoId={movie.youtubeTitleId}
