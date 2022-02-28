@@ -37,9 +37,7 @@ const AppProvider: FC = ({ children }) => {
   const [createUserInput, setCreateUserInput] = useState<CreateUserInput>({
     username: '',
     email: '',
-    confirmEmail: '',
     password: '',
-    confirmPassword: '',
   });
   const [logInUserInput, setLogInUserInput] = useState<LogInUserInput>({
     email: '',

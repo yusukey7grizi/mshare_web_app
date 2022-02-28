@@ -10,7 +10,7 @@ import { MoviePlayerState } from 'types';
 import { Movie } from 'types/dataTypes';
 import { useMediaQuery } from '@mui/material';
 import { motion } from 'framer-motion';
-import { MinScreenSize } from 'components/constants';
+import { ScreenSize } from 'components/constants';
 
 type FaceRecognitionProps = {
   moviePlayerState: MoviePlayerState;
@@ -35,8 +35,8 @@ const FaceRecognition: FC<FaceRecognitionProps> = ({
 
   const [isDragging, setIsDragging] = useState<boolean>(false);
 
-  const isLargeScreen = useMediaQuery(MinScreenSize['l']);
-  const cameraSize = isLargeScreen ? '5rem' : '3rem';
+  const isLargerThanIpad = useMediaQuery(ScreenSize.largerThanIpad);
+  const cameraSize = isLargerThanIpad ? '5rem' : '3rem';
 
   useInterval(async () => {
     if (
@@ -85,7 +85,7 @@ const FaceRecognition: FC<FaceRecognitionProps> = ({
   const handleSetX = () => {
     const currentX = webcamRef?.current?.getBoundingClientRect().x;
     const halfScreenWidth = window.innerWidth / 2;
-    const newX = isLargeScreen
+    const newX = isLargerThanIpad
       ? window.innerWidth - 100
       : window.innerWidth - 65;
 

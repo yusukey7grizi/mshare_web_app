@@ -22,18 +22,4 @@ const EmailField: FC<EmailFieldProps> = ({ onChange }) => {
   );
 };
 
-const ConfirmEmailField: FC<EmailFieldProps> = ({ onChange }) => {
-  return (
-    <FieldContainer>
-      <Typography gutterBottom>メールアドレスの確認</Typography>
-      <AuthFormTextField
-        type='email'
-        error={false}
-        placeholder='例 sample@gmail.com'
-        onChange={onChange}
-      />
-    </FieldContainer>
-  );
-};
-
-export { EmailField, ConfirmEmailField };
+export { EmailField };

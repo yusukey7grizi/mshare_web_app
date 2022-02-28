@@ -22,18 +22,4 @@ const PasswordField: FC<PasswordFieldProps> = ({ onChange }) => {
   );
 };
 
-const ConFirmPasswordField: FC<PasswordFieldProps> = ({ onChange }) => {
-  return (
-    <FieldContainer>
-      <Typography gutterBottom>パスワードの確認</Typography>
-      <AuthFormTextField
-        type='password'
-        error={false}
-        placeholder='パスワードを再度入力してください'
-        onChange={onChange}
-      />
-    </FieldContainer>
-  );
-};
-
-export { PasswordField, ConFirmPasswordField };
+export { PasswordField };

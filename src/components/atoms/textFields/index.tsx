@@ -2,7 +2,7 @@ import { FC } from 'react';
 import { InputAdornment, TextField, useMediaQuery } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 import { MuiKeyBoardEvent, MuiOnChangeEvent } from 'types';
-import { MinScreenSize } from 'components/constants';
+import { ScreenSize } from 'components/constants';
 
 type TextFieldProps = {
   placeholder: string;
@@ -30,7 +30,7 @@ const SearchField: FC<SearchFieldProps> = ({
       onKeyPress={onKeyPress}
       placeholder='映画を検索する'
       variant='filled'
-      sx={{ width: '40rem', pr: 2, pl: 2 }}
+      sx={{ width: '30rem', pr: 2, pl: 2 }}
       InputProps={{
         disableUnderline: true,
         startAdornment: (
@@ -49,17 +49,15 @@ const AuthFormTextField: FC<TextFieldProps> = ({
   type,
   onChange,
 }) => {
-  const isLargeScreenSize = useMediaQuery(MinScreenSize['m']);
-
   return (
     <TextField
+      fullWidth
       autoComplete='off'
       required
       type={type}
       error={error}
       placeholder={placeholder}
       InputLabelProps={{ shrink: true }}
-      sx={isLargeScreenSize ? { width: '30rem' } : { width: '15rem' }}
       variant='standard'
       onChange={onChange}
     />
@@ -72,12 +70,12 @@ const MovieFormTextField: FC<TextFieldProps> = ({
   type,
   onChange,
 }) => {
-  const isLargeScreenSize = useMediaQuery(MinScreenSize['m']);
+  const isLargerThanIpad = useMediaQuery(ScreenSize.largerThanIpad);
 
   return (
     <TextField
       autoComplete='off'
-      sx={isLargeScreenSize ? { width: '30rem' } : { width: '15rem' }}
+      sx={isLargerThanIpad ? { width: '30rem' } : { width: '100%' }}
       required
       type={type}
       error={error}
