@@ -1,5 +1,5 @@
-import { Link, Typography, Button } from '@mui/material';
-import { FontSize } from 'components/constants';
+import { Link, Typography, Button, useMediaQuery } from '@mui/material';
+import { FontSize, ScreenSize } from 'components/constants';
 import { useRouter } from 'next/router';
 import React, { FC } from 'react';
 
@@ -35,7 +35,7 @@ const AuthTitle: FC = () => {
     <Typography
       sx={{ marginTop: '50px' }}
       align='center'
-      fontSize={FontSize['xl']}
+      fontSize={FontSize['l']}
     >
       MShare へようこそ！
     </Typography>
@@ -43,10 +43,16 @@ const AuthTitle: FC = () => {
 };
 
 const RandomTitle: FC = () => {
+  const isLargerThanIphone = useMediaQuery(ScreenSize.largerThanIphone);
+
   return (
     <Typography
-      fontSize={FontSize['s']}
-      sx={{ pb: '7rem', fontWeight: 'bold', pt: '2rem' }}
+      sx={{
+        pb: '7rem',
+        fontWeight: 'bold',
+        pt: '2rem',
+        fontSize: isLargerThanIphone ? FontSize.m : FontSize.xs,
+      }}
       align='center'
     >
       ランダムガチャ検索で新しい映画と出会おう！
@@ -54,4 +60,22 @@ const RandomTitle: FC = () => {
   );
 };
 
-export { Subtitle, BarTitle, AuthTitle, RandomTitle };
+const PostTitle: FC = () => {
+  const isLargerThanIphone = useMediaQuery(ScreenSize.largerThanIphone);
+
+  return (
+    <Typography
+      fontFamily='monospace'
+      sx={{
+        p: 5,
+        fontSize: isLargerThanIphone ? FontSize.m : FontSize.xs,
+      }}
+      gutterBottom
+      align='center'
+    >
+      自分だけのオリジナル映画を共有しよう　！
+    </Typography>
+  );
+};
+
+export { Subtitle, BarTitle, AuthTitle, RandomTitle, PostTitle };

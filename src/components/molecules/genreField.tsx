@@ -1,11 +1,5 @@
-import {
-  Autocomplete,
-  TextField,
-  Typography,
-  useMediaQuery,
-} from '@mui/material';
+import { Autocomplete, TextField, Typography } from '@mui/material';
 import { FieldContainer } from 'components/atoms/layoutElement';
-import { MinScreenSize } from 'components/constants';
 import React, { FC } from 'react';
 import { MuiAutoCompleteOnChangeEvent } from 'types';
 
@@ -23,14 +17,11 @@ const GenreField: FC<GenreFieldProps> = ({ onChange }) => {
     '恋愛映画',
     'その他',
   ];
-  const isLargeScreenSize = useMediaQuery(MinScreenSize['m']);
 
   return (
     <FieldContainer>
       <Typography gutterBottom>ジャンル</Typography>
       <Autocomplete
-        sx={isLargeScreenSize ? { width: '30rem' } : { width: '15rem' }}
-        fullWidth
         options={options}
         onChange={onChange}
         renderInput={(params) => (

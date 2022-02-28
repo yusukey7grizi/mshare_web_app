@@ -11,9 +11,7 @@ export const Color = {
   orange: '#ff9100',
 } as const;
 
-export const MinScreenSize = {
-  s: '(min-width:400px)',
-  m: '(min-width:600px)',
-  l: '(min-width:710px)',
-  xl: '(min-width:970px)',
+export const ScreenSize = {
+  largerThanIpad: '(min-width:769px)',
+  largerThanIphone: '(min-width:477px)',
 } as const;

@@ -8,7 +8,7 @@ import {
 } from '@mui/material';
 import { styled } from '@mui/system';
 import GoogleIcon from '@mui/icons-material/Google';
-import { FontSize, MinScreenSize } from 'components/constants';
+import { FontSize, ScreenSize } from 'components/constants';
 
 type SubmitButtonProps = {
   text: 'ログイン' | '登録' | '作成';
@@ -81,13 +81,13 @@ const CustomFormButtonRoot: FC = styled('button')`
 `;
 
 const CustomSubmitButton: FC<SubmitButtonProps> = ({ text }) => {
-  const isLargeScreenSize = useMediaQuery(MinScreenSize['m']);
+  const isLargerThanIphone = useMediaQuery(ScreenSize.largerThanIphone);
 
   return (
     <Button
       type='submit'
       sx={
-        isLargeScreenSize
+        isLargerThanIphone
           ? { width: '30rem', height: '3.5rem', borderRadius: '35rem' }
           : { width: '15rem', borderRadius: '35rem' }
       }

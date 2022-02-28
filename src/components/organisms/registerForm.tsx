@@ -1,11 +1,8 @@
 import { Box } from '@mui/material';
 import { CustomSubmitButton } from 'components/atoms/buttons';
 import { AuthSwitchLink } from 'components/molecules/AuthSwitchLink';
-import { ConfirmEmailField, EmailField } from 'components/molecules/emailField';
-import {
-  ConFirmPasswordField,
-  PasswordField,
-} from 'components/molecules/passwordField';
+import { EmailField } from 'components/molecules/emailField';
+import { PasswordField } from 'components/molecules/passwordField';
 import { UsernameField } from 'components/molecules/usernameField';
 import { AppContext } from 'contexts/appContext';
 import { useAuth } from 'contexts/authContext';
@@ -13,12 +10,7 @@ import { useRouter } from 'next/router';
 import { FormEvent, useContext } from 'react';
 import { MuiOnChangeEvent } from 'types';
 
-type CreateUserFormInputTypes =
-  | 'email'
-  | 'password'
-  | 'confirmEmail'
-  | 'confirmPassword'
-  | 'username';
+type CreateUserFormInputTypes = 'email' | 'password' | 'username';
 
 const RegisterForm = () => {
   const { createUserInput, setCreateUserInput } = useContext(AppContext);
@@ -63,11 +55,7 @@ const RegisterForm = () => {
       onSubmit={(e: FormEvent) => createUserHandler(e)}
     >
       <EmailField onChange={createOnChangeHandler('email')} />
-      <ConfirmEmailField onChange={createOnChangeHandler('confirmEmail')} />
       <PasswordField onChange={createOnChangeHandler('password')} />
-      <ConFirmPasswordField
-        onChange={createOnChangeHandler('confirmPassword')}
-      />
       <UsernameField onChange={createOnChangeHandler('username')} />
       <CustomSubmitButton text='登録' />
       <AuthSwitchLink useCase='register' />
