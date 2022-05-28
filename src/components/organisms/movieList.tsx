@@ -23,7 +23,7 @@ const MovieList: FC<Props> = ({ movieList }) => {
             該当する作品はありません
           </Typography>
         ) : (
-          <MovieItem key={movie.id} movie={movie} />
+          <MovieItem key={movie.movieId} movie={movie} />
         );
       })}
     </Box>

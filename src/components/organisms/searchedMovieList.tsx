@@ -18,7 +18,7 @@ const SearchedMovieList: FC<Props> = ({ movieList }) => {
       }}
     >
       {movieList.map((movie) => {
-        return <MovieItem key={movie.id} movie={movie} />;
+        return <MovieItem key={movie.movieId} movie={movie} />;
       })}
     </Box>
   );

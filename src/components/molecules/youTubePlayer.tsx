@@ -26,7 +26,7 @@ const YouTubePlayer: FC<YouTubePlayerProps> = ({
   const auth = useAuth();
 
   const [isDetailOpened, setIsDetailOpened] = useState<boolean>(false);
-  const { overview, title, createdAt, userName } = movie;
+  const { overview, title, createdAt, username } = movie;
 
   const isLargerThanIpad = useMediaQuery(ScreenSize.largerThanIpad);
   const isLargerThanIphone = useMediaQuery(ScreenSize.largerThanIphone);
@@ -64,7 +64,7 @@ const YouTubePlayer: FC<YouTubePlayerProps> = ({
     const putBody: PutMovieBody = { grinningScore: grinningScore };
 
     axiosDefaultInstance
-      .put(`/movies/${movie.id}`, putBody, {
+      .put(`/movies/${movie.movieId}`, putBody, {
         headers: {
           'Content-Type': 'application/json',
           'X-CSRF-Token': auth.csrfToken,
@@ -78,7 +78,7 @@ const YouTubePlayer: FC<YouTubePlayerProps> = ({
     <Box sx={{ margin: isLargerThanIpad ? 'auto' : 'unset' }}>
       <YouTube
         onPause={handleSendScore}
-        videoId={movie.youtubeTitleId}
+        videoId={movie.movieId}
         opts={options}
         onStateChange={playerStateUpdateHandler}
       />
@@ -89,7 +89,7 @@ const YouTubePlayer: FC<YouTubePlayerProps> = ({
         {title}
       </Typography>
       <Typography sx={{ width: width }} fontSize={FontSize['s']}>
-        {userName}
+        {username}
       </Typography>
       <Typography gutterBottom fontSize={FontSize['xs']}>
         {createdDate}

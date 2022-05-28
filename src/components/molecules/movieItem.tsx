@@ -19,7 +19,7 @@ const MovieItem: FC<MovieItemProps> = ({ movie }) => {
   const router = useRouter();
 
   const cardOnClickHandler = () => {
-    router.push(`/movie/${movie.id}`);
+    router.push(`/movie/${movie.movieId}`);
   };
 
   return (
@@ -33,7 +33,7 @@ const MovieItem: FC<MovieItemProps> = ({ movie }) => {
         >
           <CardMedia
             component='img'
-            image={`https://i.ytimg.com/vi/${movie.youtubeTitleId}/mqdefault.jpg`}
+            image={`https://i.ytimg.com/vi/${movie.movieId}/mqdefault.jpg`}
           />
           <CardContent>
             <Typography
@@ -47,7 +47,7 @@ const MovieItem: FC<MovieItemProps> = ({ movie }) => {
               {movie.title}
             </Typography>
             <Typography sx={{ fontSize: '0.8rem' }}>
-              {movie.userName}
+              {movie.username}
             </Typography>
           </CardContent>
         </CardActionArea>

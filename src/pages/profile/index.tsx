@@ -25,7 +25,7 @@ const Profile = () => {
       {auth.user && (
         <ProfileTemplate
           email={auth.user.email || ''}
-          userName={auth.user.displayName || ''}
+          username={auth.user.displayName || ''}
           movieList={movieList || []}
         />
       )}

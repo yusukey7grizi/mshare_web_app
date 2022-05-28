@@ -7,13 +7,13 @@ import { LoadingPage } from 'components/templates/loadingTemplate';
 
 const MovieDetail: FC = () => {
   const router = useRouter();
-  const { id } = router.query;
+  const { movieId } = router.query;
 
   const {
     data: movie,
     isError: isMovieError,
     isLoading: isMovieLoading,
-  } = useMovie(`/movies/${id}`);
+  } = useMovie(`/movies/${movieId}`);
 
   const {
     data: relatedMovieList,
@@ -21,8 +21,8 @@ const MovieDetail: FC = () => {
     isLoading: isRelatedMovieListLoading,
   } = useRelatedMovieList(() => `/movies?userId=${movie.userId}`);
 
-  const filteredRelatedMovieList = relatedMovieList?.filter(({ id }) => {
-    return id !== movie.id;
+  const filteredRelatedMovieList = relatedMovieList?.filter(({ movieId }) => {
+    return movieId !== movie.movieId;
   });
 
   if (isMovieError || isRelatedMovieListError) {

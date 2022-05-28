@@ -56,7 +56,7 @@ const MovieDetailTemplate: FC<Props> = ({ movie, relatedMovieList }) => {
           />
         </Box>
         <MuiDivider />
-        <MovieListTitle userName={movie.userName} />
+        <MovieListTitle username={movie.username} />
         <MovieList movieList={relatedMovieList} />
       </Bar>
     )

@@ -20,12 +20,12 @@ type CreateMovieFormInputTypes =
   | 'genre';
 
 interface PostMovieBody {
+  movieId: string;
   title: string;
   overview: string;
   userId: string;
-  userName: string;
+  username: string;
   genre: string;
-  youtubeTitleId: string;
 }
 
 const MovieForm: FC = () => {
@@ -55,21 +55,21 @@ const MovieForm: FC = () => {
   const moviePostHandler = async (event: FormEvent) => {
     event.preventDefault();
 
-    const youtubeTitleId = new URLSearchParams(
+    const movieId = new URLSearchParams(
       createMovieInput.youtubeLinkUrl.split('?')[1]
     ).get('v');
 
-    if (!(auth.user?.uid && auth.user?.displayName && youtubeTitleId)) {
+    if (!(auth.user?.uid && auth.user?.displayName && movieId)) {
       return;
     }
 
     const data: PostMovieBody = {
+      movieId: movieId,
       title: createMovieInput.title,
       overview: createMovieInput.overview,
       userId: auth.user.uid,
-      userName: auth.user.displayName,
+      username: auth.user.displayName,
       genre: createMovieInput.genre,
-      youtubeTitleId: youtubeTitleId,
     };
 
     axiosDefaultInstance

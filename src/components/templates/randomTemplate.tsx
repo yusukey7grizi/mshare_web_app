@@ -91,7 +91,7 @@ const RandomTemplate: FC<Props> = ({ onSubmit, onChange }) => {
             />
           </Box>
           <MuiDivider />
-          <MovieListTitle userName={randomMovie.userName} />
+          <MovieListTitle username={randomMovie.username} />
           <MovieList movieList={relatedMovieList} />
         </motion.div>
       )}
