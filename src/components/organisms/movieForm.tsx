@@ -77,7 +77,7 @@ const MovieForm: FC = () => {
     };
     try {
       const token = await getAccessTokenSilently({
-        audience: 'https://mshare-auth.com',
+        audience: process.env.NEXT_PUBLIC_AUTH0_JWT_AUDIENCE,
       });
       await axiosDefaultInstance.post('/movies', data, {
         headers: {

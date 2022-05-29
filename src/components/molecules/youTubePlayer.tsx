@@ -67,7 +67,7 @@ const YouTubePlayer: FC<YouTubePlayerProps> = ({
     const putBody: PutMovieBody = { grinningScore: `${grinningScore}` };
     try {
       const token = await getAccessTokenSilently({
-        audience: 'https://mshare-auth.com',
+        audience: process.env.NEXT_PUBLIC_AUTH0_JWT_AUDIENCE,
       });
       await axiosDefaultInstance.put(`/movies/${movie.movieId}`, putBody, {
         headers: {

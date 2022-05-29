@@ -30,7 +30,6 @@ function MyApp({ Component, pageProps }: AppProps) {
       clientId={process.env.NEXT_PUBLIC_AUTH0_CLIENT_ID as string}
       redirectUri={redirectUri}
       onRedirectCallback={onRedirectCallback}
-      audience={'https://mshare-auth.com'}
     >
       <AppProvider>
         <ThemeWrapper>
