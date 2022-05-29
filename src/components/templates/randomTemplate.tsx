@@ -33,15 +33,7 @@ const RandomTemplate: FC<Props> = ({ onSubmit, onChange }) => {
     currentTime: 0,
     duration: 0,
   });
-  const [grinningScore, setGrinningScore] = useState<number>(
-    randomMovie ? randomMovie.grinningScore : 0
-  );
-
-  useEffect(() => {
-    if (randomMovie) {
-      setGrinningScore(randomMovie.grinningScore);
-    }
-  }, [randomMovie]);
+  const [grinningScore, setGrinningScore] = useState<number>(0);
 
   return (
     <Bar>

@@ -1,12 +1,13 @@
+import { useAuth0 } from '@auth0/auth0-react';
 import { Box, Typography, useMediaQuery } from '@mui/material';
 import { ShowMoreButton } from 'components/atoms/buttons';
 import { FontSize, ScreenSize } from 'components/constants';
-import { useAuth } from 'contexts/authContext';
 import React, { Dispatch, FC, SetStateAction, useState } from 'react';
 import YouTube, { Options } from 'react-youtube';
 import { MoviePlayerState } from 'types';
 import { Movie } from 'types/dataTypes';
 import { axiosDefaultInstance } from 'utils/axiosConfig';
+// import { useAuth } from 'contexts/authContext';
 
 type YouTubePlayerProps = {
   movie: Movie;
@@ -15,7 +16,7 @@ type YouTubePlayerProps = {
 };
 
 type PutMovieBody = {
-  grinningScore: number;
+  grinningScore: string;
 };
 
 const YouTubePlayer: FC<YouTubePlayerProps> = ({
@@ -23,7 +24,7 @@ const YouTubePlayer: FC<YouTubePlayerProps> = ({
   setMoviePlayerState,
   grinningScore,
 }) => {
-  const auth = useAuth();
+  // const auth = useAuth();
 
   const [isDetailOpened, setIsDetailOpened] = useState<boolean>(false);
   const { overview, title, createdAt, username } = movie;
@@ -48,6 +49,8 @@ const YouTubePlayer: FC<YouTubePlayerProps> = ({
   const year = today.getFullYear();
   const createdDate = `${year}年${month}月${date}日 `;
 
+  const { getAccessTokenSilently } = useAuth0();
+
   // call back for state update
   const playerStateUpdateHandler = ({
     data,
@@ -60,18 +63,21 @@ const YouTubePlayer: FC<YouTubePlayerProps> = ({
     });
   };
 
-  const handleSendScore = () => {
-    const putBody: PutMovieBody = { grinningScore: grinningScore };
-
-    axiosDefaultInstance
-      .put(`/movies/${movie.movieId}`, putBody, {
+  const handleSendScore = async () => {
+    const putBody: PutMovieBody = { grinningScore: `${grinningScore}` };
+    try {
+      const token = await getAccessTokenSilently({
+        audience: 'https://mshare-auth.com',
+      });
+      await axiosDefaultInstance.put(`/movies/${movie.movieId}`, putBody, {
         headers: {
           'Content-Type': 'application/json',
-          'X-CSRF-Token': auth.csrfToken,
+          Authorization: `Bearer ${token}`,
         },
-        withCredentials: true,
-      })
-      .catch(() => console.error);
+      });
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   return (
@@ -95,8 +101,12 @@ const YouTubePlayer: FC<YouTubePlayerProps> = ({
         {createdDate}
       </Typography>
       <Typography sx={{ width: width }} gutterBottom fontSize={FontSize['xs']}>
-        ニヤッと回数：
+        あなたのニヤッと回数：
         {grinningScore ? `${grinningScore} 回` : '0回'}
+      </Typography>
+      <Typography sx={{ width: width }} gutterBottom fontSize={FontSize['xs']}>
+        合計ニヤッと回数：
+        {movie ? `${movie.grinningScore + grinningScore} 回` : '0回'}
       </Typography>
       {isDetailOpened && (
         <Typography

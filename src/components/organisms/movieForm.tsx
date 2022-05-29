@@ -8,10 +8,11 @@ import {
 import { TitleField } from 'components/molecules/titleField';
 import { AppContext } from 'contexts/appContext';
 import { MuiAutoCompleteOnChangeEvent, MuiOnChangeEvent } from 'types';
-import { useAuth } from 'contexts/authContext';
 import { useRouter } from 'next/router';
 import { CustomSubmitButton } from 'components/atoms/buttons';
 import { axiosDefaultInstance } from 'utils/axiosConfig';
+import { useAuth0 } from '@auth0/auth0-react';
+// import { useAuth } from 'contexts/authContext'; DEPRECATED
 
 type CreateMovieFormInputTypes =
   | 'title'
@@ -30,8 +31,9 @@ interface PostMovieBody {
 
 const MovieForm: FC = () => {
   const { createMovieInput, setCreateMovieInput } = useContext(AppContext);
-  const auth = useAuth();
   const router = useRouter();
+  const { user, getAccessTokenSilently } = useAuth0();
+  // const auth = useAuth(); DEPRECATED
 
   const createOnChangeHandler = (formType: CreateMovieFormInputTypes) => {
     return ({ target: { value } }: MuiOnChangeEvent) => {
@@ -54,12 +56,14 @@ const MovieForm: FC = () => {
 
   const moviePostHandler = async (event: FormEvent) => {
     event.preventDefault();
+    console.log(user);
 
     const movieId = new URLSearchParams(
       createMovieInput.youtubeLinkUrl.split('?')[1]
     ).get('v');
 
-    if (!(auth.user?.uid && auth.user?.displayName && movieId)) {
+    if (!(user?.sub && user?.nickname && movieId)) {
+      console.log('aborting', user?.sub, user?.nickname, movieId);
       return;
     }
 
@@ -67,25 +71,24 @@ const MovieForm: FC = () => {
       movieId: movieId,
       title: createMovieInput.title,
       overview: createMovieInput.overview,
-      userId: auth.user.uid,
-      username: auth.user.displayName,
+      userId: user.sub,
+      username: user.nickname,
       genre: createMovieInput.genre,
     };
-
-    axiosDefaultInstance
-      .post('/movies', data, {
+    try {
+      const token = await getAccessTokenSilently({
+        audience: 'https://mshare-auth.com',
+      });
+      await axiosDefaultInstance.post('/movies', data, {
         headers: {
           'Content-Type': 'application/json',
-          'X-CSRF-Token': auth.csrfToken,
+          Authorization: `Bearer ${token}`,
         },
-        withCredentials: true,
-      })
-      .then(() => {
-        router.push('/');
-      })
-      .catch(() => {
-        console.error;
       });
+      await router.push(`/movie/${movieId}`);
+    } catch (error) {
+      await router.push('/');
+    }
   };
 
   return (

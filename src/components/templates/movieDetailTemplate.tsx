@@ -21,15 +21,7 @@ const MovieDetailTemplate: FC<Props> = ({ movie, relatedMovieList }) => {
     currentTime: 0,
     duration: 0,
   });
-  const [grinningScore, setGrinningScore] = useState<number>(
-    movie ? movie.grinningScore : 0
-  );
-
-  useEffect(() => {
-    if (movie) {
-      setGrinningScore(movie.grinningScore);
-    }
-  }, [movie]);
+  const [grinningScore, setGrinningScore] = useState<number>(0);
 
   return (
     movie && (
