@@ -3,7 +3,7 @@ import { Box, Typography, useMediaQuery } from '@mui/material';
 import { ShowMoreButton } from 'components/atoms/buttons';
 import { FontSize, ScreenSize } from 'components/constants';
 import { CoreFunctionsContext } from 'contexts/coreFunctionsContext';
-import React, { FC, useContext, useState } from 'react';
+import React, { FC, useContext, useEffect, useState } from 'react';
 import YouTube, { Options } from 'react-youtube';
 import { Movie } from 'types/dataTypes';
 import { axiosDefaultInstance } from 'utils/axiosConfig';
@@ -11,10 +11,6 @@ import { axiosDefaultInstance } from 'utils/axiosConfig';
 
 type YouTubePlayerProps = {
   movie: Movie;
-};
-
-type PutMovieBody = {
-  grinningScore: string;
 };
 
 const YouTubePlayer: FC<YouTubePlayerProps> = ({ movie }) => {
@@ -45,8 +41,6 @@ const YouTubePlayer: FC<YouTubePlayerProps> = ({ movie }) => {
   const year = today.getFullYear();
   const createdDate = `${year}年${month}月${date}日 `;
 
-  const { getAccessTokenSilently } = useAuth0();
-
   // call back for state update
   const playerStateUpdateHandler = ({
     data,
@@ -59,27 +53,9 @@ const YouTubePlayer: FC<YouTubePlayerProps> = ({ movie }) => {
     });
   };
 
-  const handleSendScore = async () => {
-    const putBody: PutMovieBody = { grinningScore: `${grinningScore}` };
-    try {
-      const token = await getAccessTokenSilently({
-        audience: process.env.NEXT_PUBLIC_AUTH0_JWT_AUDIENCE,
-      });
-      await axiosDefaultInstance.put(`/movies/${movie.movieId}`, putBody, {
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`,
-        },
-      });
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
   return (
     <Box sx={{ margin: isLargerThanIpad ? 'auto' : 'unset' }}>
       <YouTube
-        onPause={handleSendScore}
         videoId={movie.movieId}
         opts={options}
         onStateChange={playerStateUpdateHandler}
@@ -102,7 +78,7 @@ const YouTubePlayer: FC<YouTubePlayerProps> = ({ movie }) => {
       </Typography>
       <Typography sx={{ width: width }} gutterBottom fontSize={FontSize['xs']}>
         合計ニヤッと回数：
-        {movie ? `${movie.grinningScore + grinningScore} 回` : '0回'}
+        {movie ? `${+movie.grinningScore + +grinningScore} 回` : '0回'}
       </Typography>
       {isDetailOpened && (
         <Typography

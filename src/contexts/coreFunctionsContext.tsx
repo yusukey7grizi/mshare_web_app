@@ -7,8 +7,6 @@ type CoreFunctionsState = {
   setMoviePlayerState: (input: MoviePlayerState) => void;
   grinningScore: number;
   setGrinningScore: (input: number) => void;
-  scoreBatch: number;
-  setScoreBatch: (input: number) => void;
 };
 
 export const CoreFunctionsContext = createContext({} as CoreFunctionsState);
@@ -20,7 +18,6 @@ const CoreFucntionsProvider: FC = ({ children }) => {
     duration: 0,
   });
   const [grinningScore, setGrinningScore] = useState<number>(0);
-  const [scoreBatch, setScoreBatch] = useState<number>(1);
 
   return (
     <CoreFunctionsContext.Provider
@@ -29,8 +26,6 @@ const CoreFucntionsProvider: FC = ({ children }) => {
         setMoviePlayerState: setMoviePlayerState,
         grinningScore: grinningScore,
         setGrinningScore: setGrinningScore,
-        scoreBatch: scoreBatch,
-        setScoreBatch: setScoreBatch,
       }}
     >
       {children}
