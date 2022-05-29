@@ -7,6 +7,7 @@ import { MoviePlayerState } from 'types';
 import { Box } from '@mui/material';
 import { Movie } from 'types/dataTypes';
 import { Bar } from 'components/organisms';
+import { PlayerCoreFunctions } from 'components/organisms/playerCoreFunctions';
 
 type Props = {
   movie: Movie;
@@ -15,13 +16,6 @@ type Props = {
 
 const MovieDetailTemplate: FC<Props> = ({ movie, relatedMovieList }) => {
   const movieDetailRef = useRef<HTMLDivElement>(null);
-
-  const [moviePlayerState, setMoviePlayerState] = useState<MoviePlayerState>({
-    playerState: -1,
-    currentTime: 0,
-    duration: 0,
-  });
-  const [grinningScore, setGrinningScore] = useState<number>(0);
 
   return (
     movie && (
@@ -34,18 +28,7 @@ const MovieDetailTemplate: FC<Props> = ({ movie, relatedMovieList }) => {
           }}
           ref={movieDetailRef}
         >
-          <YouTubePlayer
-            grinningScore={grinningScore}
-            movie={movie}
-            setMoviePlayerState={setMoviePlayerState}
-          />
-          <FaceRecognition
-            movieDetailRef={movieDetailRef}
-            moviePlayerState={moviePlayerState}
-            movie={movie}
-            grinningScore={grinningScore}
-            setGrinningScore={setGrinningScore}
-          />
+          <PlayerCoreFunctions movie={movie} movieDetailRef={movieDetailRef} />
         </Box>
         <MuiDivider />
         <MovieListTitle username={movie.username} />

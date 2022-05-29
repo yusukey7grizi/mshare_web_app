@@ -1,4 +1,4 @@
-import React, { FC, useState, useEffect, useRef } from 'react';
+import React, { FC, useState, useEffect, useRef, useContext } from 'react';
 import * as faceapi from 'face-api.js';
 import {
   detectSingleFace,
@@ -11,24 +11,20 @@ import { Movie } from 'types/dataTypes';
 import { useMediaQuery } from '@mui/material';
 import { motion } from 'framer-motion';
 import { ScreenSize } from 'components/constants';
+import { CoreFunctionsContext } from 'contexts/coreFunctionsContext';
 
 type FaceRecognitionProps = {
-  moviePlayerState: MoviePlayerState;
   movie: Movie;
-  grinningScore: number;
-  setGrinningScore: (input: number) => void;
   movieDetailRef: any;
 };
 
 // recognition threshold for determining expression
 const THRESHOLD = 0.5;
 
-const FaceRecognition: FC<FaceRecognitionProps> = ({
-  grinningScore,
-  movieDetailRef,
-  setGrinningScore,
-  moviePlayerState,
-}) => {
+const FaceRecognition: FC<FaceRecognitionProps> = ({ movieDetailRef }) => {
+  const { grinningScore, setGrinningScore, moviePlayerState } =
+    useContext(CoreFunctionsContext);
+
   const webcamRef = useRef<HTMLVideoElement>(null);
   const [isModelReady, setIsModelReady] = useState<boolean>(false);
   const [isWebcamReady, setIsWebcamReady] = useState<boolean>(false);
@@ -37,6 +33,7 @@ const FaceRecognition: FC<FaceRecognitionProps> = ({
 
   const isLargerThanIpad = useMediaQuery(ScreenSize.largerThanIpad);
   const cameraSize = isLargerThanIpad ? '5rem' : '3rem';
+  let mediaStream: MediaStream;
 
   useInterval(async () => {
     if (
@@ -72,12 +69,12 @@ const FaceRecognition: FC<FaceRecognitionProps> = ({
   const handleStartWebcam = async () => {
     if (webcamRef.current) {
       const webcam = webcamRef.current;
-      const handleGetUserMedia = await navigator.mediaDevices.getUserMedia({
+      mediaStream = await navigator.mediaDevices.getUserMedia({
         audio: false,
         video: { width: 100, height: 100 },
       });
 
-      webcam.srcObject = handleGetUserMedia;
+      webcam.srcObject = mediaStream;
       setIsWebcamReady(true);
     }
   };
@@ -103,6 +100,10 @@ const FaceRecognition: FC<FaceRecognitionProps> = ({
     };
 
     handleSetUpFaceDetection();
+
+    return () => {
+      mediaStream.getTracks().forEach((track) => track.stop());
+    };
   }, []);
 
   return (

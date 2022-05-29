@@ -18,6 +18,7 @@ import { AppContext } from 'contexts/appContext';
 import { MovieList } from 'components/organisms/movieList';
 import { FontSize } from 'components/constants';
 import { Bar } from 'components/organisms';
+import { PlayerCoreFunctions } from 'components/organisms/playerCoreFunctions';
 
 type Props = {
   onSubmit: (e: MuiOnClickEvent) => void;
@@ -27,13 +28,6 @@ type Props = {
 const RandomTemplate: FC<Props> = ({ onSubmit, onChange }) => {
   const { randomMovie, relatedMovieList } = useContext(AppContext);
   const movieDetailRef = useRef<HTMLDivElement>(null);
-
-  const [moviePlayerState, setMoviePlayerState] = useState<MoviePlayerState>({
-    playerState: -1,
-    currentTime: 0,
-    duration: 0,
-  });
-  const [grinningScore, setGrinningScore] = useState<number>(0);
 
   return (
     <Bar>
@@ -69,17 +63,9 @@ const RandomTemplate: FC<Props> = ({ onSubmit, onChange }) => {
             }}
             ref={movieDetailRef}
           >
-            <YouTubePlayer
-              grinningScore={grinningScore}
+            <PlayerCoreFunctions
               movie={randomMovie}
-              setMoviePlayerState={setMoviePlayerState}
-            />
-            <FaceRecognition
               movieDetailRef={movieDetailRef}
-              moviePlayerState={moviePlayerState}
-              movie={randomMovie}
-              grinningScore={grinningScore}
-              setGrinningScore={setGrinningScore}
             />
           </Box>
           <MuiDivider />

@@ -2,29 +2,25 @@ import { useAuth0 } from '@auth0/auth0-react';
 import { Box, Typography, useMediaQuery } from '@mui/material';
 import { ShowMoreButton } from 'components/atoms/buttons';
 import { FontSize, ScreenSize } from 'components/constants';
-import React, { Dispatch, FC, SetStateAction, useState } from 'react';
+import { CoreFunctionsContext } from 'contexts/coreFunctionsContext';
+import React, { FC, useContext, useState } from 'react';
 import YouTube, { Options } from 'react-youtube';
-import { MoviePlayerState } from 'types';
 import { Movie } from 'types/dataTypes';
 import { axiosDefaultInstance } from 'utils/axiosConfig';
 // import { useAuth } from 'contexts/authContext';
 
 type YouTubePlayerProps = {
   movie: Movie;
-  setMoviePlayerState: Dispatch<SetStateAction<MoviePlayerState>>;
-  grinningScore: number;
 };
 
 type PutMovieBody = {
   grinningScore: string;
 };
 
-const YouTubePlayer: FC<YouTubePlayerProps> = ({
-  movie,
-  setMoviePlayerState,
-  grinningScore,
-}) => {
+const YouTubePlayer: FC<YouTubePlayerProps> = ({ movie }) => {
   // const auth = useAuth();
+  const { grinningScore, setMoviePlayerState } =
+    useContext(CoreFunctionsContext);
 
   const [isDetailOpened, setIsDetailOpened] = useState<boolean>(false);
   const { overview, title, createdAt, username } = movie;
