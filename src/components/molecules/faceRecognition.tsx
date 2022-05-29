@@ -23,9 +23,13 @@ type PutMovieBody = {
   grinningScore: string;
 };
 // recognition threshold for determining expression
-const THRESHOLD = 0.3;
-const RECOGNITION_INTERVAL = 250;
-const MAX_BATCH_ITER = 40;
+const THRESHOLD = parseFloat(
+  process.env.NEXT_PUBLIC_RECOGNITION_THRESHOLD || '0.3'
+);
+const RECOGNITION_INTERVAL = parseInt(
+  process.env.NEXT_PUBLIC_RECOGNITION_INTERVAL || '500'
+);
+const MAX_BATCH_ITER = parseInt(process.env.NEXT_PUBLIC_MAX_BATCH_ITER || '20');
 
 const FaceRecognition: FC<FaceRecognitionProps> = ({
   movieDetailRef,
