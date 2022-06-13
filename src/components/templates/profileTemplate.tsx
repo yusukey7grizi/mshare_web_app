@@ -8,12 +8,12 @@ import { Movie } from 'types/dataTypes';
 import { Bar } from 'components/organisms';
 
 type Props = {
-  userName: string;
+  username: string;
   email: string;
   movieList: Movie[];
 };
 
-const ProfileTemplate: FC<Props> = ({ userName, email, movieList }) => {
+const ProfileTemplate: FC<Props> = ({ username, email, movieList }) => {
   const isLargerThanIphone = useMediaQuery(ScreenSize.largerThanIphone);
   const fontSize = isLargerThanIphone ? FontSize['m'] : FontSize['xs'];
 
@@ -39,7 +39,7 @@ const ProfileTemplate: FC<Props> = ({ userName, email, movieList }) => {
           }}
         >
           <Typography fontSize={fontSize}>
-            ユーザーネーム: {userName}
+            ユーザーネーム: {username}
           </Typography>
           <Typography fontSize={fontSize}>メールアドレス: {email}</Typography>
         </Box>

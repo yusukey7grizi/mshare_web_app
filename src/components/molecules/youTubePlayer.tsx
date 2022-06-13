@@ -1,32 +1,21 @@
 import { Box, Typography, useMediaQuery } from '@mui/material';
 import { ShowMoreButton } from 'components/atoms/buttons';
 import { FontSize, ScreenSize } from 'components/constants';
-import { useAuth } from 'contexts/authContext';
-import React, { Dispatch, FC, SetStateAction, useState } from 'react';
+import { CoreFunctionsContext } from 'contexts/coreFunctionsContext';
+import React, { FC, useContext, useState } from 'react';
 import YouTube, { Options } from 'react-youtube';
-import { MoviePlayerState } from 'types';
 import { Movie } from 'types/dataTypes';
-import { axiosDefaultInstance } from 'utils/axiosConfig';
 
 type YouTubePlayerProps = {
   movie: Movie;
-  setMoviePlayerState: Dispatch<SetStateAction<MoviePlayerState>>;
-  grinningScore: number;
 };
 
-type PutMovieBody = {
-  grinningScore: number;
-};
-
-const YouTubePlayer: FC<YouTubePlayerProps> = ({
-  movie,
-  setMoviePlayerState,
-  grinningScore,
-}) => {
-  const auth = useAuth();
+const YouTubePlayer: FC<YouTubePlayerProps> = ({ movie }) => {
+  const { grinningScore, setMoviePlayerState } =
+    useContext(CoreFunctionsContext);
 
   const [isDetailOpened, setIsDetailOpened] = useState<boolean>(false);
-  const { overview, title, createdAt, userName } = movie;
+  const { overview, title, createdAt, username } = movie;
 
   const isLargerThanIpad = useMediaQuery(ScreenSize.largerThanIpad);
   const isLargerThanIphone = useMediaQuery(ScreenSize.largerThanIphone);
@@ -60,25 +49,10 @@ const YouTubePlayer: FC<YouTubePlayerProps> = ({
     });
   };
 
-  const handleSendScore = () => {
-    const putBody: PutMovieBody = { grinningScore: grinningScore };
-
-    axiosDefaultInstance
-      .put(`/movies/${movie.id}`, putBody, {
-        headers: {
-          'Content-Type': 'application/json',
-          'X-CSRF-Token': auth.csrfToken,
-        },
-        withCredentials: true,
-      })
-      .catch(() => console.error);
-  };
-
   return (
     <Box sx={{ margin: isLargerThanIpad ? 'auto' : 'unset' }}>
       <YouTube
-        onPause={handleSendScore}
-        videoId={movie.youtubeTitleId}
+        videoId={movie.movieId}
         opts={options}
         onStateChange={playerStateUpdateHandler}
       />
@@ -89,14 +63,18 @@ const YouTubePlayer: FC<YouTubePlayerProps> = ({
         {title}
       </Typography>
       <Typography sx={{ width: width }} fontSize={FontSize['s']}>
-        {userName}
+        {username}
       </Typography>
       <Typography gutterBottom fontSize={FontSize['xs']}>
         {createdDate}
       </Typography>
       <Typography sx={{ width: width }} gutterBottom fontSize={FontSize['xs']}>
-        ニヤッと回数：
+        あなたのニヤッと回数：
         {grinningScore ? `${grinningScore} 回` : '0回'}
+      </Typography>
+      <Typography sx={{ width: width }} gutterBottom fontSize={FontSize['xs']}>
+        合計ニヤッと回数：
+        {movie ? `${+movie.grinningScore + +grinningScore} 回` : '0回'}
       </Typography>
       {isDetailOpened && (
         <Typography

@@ -1,4 +1,4 @@
-import React, { FC, useState, useEffect, useRef } from 'react';
+import React, { FC, useState, useEffect, useRef, useContext } from 'react';
 import * as faceapi from 'face-api.js';
 import {
   detectSingleFace,
@@ -6,37 +6,52 @@ import {
   TNetInput,
 } from 'face-api.js';
 import useInterval from 'use-interval';
-import { MoviePlayerState } from 'types';
 import { Movie } from 'types/dataTypes';
 import { useMediaQuery } from '@mui/material';
 import { motion } from 'framer-motion';
 import { ScreenSize } from 'components/constants';
+import { CoreFunctionsContext } from 'contexts/coreFunctionsContext';
+import { axiosDefaultInstance } from 'utils/axiosConfig';
+import { useAuth0 } from '@auth0/auth0-react';
 
 type FaceRecognitionProps = {
-  moviePlayerState: MoviePlayerState;
   movie: Movie;
-  grinningScore: number;
-  setGrinningScore: (input: number) => void;
   movieDetailRef: any;
 };
 
+type PutMovieBody = {
+  grinningScore: string;
+};
 // recognition threshold for determining expression
-const THRESHOLD = 0.5;
+const THRESHOLD = parseFloat(
+  process.env.NEXT_PUBLIC_RECOGNITION_THRESHOLD || '0.3'
+);
+const RECOGNITION_INTERVAL = parseInt(
+  process.env.NEXT_PUBLIC_RECOGNITION_INTERVAL || '500'
+);
+const MAX_BATCH_ITER = parseInt(process.env.NEXT_PUBLIC_MAX_BATCH_ITER || '20');
 
 const FaceRecognition: FC<FaceRecognitionProps> = ({
-  grinningScore,
   movieDetailRef,
-  setGrinningScore,
-  moviePlayerState,
+  movie,
 }) => {
+  const { grinningScore, setGrinningScore, moviePlayerState } =
+    useContext(CoreFunctionsContext);
+
+  const { getAccessTokenSilently } = useAuth0();
+
   const webcamRef = useRef<HTMLVideoElement>(null);
   const [isModelReady, setIsModelReady] = useState<boolean>(false);
   const [isWebcamReady, setIsWebcamReady] = useState<boolean>(false);
 
   const [isDragging, setIsDragging] = useState<boolean>(false);
 
+  const [batchIter, setBatchIter] = useState<number>(0);
+  const [batchScore, setBatchScore] = useState<number>(0);
+
   const isLargerThanIpad = useMediaQuery(ScreenSize.largerThanIpad);
   const cameraSize = isLargerThanIpad ? '5rem' : '3rem';
+  let mediaStream: MediaStream;
 
   useInterval(async () => {
     if (
@@ -57,11 +72,21 @@ const FaceRecognition: FC<FaceRecognitionProps> = ({
         )) {
           if (value > THRESHOLD && key == 'happy') {
             setGrinningScore(grinningScore + 1);
+            setBatchScore(batchScore + 1);
           }
         }
       }
+      // each batch includes MAX_BATCH_ITER number of recognition iteration
+      if (batchIter === MAX_BATCH_ITER && batchScore > 0) {
+        await handleSendScore(batchScore);
+        setBatchIter(0);
+        setBatchScore(0);
+        return;
+      }
+      // keep track of the number of iterations
+      setBatchIter(batchIter + 1);
     }
-  }, 300);
+  }, RECOGNITION_INTERVAL);
 
   const handleLoadModels = async () => {
     await faceapi.loadTinyFaceDetectorModel('/models');
@@ -72,13 +97,13 @@ const FaceRecognition: FC<FaceRecognitionProps> = ({
   const handleStartWebcam = async () => {
     if (webcamRef.current) {
       const webcam = webcamRef.current;
-      const handleGetUserMedia = await navigator.mediaDevices.getUserMedia({
+      mediaStream = await navigator.mediaDevices.getUserMedia({
         audio: false,
         video: { width: 100, height: 100 },
       });
 
-      webcam.srcObject = handleGetUserMedia;
-      setIsWebcamReady(true);
+      webcam.srcObject = await mediaStream;
+      await setIsWebcamReady(true);
     }
   };
 
@@ -96,6 +121,23 @@ const FaceRecognition: FC<FaceRecognitionProps> = ({
     }
   };
 
+  const handleSendScore = async (score: number) => {
+    const putBody: PutMovieBody = { grinningScore: `${score}` };
+    try {
+      const token = await getAccessTokenSilently({
+        audience: process.env.NEXT_PUBLIC_AUTH0_JWT_AUDIENCE,
+      });
+      await axiosDefaultInstance.put(`/movies/${movie.movieId}`, putBody, {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+      });
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   useEffect(() => {
     const handleSetUpFaceDetection = async () => {
       await handleLoadModels();
@@ -103,6 +145,10 @@ const FaceRecognition: FC<FaceRecognitionProps> = ({
     };
 
     handleSetUpFaceDetection();
+
+    return () => {
+      if (mediaStream) mediaStream.getTracks().forEach((track) => track.stop());
+    };
   }, []);
 
   return (

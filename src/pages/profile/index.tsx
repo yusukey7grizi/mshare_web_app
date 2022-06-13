@@ -1,18 +1,18 @@
 import { LoadingPage } from 'components/templates/loadingTemplate';
 import { ErrorPage } from 'components/templates/errorTemplate';
 import { ProfileTemplate } from 'components/templates/profileTemplate';
-import { useAuth } from 'contexts/authContext';
 import React from 'react';
 import { useMovieList } from 'utils';
-import { AuthCheckWrapper } from 'components/organisms';
+import { useAuth0, withAuthenticationRequired } from '@auth0/auth0-react';
 
 const Profile = () => {
-  const auth = useAuth();
+  const { user } = useAuth0();
+
   const {
     data: movieList,
     isError,
     isLoading,
-  } = useMovieList(`/movies?userId=${auth.user?.uid}`);
+  } = useMovieList(`/movies?userId=${user?.sub}`);
 
   if (isLoading) {
     return <LoadingPage />;
@@ -21,16 +21,14 @@ const Profile = () => {
     return <ErrorPage />;
   }
   return (
-    <AuthCheckWrapper>
-      {auth.user && (
-        <ProfileTemplate
-          email={auth.user.email || ''}
-          userName={auth.user.displayName || ''}
-          movieList={movieList || []}
-        />
-      )}
-    </AuthCheckWrapper>
+    <ProfileTemplate
+      email={user?.email || ''}
+      username={user?.nickname || ''}
+      movieList={movieList || []}
+    />
   );
 };
 
-export default Profile;
+export default withAuthenticationRequired(Profile, {
+  onRedirecting: () => <LoadingPage />,
+});

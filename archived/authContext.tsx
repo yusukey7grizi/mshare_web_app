@@ -1,3 +1,6 @@
+// DEPRECATED,
+// AUTHENTICATION AND AUTHORIZATION ARE NOW IMPLEMENTED USING AUTH0 LIBRARY
+
 import React, {
   createContext,
   FC,
@@ -80,9 +83,9 @@ export const AuthProvider: FC = ({ children }) => {
   );
 };
 
-export const useAuth = () => {
-  return useContext(authContext);
-};
+// export const useAuth = () => {
+//   return useContext(authContext);
+// };
 
 const useProvideAuth = () => {
   const [user, setUser] = useState<UserInfo | null>(null);
