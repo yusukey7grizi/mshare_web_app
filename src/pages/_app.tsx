@@ -5,7 +5,6 @@ import { ThemeWrapper } from 'components/themeProvider';
 import { AppState, Auth0Provider, useAuth0 } from '@auth0/auth0-react';
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
-// import { AuthProvider } from 'contexts/authContext';
 
 function MyApp({ Component, pageProps }: AppProps) {
   const redirectUri =
@@ -24,7 +23,6 @@ function MyApp({ Component, pageProps }: AppProps) {
   }, [isAuthenticated, error]);
 
   return (
-    // <AuthProvider> DEPRECATED
     <Auth0Provider
       domain={process.env.NEXT_PUBLIC_AUTH0_DOMAIN as string}
       clientId={process.env.NEXT_PUBLIC_AUTH0_CLIENT_ID as string}
@@ -37,7 +35,6 @@ function MyApp({ Component, pageProps }: AppProps) {
         </ThemeWrapper>
       </AppProvider>
     </Auth0Provider>
-    // </AuthProvider>
   );
 }
 

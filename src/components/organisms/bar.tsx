@@ -11,7 +11,6 @@ import { ScreenSize } from 'components/constants';
 import { AppContext } from 'contexts/appContext';
 import { FlexBox } from 'components/atoms/layoutElement';
 import { useAuth0 } from '@auth0/auth0-react';
-// import { useAuth } from 'contexts/authContext';
 
 const iconButtonStyle = { width: '3rem', height: '3rem' } as const;
 
@@ -20,11 +19,8 @@ const TopBar: FC = () => {
   const { setSearchInput, searchInput } = useContext(AppContext);
   const isLargerThanIpad = useMediaQuery(ScreenSize.largerThanIpad);
   const { isAuthenticated, loginWithRedirect, logout } = useAuth0();
-  // const auth = useAuth(); DEPRECATED
 
   const [isSearchFieldOpen, setIsSearchFieldOpen] = useState<boolean>(false);
-
-  // const isLoggedIn = !!auth.user; DEPRECATED
 
   const searchHandler = ({ key }: MuiKeyBoardEvent) => {
     const isNonEmptyString = !!searchInput.replace(/\s/g, '');
@@ -43,22 +39,6 @@ const TopBar: FC = () => {
     }
     setSearchInput(value);
   };
-
-  // DEPRECATED
-  // const logOutHandler = () => {
-  //   auth
-  //     .logOut()
-  //     .then(() => {
-  //       router.push('/auth/login');
-  //     })
-  //     .catch((err) => {
-  //       console.error(err);
-  //     });
-  // };
-
-  // const logInHandler = () => {
-  //   router.push('/auth/login');
-  // };
 
   return (
     <AppBar position='fixed'>
@@ -92,8 +72,6 @@ const TopBar: FC = () => {
                 isLoggedIn={isAuthenticated}
                 authHandler={isAuthenticated ? logout : loginWithRedirect}
                 anchor={isLargerThanIpad ? 'left' : 'top'}
-                // isLoggedIn={isLoggedIn} DEPRECATED
-                // authHandler={isLoggedIn ? logOutHandler : logInHandler} DEPRECATED
               />
               <BarTitle />
             </FlexBox>

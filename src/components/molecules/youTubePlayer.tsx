@@ -1,20 +1,16 @@
-import { useAuth0 } from '@auth0/auth0-react';
 import { Box, Typography, useMediaQuery } from '@mui/material';
 import { ShowMoreButton } from 'components/atoms/buttons';
 import { FontSize, ScreenSize } from 'components/constants';
 import { CoreFunctionsContext } from 'contexts/coreFunctionsContext';
-import React, { FC, useContext, useEffect, useState } from 'react';
+import React, { FC, useContext, useState } from 'react';
 import YouTube, { Options } from 'react-youtube';
 import { Movie } from 'types/dataTypes';
-import { axiosDefaultInstance } from 'utils/axiosConfig';
-// import { useAuth } from 'contexts/authContext';
 
 type YouTubePlayerProps = {
   movie: Movie;
 };
 
 const YouTubePlayer: FC<YouTubePlayerProps> = ({ movie }) => {
-  // const auth = useAuth();
   const { grinningScore, setMoviePlayerState } =
     useContext(CoreFunctionsContext);
 

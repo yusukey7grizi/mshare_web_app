@@ -12,7 +12,6 @@ import { useRouter } from 'next/router';
 import { CustomSubmitButton } from 'components/atoms/buttons';
 import { axiosDefaultInstance } from 'utils/axiosConfig';
 import { useAuth0 } from '@auth0/auth0-react';
-// import { useAuth } from 'contexts/authContext'; DEPRECATED
 
 type CreateMovieFormInputTypes =
   | 'title'
@@ -33,7 +32,6 @@ const MovieForm: FC = () => {
   const { createMovieInput, setCreateMovieInput } = useContext(AppContext);
   const router = useRouter();
   const { user, getAccessTokenSilently } = useAuth0();
-  // const auth = useAuth(); DEPRECATED
 
   const createOnChangeHandler = (formType: CreateMovieFormInputTypes) => {
     return ({ target: { value } }: MuiOnChangeEvent) => {
