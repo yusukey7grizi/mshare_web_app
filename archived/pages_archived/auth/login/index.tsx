@@ -1,5 +1,5 @@
 import React from 'react';
-import { LoginTemplate } from 'components/templates/loginTemplate';
+import { LoginTemplate } from 'components_archived/loginTemplate';
 
 const LogIn = () => {
   return <LoginTemplate />;

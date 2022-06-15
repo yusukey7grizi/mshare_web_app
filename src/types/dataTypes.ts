@@ -7,15 +7,17 @@ type Genre =
   | '恋愛映画'
   | 'その他';
 
+// youtubeTitleId: now named movieId
+// userName: renamed to username
+// id: DEPRECATED
 type Movie = {
-  id: number;
+  movieId: string;
   userId: string;
   title: string;
   overview: string;
   genre: Genre;
-  youtubeTitleId: string;
   grinningScore: number;
-  userName: string;
+  username: string;
   createdAt: string;
 };
 

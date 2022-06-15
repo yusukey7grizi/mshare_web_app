@@ -20,7 +20,7 @@ const Random = () => {
     axiosDefaultInstance
       .get(`/movies/random?genre=${genre}`)
       .then((res) => {
-        const id = res.data.id;
+        const movieId = res.data.movieId;
         setRandomMovie(res.data);
 
         axiosDefaultInstance
@@ -28,7 +28,7 @@ const Random = () => {
           .then((res) => {
             setRelatedMovieList(
               res.data.filter((movie: Movie) => {
-                return movie.id !== id;
+                return movie.movieId !== movieId;
               })
             );
           })

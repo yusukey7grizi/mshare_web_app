@@ -2,15 +2,15 @@ import { Typography } from '@mui/material';
 import { FontSize } from 'components/constants';
 import React, { FC } from 'react';
 
-type MovieListTitleProps = { userName?: string };
+type MovieListTitleProps = { username?: string };
 
-const MovieListTitle: FC<MovieListTitleProps> = ({ userName }) => {
+const MovieListTitle: FC<MovieListTitleProps> = ({ username }) => {
   return (
     <Typography
       fontSize={FontSize['m']}
       sx={{ textAlign: 'center', pt: '2rem', pb: '1rem' }}
     >
-      {userName ? `${userName} さんのその他の作品` : `投稿した映画一覧`}
+      {username ? `${username} さんのその他の作品` : `投稿した映画一覧`}
     </Typography>
   );
 };

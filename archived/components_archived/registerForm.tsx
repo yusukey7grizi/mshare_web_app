@@ -1,9 +1,9 @@
 import { Box } from '@mui/material';
 import { CustomSubmitButton } from 'components/atoms/buttons';
-import { AuthSwitchLink } from 'components/molecules/AuthSwitchLink';
-import { EmailField } from 'components/molecules/emailField';
-import { PasswordField } from 'components/molecules/passwordField';
-import { UsernameField } from 'components/molecules/usernameField';
+import { AuthSwitchLink } from 'components_archived/AuthSwitchLink';
+import { EmailField } from 'components_archived/emailField';
+import { PasswordField } from 'components_archived/passwordField';
+import { UsernameField } from 'components_archived/usernameField';
 import { AppContext } from 'contexts/appContext';
 import { useAuth } from 'contexts/authContext';
 import { useRouter } from 'next/router';
