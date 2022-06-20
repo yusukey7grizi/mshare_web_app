@@ -1,9 +1,7 @@
-import React, { FC, useEffect, useRef, useState } from 'react';
+import React, { FC, useRef } from 'react';
 import { MuiDivider } from 'components/atoms/divider';
 import { MovieListTitle } from 'components/atoms/texts';
 import { MovieList } from 'components/organisms/movieList';
-import { FaceRecognition, YouTubePlayer } from 'components/molecules';
-import { MoviePlayerState } from 'types';
 import { Box } from '@mui/material';
 import { Movie } from 'types/dataTypes';
 import { Bar } from 'components/organisms';

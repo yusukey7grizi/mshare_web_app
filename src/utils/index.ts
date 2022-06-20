@@ -14,6 +14,15 @@ type UseMovieList = {
   isError: boolean;
 };
 
+type PutMovieBody = {
+  grinningScore: string;
+};
+
+type HandleSendScoreInput = {
+  grinningScore: number;
+  movieId: string;
+};
+
 interface CallBackType {
   (url: string): void;
 }
@@ -51,4 +60,19 @@ const useRelatedMovieList = (callback: CallBackType): UseMovieList => {
   };
 };
 
-export { useMovie, useMovieList, useRelatedMovieList };
+const handleSendScore = async (data: HandleSendScoreInput) => {
+  const { grinningScore, movieId } = data;
+  const putBody: PutMovieBody = { grinningScore: `${grinningScore}` };
+  console.log('is updating');
+  try {
+    await axiosDefaultInstance.put(`/movies/${movieId}`, putBody, {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+export { handleSendScore, useMovie, useMovieList, useRelatedMovieList };

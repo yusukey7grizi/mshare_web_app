@@ -23,6 +23,8 @@ type AppState = {
   searchedMovieList: Movie[];
   searchInput: string;
   setSearchInput: (input: string) => void;
+  grinningScore: number;
+  setGrinningScore: (input: number) => void;
 };
 
 export const AppContext = createContext({} as AppState);
@@ -49,6 +51,7 @@ const AppProvider: FC = ({ children }) => {
   const [movie, setMovie] = useState<Maybe<Movie>>(null);
   const [randomMovie, setRandomMovie] = useState<Maybe<Movie>>(null);
   const [searchInput, setSearchInput] = useState<string>('');
+  const [grinningScore, setGrinningScore] = useState<number>(0);
 
   return (
     <AppContext.Provider
@@ -71,6 +74,8 @@ const AppProvider: FC = ({ children }) => {
         searchedMovieList: searchedMovieList,
         setSearchInput: setSearchInput,
         searchInput: searchInput,
+        grinningScore: grinningScore,
+        setGrinningScore: setGrinningScore,
       }}
     >
       {children}
