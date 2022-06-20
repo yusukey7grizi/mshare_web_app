@@ -1,18 +1,20 @@
 import { Box, Typography, useMediaQuery } from '@mui/material';
 import { ShowMoreButton } from 'components/atoms/buttons';
 import { FontSize, ScreenSize } from 'components/constants';
+import { AppContext } from 'contexts/appContext';
 import { CoreFunctionsContext } from 'contexts/coreFunctionsContext';
 import React, { FC, useContext, useState } from 'react';
 import YouTube, { Options } from 'react-youtube';
 import { Movie } from 'types/dataTypes';
+import { handleSendScore } from 'utils';
 
 type YouTubePlayerProps = {
   movie: Movie;
 };
 
 const YouTubePlayer: FC<YouTubePlayerProps> = ({ movie }) => {
-  const { grinningScore, setMoviePlayerState } =
-    useContext(CoreFunctionsContext);
+  const { setMoviePlayerState } = useContext(CoreFunctionsContext);
+  const { grinningScore } = useContext(AppContext);
 
   const [isDetailOpened, setIsDetailOpened] = useState<boolean>(false);
   const { overview, title, createdAt, username } = movie;
@@ -52,6 +54,12 @@ const YouTubePlayer: FC<YouTubePlayerProps> = ({ movie }) => {
   return (
     <Box sx={{ margin: isLargerThanIpad ? 'auto' : 'unset' }}>
       <YouTube
+        onPause={() => {
+          handleSendScore({
+            grinningScore: grinningScore,
+            movieId: movie.movieId,
+          });
+        }}
         videoId={movie.movieId}
         opts={options}
         onStateChange={playerStateUpdateHandler}
