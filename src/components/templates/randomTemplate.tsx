@@ -1,17 +1,9 @@
 import { Box, Button } from '@mui/material';
 import { MuiDivider } from 'components/atoms/divider';
 import { MovieListTitle } from 'components/atoms/texts';
-import {
-  FaceRecognition,
-  GenreField,
-  YouTubePlayer,
-} from 'components/molecules';
-import React, { FC, useContext, useEffect, useRef, useState } from 'react';
-import {
-  MoviePlayerState,
-  MuiAutoCompleteOnChangeEvent,
-  MuiOnClickEvent,
-} from 'types';
+import { GenreField } from 'components/molecules';
+import React, { FC, useContext, useRef } from 'react';
+import { MuiAutoCompleteOnChangeEvent, MuiOnClickEvent } from 'types';
 import { motion } from 'framer-motion';
 import { RandomTitle } from 'components/atoms/titles';
 import { AppContext } from 'contexts/appContext';

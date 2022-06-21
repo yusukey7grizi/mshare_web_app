@@ -11,17 +11,14 @@ import { useMediaQuery } from '@mui/material';
 import { motion } from 'framer-motion';
 import { ScreenSize } from 'components/constants';
 import { CoreFunctionsContext } from 'contexts/coreFunctionsContext';
-import { axiosDefaultInstance } from 'utils/axiosConfig';
-import { useAuth0 } from '@auth0/auth0-react';
+import { AppContext } from 'contexts/appContext';
+import { handleSendScore } from 'utils';
 
 type FaceRecognitionProps = {
   movie: Movie;
   movieDetailRef: any;
 };
 
-type PutMovieBody = {
-  grinningScore: string;
-};
 // recognition threshold for determining expression
 const THRESHOLD = parseFloat(
   process.env.NEXT_PUBLIC_RECOGNITION_THRESHOLD || '0.3'
@@ -35,11 +32,9 @@ const FaceRecognition: FC<FaceRecognitionProps> = ({
   movieDetailRef,
   movie,
 }) => {
-  const { grinningScore, setGrinningScore, moviePlayerState } =
-    useContext(CoreFunctionsContext);
+  const { moviePlayerState } = useContext(CoreFunctionsContext);
 
-  const { getAccessTokenSilently } = useAuth0();
-
+  const { grinningScore, setGrinningScore } = useContext(AppContext);
   const webcamRef = useRef<HTMLVideoElement>(null);
   const [isModelReady, setIsModelReady] = useState<boolean>(false);
   const [isWebcamReady, setIsWebcamReady] = useState<boolean>(false);
@@ -71,14 +66,17 @@ const FaceRecognition: FC<FaceRecognitionProps> = ({
           detectionsWithExpressions?.expressions
         )) {
           if (value > THRESHOLD && key == 'happy') {
-            setGrinningScore(grinningScore + 1);
             setBatchScore(batchScore + 1);
+            setGrinningScore(grinningScore + 1);
           }
         }
       }
       // each batch includes MAX_BATCH_ITER number of recognition iteration
       if (batchIter === MAX_BATCH_ITER && batchScore > 0) {
-        await handleSendScore(batchScore);
+        await handleSendScore({
+          grinningScore: grinningScore,
+          movieId: movie.movieId,
+        });
         setBatchIter(0);
         setBatchScore(0);
         return;
@@ -121,23 +119,6 @@ const FaceRecognition: FC<FaceRecognitionProps> = ({
     }
   };
 
-  const handleSendScore = async (score: number) => {
-    const putBody: PutMovieBody = { grinningScore: `${score}` };
-    try {
-      const token = await getAccessTokenSilently({
-        audience: process.env.NEXT_PUBLIC_AUTH0_JWT_AUDIENCE,
-      });
-      await axiosDefaultInstance.put(`/movies/${movie.movieId}`, putBody, {
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`,
-        },
-      });
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
   useEffect(() => {
     const handleSetUpFaceDetection = async () => {
       await handleLoadModels();
@@ -149,6 +130,7 @@ const FaceRecognition: FC<FaceRecognitionProps> = ({
     return () => {
       if (mediaStream) mediaStream.getTracks().forEach((track) => track.stop());
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
