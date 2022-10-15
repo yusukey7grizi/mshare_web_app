@@ -15,3 +15,5 @@ export const ScreenSize = {
   largerThanIpad: '(min-width:769px)',
   largerThanIphone: '(min-width:477px)',
 } as const;
+
+export const BaseMargin = '4px';

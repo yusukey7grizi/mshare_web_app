@@ -2,9 +2,8 @@ import { AppProvider } from 'contexts/appContext';
 import type { AppProps } from 'next/app';
 import 'components/globals.css';
 import { ThemeWrapper } from 'components/themeProvider';
-import { AppState, Auth0Provider, useAuth0 } from '@auth0/auth0-react';
+import { AppState, Auth0Provider } from '@auth0/auth0-react';
 import { useRouter } from 'next/router';
-import { useEffect } from 'react';
 
 function MyApp({ Component, pageProps }: AppProps) {
   const redirectUri =
@@ -16,11 +15,6 @@ function MyApp({ Component, pageProps }: AppProps) {
   const onRedirectCallback = (appState: AppState | undefined) => {
     router.replace(appState?.returnTo || '/');
   };
-  const { isAuthenticated, error } = useAuth0();
-  useEffect(() => {
-    console.log(isAuthenticated);
-    console.log(error);
-  }, [isAuthenticated, error]);
 
   return (
     <Auth0Provider

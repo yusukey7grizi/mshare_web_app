@@ -54,14 +54,12 @@ const MovieForm: FC = () => {
 
   const moviePostHandler = async (event: FormEvent) => {
     event.preventDefault();
-    console.log(user);
 
     const movieId = new URLSearchParams(
       createMovieInput.youtubeLinkUrl.split('?')[1]
     ).get('v');
 
     if (!(user?.sub && user?.nickname && movieId)) {
-      console.log('aborting', user?.sub, user?.nickname, movieId);
       return;
     }
 
