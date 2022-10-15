@@ -26,7 +26,7 @@ const SearchField: FC<SearchFieldProps> = ({
 }) => {
   const styles = {
     height: BasePixel * 12,
-    fontSize: FontSize['s'],
+    fontSize: FontSize['m'],
     width: width,
   } as const;
 

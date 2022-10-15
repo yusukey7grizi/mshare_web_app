@@ -27,12 +27,12 @@ const MovieItem: FC<MovieItemProps> = ({ movie }) => {
       width: BasePixel * 80,
     },
     title: {
-      fontSize: FontSize['s'],
+      fontSize: FontSize['m'],
       fontWeight: 'bold',
       textOverflow: 'ellipsis',
     },
     username: {
-      fontSize: FontSize['xs'],
+      fontSize: FontSize['s'],
     },
   } as const;
 

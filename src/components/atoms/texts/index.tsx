@@ -7,7 +7,7 @@ type MovieListTitleProps = { username?: string };
 const MovieListTitle: FC<MovieListTitleProps> = ({ username }) => {
   const styles = {
     textAlign: 'center',
-    fontSize: FontSize['m'],
+    fontSize: FontSize['l'],
   } as const;
 
   return (

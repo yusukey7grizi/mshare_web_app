@@ -15,10 +15,10 @@ export const IconButtonStyle = {
 } as const;
 
 export const FontSize = {
-  xxs: '0.5rem',
-  xs: '0.8rem',
-  s: '1rem',
-  m: '1.2rem',
+  xxs: BasePixel * 1,
+  xs: BasePixel * 2,
+  s: BasePixel * 3,
+  m: BasePixel * 4,
   l: BasePixel * 5,
-  xl: '1.8rem',
+  xl: BasePixel * 6,
 } as const;

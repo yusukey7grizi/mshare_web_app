@@ -28,11 +28,11 @@ const YouTubePlayer: FC<YouTubePlayerProps> = ({ movie }) => {
     },
     title: {
       fontWeight: 'bold',
-      fontSize: FontSize['m'],
+      fontSize: FontSize['xl'],
       maxWidth: BasePixel * 175,
     },
-    username: { fontSize: FontSize['s'], maxWidth: BasePixel * 175 },
-    detail: { fontSize: FontSize['xs'], maxWidth: BasePixel * 175 },
+    username: { fontSize: FontSize['m'], maxWidth: BasePixel * 175 },
+    detail: { fontSize: FontSize['s'], maxWidth: BasePixel * 175 },
     youtube: {
       height: isLargerThanIpad ? '360' : isLargerThanIphone ? '320' : '240',
       width: isLargerThanIpad ? '700' : '100%',
