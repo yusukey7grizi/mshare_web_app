@@ -9,7 +9,11 @@ type Props = {
 };
 
 const SearchedMovieList: FC<Props> = ({ movieList }) => {
-  const styles = { flexWrap: 'wrap', gap: BasePixel * 2 } as const;
+  const styles = {
+    flexWrap: 'wrap',
+    justifyContent: 'center',
+    gap: BasePixel * 5,
+  } as const;
 
   return (
     <FlexBox sx={styles}>
