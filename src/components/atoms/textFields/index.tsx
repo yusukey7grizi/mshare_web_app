@@ -2,7 +2,7 @@ import { FC } from 'react';
 import { InputAdornment, TextField, useMediaQuery } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 import { MuiKeyBoardEvent, MuiOnChangeEvent } from 'types';
-import { ScreenSize } from 'components/constants';
+import { BasePixel, FontSize, ScreenSize } from 'components/constants';
 
 type TextFieldProps = {
   placeholder: string;
@@ -22,6 +22,12 @@ const SearchField: FC<SearchFieldProps> = ({
   onChange,
   defaultValue,
 }) => {
+  const styles = {
+    height: BasePixel * 12,
+    fontSize: FontSize['s'],
+    width: BasePixel * 120,
+  };
+
   return (
     <TextField
       defaultValue={defaultValue}
@@ -30,8 +36,8 @@ const SearchField: FC<SearchFieldProps> = ({
       onKeyPress={onKeyPress}
       placeholder='映画を検索する'
       variant='filled'
-      sx={{ width: '30rem', pr: 2, pl: 2 }}
       InputProps={{
+        style: styles,
         disableUnderline: true,
         startAdornment: (
           <InputAdornment position='start'>

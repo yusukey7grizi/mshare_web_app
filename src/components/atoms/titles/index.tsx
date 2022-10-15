@@ -13,6 +13,10 @@ const Subtitle: FC<SubtitleProps> = ({ text }) => {
 
 const BarTitle: FC = () => {
   const router = useRouter();
+  const styles = {
+    fontWeight: 'bold',
+    fontSize: FontSize['l'],
+  };
   return (
     <Link
       onClick={() => {
@@ -20,10 +24,8 @@ const BarTitle: FC = () => {
       }}
       underline='none'
       component={Button}
-      sx={{ fontWeight: 'bold' }}
+      sx={styles}
       align='center'
-      fontSize={FontSize['l']}
-      color='primary'
     >
       MShare
     </Link>

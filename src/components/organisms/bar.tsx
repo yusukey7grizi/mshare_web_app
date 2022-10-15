@@ -7,14 +7,12 @@ import { MuiKeyBoardEvent, MuiOnChangeEvent } from 'types';
 import { MenuDrawer } from 'components/molecules';
 import CloseIcon from '@mui/icons-material/Close';
 import SearchIcon from '@mui/icons-material/Search';
-import { ScreenSize } from 'components/constants';
+import { BasePixel, IconButtonStyle, ScreenSize } from 'components/constants';
 import { AppContext } from 'contexts/appContext';
 import { FlexBox } from 'components/atoms/layoutElement';
 import { useAuth0 } from '@auth0/auth0-react';
 
-const iconButtonStyle = { width: '3rem', height: '3rem' } as const;
-
-const TopBar: FC = () => {
+const Bar: FC = () => {
   const router = useRouter();
   const { setSearchInput, searchInput } = useContext(AppContext);
   const isLargerThanIpad = useMediaQuery(ScreenSize.largerThanIpad);
@@ -40,19 +38,22 @@ const TopBar: FC = () => {
     setSearchInput(value);
   };
 
+  const styles = {
+    toolBar: {
+      backgroundColor: '#ffff',
+      height: BasePixel * 20,
+      justifyContent: 'space-between',
+    },
+    iconButton: IconButtonStyle,
+  };
+
   return (
     <AppBar position='fixed'>
-      <Toolbar
-        sx={{
-          backgroundColor: '#ffff',
-          height: '80px',
-          justifyContent: 'space-between',
-        }}
-      >
+      <Toolbar sx={styles.toolBar}>
         {isSearchFieldOpen ? (
           <>
             <IconButton
-              sx={iconButtonStyle}
+              sx={styles.iconButton}
               onClick={() => {
                 setIsSearchFieldOpen(false);
               }}
@@ -83,7 +84,7 @@ const TopBar: FC = () => {
               />
             ) : (
               <IconButton
-                sx={iconButtonStyle}
+                sx={styles.iconButton}
                 onClick={() => {
                   setIsSearchFieldOpen(true);
                 }}
@@ -95,17 +96,6 @@ const TopBar: FC = () => {
         )}
       </Toolbar>
     </AppBar>
-  );
-};
-
-const Bar: FC = ({ children }) => {
-  return (
-    <>
-      <TopBar />
-      <Box component='div' sx={{ mt: '8rem' }}>
-        {children}
-      </Box>
-    </>
   );
 };
 
