@@ -2,11 +2,11 @@ import React, { FC, useRef } from 'react';
 import { MuiDivider } from 'components/atoms/divider';
 import { MovieListTitle } from 'components/atoms/texts';
 import { MovieList } from 'components/organisms/movieList';
-import { Box } from '@mui/material';
+import { Box, useMediaQuery } from '@mui/material';
 import { Movie } from 'types/dataTypes';
 import { Bar } from 'components/organisms';
 import { PlayerCoreFunctions } from 'components/organisms/playerCoreFunctions';
-import { BasePixel } from 'components/constants';
+import { BasePixel, ScreenSize } from 'components/constants';
 import { FlexBox } from 'components/atoms/layoutElement';
 
 type Props = {
@@ -16,6 +16,7 @@ type Props = {
 
 const MovieDetailTemplate: FC<Props> = ({ movie, relatedMovieList }) => {
   const movieDetailRef = useRef<HTMLDivElement>(null);
+  const isLargerThanIpad = useMediaQuery(ScreenSize.largerThanIpad);
   const styles = {
     box: { marginLeft: BasePixel * 6, marginRight: BasePixel * 6 },
     flexBox: {

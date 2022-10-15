@@ -47,17 +47,13 @@ const AuthTitle: FC = () => {
 
 const RandomTitle: FC = () => {
   const isLargerThanIphone = useMediaQuery(ScreenSize.largerThanIphone);
+  const styles = {
+    fontWeight: 'bold',
+    fontSize: isLargerThanIphone ? FontSize['m'] : FontSize['xs'],
+  } as const;
 
   return (
-    <Typography
-      sx={{
-        pb: '7rem',
-        fontWeight: 'bold',
-        pt: '2rem',
-        fontSize: isLargerThanIphone ? FontSize.m : FontSize.xs,
-      }}
-      align='center'
-    >
+    <Typography sx={styles}>
       ランダムガチャ検索で新しい映画と出会おう！
     </Typography>
   );

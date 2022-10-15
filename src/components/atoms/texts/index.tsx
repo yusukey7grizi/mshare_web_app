@@ -9,6 +9,7 @@ const MovieListTitle: FC<MovieListTitleProps> = ({ username }) => {
     textAlign: 'center',
     fontSize: FontSize['m'],
   } as const;
+
   return (
     <Typography sx={styles}>
       {username ? `${username} さんのその他の作品` : `投稿した映画一覧`}

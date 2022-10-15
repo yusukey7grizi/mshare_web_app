@@ -16,7 +16,7 @@ const GenreField: FC<GenreFieldProps> = ({ onChange }) => {
     'ミステリー映画',
     '恋愛映画',
     'その他',
-  ];
+  ] as const;
 
   return (
     <FieldContainer>
