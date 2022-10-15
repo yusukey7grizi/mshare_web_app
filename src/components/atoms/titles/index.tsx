@@ -16,7 +16,8 @@ const BarTitle: FC = () => {
   const styles = {
     fontWeight: 'bold',
     fontSize: FontSize['l'],
-  };
+  } as const;
+
   return (
     <Link
       onClick={() => {

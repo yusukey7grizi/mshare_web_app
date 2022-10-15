@@ -1,5 +1,5 @@
 import { FC, useState, useContext } from 'react';
-import { Box, Toolbar, AppBar, IconButton, useMediaQuery } from '@mui/material';
+import { Toolbar, AppBar, IconButton, useMediaQuery } from '@mui/material';
 import { SearchField } from 'components/atoms/textFields';
 import { BarTitle } from 'components/atoms/titles';
 import { useRouter } from 'next/router';
@@ -39,16 +39,18 @@ const Bar: FC = () => {
   };
 
   const styles = {
+    appBar: { backgroundColor: '#ffff' },
     toolBar: {
-      backgroundColor: '#ffff',
       height: BasePixel * 20,
       justifyContent: 'space-between',
+      marginLeft: BasePixel * 6,
+      marginRight: BasePixel * 6,
     },
     iconButton: IconButtonStyle,
-  };
+  } as const;
 
   return (
-    <AppBar position='fixed'>
+    <AppBar position='fixed' sx={styles.appBar}>
       <Toolbar sx={styles.toolBar}>
         {isSearchFieldOpen ? (
           <>
@@ -61,6 +63,7 @@ const Bar: FC = () => {
               <CloseIcon />
             </IconButton>
             <SearchField
+              width={BasePixel * 60}
               defaultValue={searchInput}
               onKeyPress={searchHandler}
               onChange={handleOnChange}
@@ -78,6 +81,7 @@ const Bar: FC = () => {
             </FlexBox>
             {isLargerThanIpad ? (
               <SearchField
+                width={BasePixel * 120}
                 defaultValue={searchInput}
                 onKeyPress={searchHandler}
                 onChange={handleOnChange}

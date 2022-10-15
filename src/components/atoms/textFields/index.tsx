@@ -15,18 +15,20 @@ type SearchFieldProps = {
   onKeyPress: ({ key }: MuiKeyBoardEvent) => void;
   onChange: ({ target: { value } }: MuiOnChangeEvent) => void;
   defaultValue: string;
+  width: number;
 };
 
 const SearchField: FC<SearchFieldProps> = ({
   onKeyPress,
   onChange,
   defaultValue,
+  width,
 }) => {
   const styles = {
     height: BasePixel * 12,
     fontSize: FontSize['s'],
-    width: BasePixel * 120,
-  };
+    width: width,
+  } as const;
 
   return (
     <TextField

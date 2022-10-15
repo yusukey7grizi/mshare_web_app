@@ -1,5 +1,6 @@
 import { Box, Typography } from '@mui/material';
-import { FontSize } from 'components/constants';
+import { FlexBox } from 'components/atoms/layoutElement';
+import { BasePixel, FontSize } from 'components/constants';
 import { MovieItem } from 'components/molecules';
 import React, { FC } from 'react';
 import { Movie } from 'types/dataTypes';
@@ -9,24 +10,28 @@ type Props = {
 };
 
 const MovieList: FC<Props> = ({ movieList }) => {
+  const styles = {
+    flexBox: { overflowX: 'scroll', gap: BasePixel * 2 },
+    box: {},
+    typography: {
+      fontSize: FontSize['m'],
+    },
+  } as const;
+
   return (
-    <Box
-      sx={{
-        display: 'flex',
-        flexDirection: 'row',
-        overflowX: 'scroll',
-      }}
-    >
+    <FlexBox sx={styles.flexBox}>
       {movieList.slice(0, 9).map((movie) => {
         return movieList.length === 0 ? (
-          <Typography fontSize={FontSize['m']}>
+          <Typography sx={styles.typography}>
             該当する作品はありません
           </Typography>
         ) : (
-          <MovieItem key={movie.movieId} movie={movie} />
+          <Box sx={styles.box}>
+            <MovieItem key={movie.movieId} movie={movie} />
+          </Box>
         );
       })}
-    </Box>
+    </FlexBox>
   );
 };
 

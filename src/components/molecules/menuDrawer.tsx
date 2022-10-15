@@ -39,7 +39,7 @@ const MenuDrawer: FC<Props> = ({ isLoggedIn, authHandler, anchor }) => {
   const styles = {
     button: IconButtonStyle,
     list: { width: anchor === 'left' ? BasePixel * 60 : '100%' },
-  };
+  } as const;
 
   return (
     <>
