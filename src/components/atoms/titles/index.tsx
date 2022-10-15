@@ -64,12 +64,10 @@ const PostTitle: FC = () => {
 
   return (
     <Typography
-      fontFamily='monospace'
       sx={{
-        p: 5,
-        fontSize: isLargerThanIphone ? FontSize.m : FontSize.xs,
+        fontFamily: 'monospace',
+        fontSize: isLargerThanIphone ? FontSize['m'] : FontSize['xs'],
       }}
-      gutterBottom
       align='center'
     >
       自分だけのオリジナル映画を共有しよう　！

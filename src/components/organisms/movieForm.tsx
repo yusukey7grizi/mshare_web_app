@@ -87,15 +87,16 @@ const MovieForm: FC = () => {
     }
   };
 
+  const styles = {
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+  } as const;
+
   return (
     <Box
       component='form'
-      sx={{
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        pb: '10rem',
-      }}
+      sx={styles}
       onSubmit={(e: FormEvent) => moviePostHandler(e)}
     >
       <TitleField onChange={createOnChangeHandler('title')} />

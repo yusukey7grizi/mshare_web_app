@@ -79,11 +79,14 @@ const MovieFormTextField: FC<TextFieldProps> = ({
   onChange,
 }) => {
   const isLargerThanIpad = useMediaQuery(ScreenSize.largerThanIpad);
+  const styles = {
+    width: isLargerThanIpad ? BasePixel * 120 : '100%',
+  } as const;
 
   return (
     <TextField
       autoComplete='off'
-      sx={isLargerThanIpad ? { width: '30rem' } : { width: '100%' }}
+      sx={styles}
       required
       type={type}
       error={error}
