@@ -50,7 +50,7 @@ const RandomTitle: FC = () => {
   const isLargerThanIphone = useMediaQuery(ScreenSize.largerThanIphone);
   const styles = {
     fontWeight: 'bold',
-    fontSize: isLargerThanIphone ? FontSize['m'] : FontSize['xs'],
+    fontSize: isLargerThanIphone ? FontSize['m'] : FontSize['s'],
   } as const;
 
   return (
@@ -64,7 +64,7 @@ const PostTitle: FC = () => {
   const isLargerThanIphone = useMediaQuery(ScreenSize.largerThanIphone);
   const styles = {
     fontFamily: 'monospace',
-    fontSize: isLargerThanIphone ? FontSize['m'] : FontSize['xs'],
+    fontSize: isLargerThanIphone ? FontSize['m'] : FontSize['s'],
   } as const;
 
   return (
