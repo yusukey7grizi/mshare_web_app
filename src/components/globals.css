@@ -1,4 +1,7 @@
+body {
+  margin: 0px;
+}
 ::-webkit-scrollbar {
-    width: 0; 
-    background: transparent;  
+  width: 0;
+  background: transparent;
 }

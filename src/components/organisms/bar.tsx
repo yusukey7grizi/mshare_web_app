@@ -44,8 +44,12 @@ const Bar: FC = memo(() => {
     toolBar: {
       height: BasePixel * 20,
       justifyContent: 'space-between',
-      marginLeft: BasePixel * 6,
+      marginLeft: BasePixel * 2,
       marginRight: BasePixel * 6,
+      '&.MuiToolbar-root': {
+        paddingLeft: 0,
+        paddingRight: 0,
+      },
     },
     iconButton: IconButtonStyle,
   } as const;
