@@ -1,5 +1,5 @@
 import { Link, Typography, Button, useMediaQuery } from '@mui/material';
-import { FontSize, ScreenSize } from 'components/constants';
+import { BasePixel, FontSize, ScreenSize } from 'components/constants';
 import { useRouter } from 'next/router';
 import React, { FC } from 'react';
 
@@ -13,6 +13,11 @@ const Subtitle: FC<SubtitleProps> = ({ text }) => {
 
 const BarTitle: FC = () => {
   const router = useRouter();
+  const styles = {
+    fontWeight: 'bold',
+    fontSize: FontSize['l'],
+  } as const;
+
   return (
     <Link
       onClick={() => {
@@ -20,10 +25,8 @@ const BarTitle: FC = () => {
       }}
       underline='none'
       component={Button}
-      sx={{ fontWeight: 'bold' }}
+      sx={styles}
       align='center'
-      fontSize={FontSize['l']}
-      color='primary'
     >
       MShare
     </Link>
@@ -31,12 +34,13 @@ const BarTitle: FC = () => {
 };
 
 const AuthTitle: FC = () => {
+  const styles = {
+    marginTop: BasePixel * 13,
+    fontSize: FontSize['l'],
+  } as const;
+
   return (
-    <Typography
-      sx={{ marginTop: '50px' }}
-      align='center'
-      fontSize={FontSize['l']}
-    >
+    <Typography sx={styles} align='center'>
       MShare へようこそ！
     </Typography>
   );
@@ -44,17 +48,13 @@ const AuthTitle: FC = () => {
 
 const RandomTitle: FC = () => {
   const isLargerThanIphone = useMediaQuery(ScreenSize.largerThanIphone);
+  const styles = {
+    fontWeight: 'bold',
+    fontSize: isLargerThanIphone ? FontSize['m'] : FontSize['xs'],
+  } as const;
 
   return (
-    <Typography
-      sx={{
-        pb: '7rem',
-        fontWeight: 'bold',
-        pt: '2rem',
-        fontSize: isLargerThanIphone ? FontSize.m : FontSize.xs,
-      }}
-      align='center'
-    >
+    <Typography sx={styles}>
       ランダムガチャ検索で新しい映画と出会おう！
     </Typography>
   );
@@ -62,18 +62,14 @@ const RandomTitle: FC = () => {
 
 const PostTitle: FC = () => {
   const isLargerThanIphone = useMediaQuery(ScreenSize.largerThanIphone);
+  const styles = {
+    fontFamily: 'monospace',
+    fontSize: isLargerThanIphone ? FontSize['m'] : FontSize['xs'],
+  } as const;
 
   return (
-    <Typography
-      fontFamily='monospace'
-      sx={{
-        p: 5,
-        fontSize: isLargerThanIphone ? FontSize.m : FontSize.xs,
-      }}
-      gutterBottom
-      align='center'
-    >
-      自分だけのオリジナル映画を共有しよう　！
+    <Typography sx={styles} align='center'>
+      自分だけのオリジナル映画を共有しよう！
     </Typography>
   );
 };

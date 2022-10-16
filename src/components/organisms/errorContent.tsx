@@ -1,6 +1,6 @@
-import React, { FC } from 'react';
+import React, { FC, memo } from 'react';
 import { Box, Typography } from '@mui/material';
-import { FontSize } from 'components/constants';
+import { BasePixel, FontSize } from 'components/constants';
 import SentimentVeryDissatisfiedIcon from '@mui/icons-material/SentimentVeryDissatisfied';
 
 type Props = {
@@ -11,21 +11,35 @@ type Props = {
     | '該当する作品がありませんでした';
 };
 
-const ErrorContent: FC<Props> = ({ title, subtitle }) => {
+// eslint-disable-next-line react/display-name
+const ErrorContent: FC<Props> = memo(({ title, subtitle }) => {
+  const styles = {
+    box: {
+      textAlign: 'center',
+      mt: BasePixel * 60,
+      ml: BasePixel * 6,
+      mr: BasePixel * 6,
+    },
+    icon: { width: BasePixel * 40, height: BasePixel * 40 },
+    title: {
+      fontSize: FontSize['xl'],
+    },
+    subTitle: {
+      fontSize: FontSize['s'],
+    },
+  } as const;
+
   return (
-    <Box sx={{ textAlign: 'center', mt: '15rem' }}>
-      <SentimentVeryDissatisfiedIcon
-        color='primary'
-        sx={{ width: '10rem', height: '10rem' }}
-      />
-      <Typography color='primary' fontSize={FontSize['xl']}>
+    <Box sx={styles.box}>
+      <SentimentVeryDissatisfiedIcon color='primary' sx={styles.icon} />
+      <Typography color='primary' sx={styles.title}>
         {title}
       </Typography>
-      <Typography color='primary' fontSize={FontSize['s']}>
+      <Typography color='primary' sx={styles.subTitle}>
         {subtitle}
       </Typography>
     </Box>
   );
-};
+});
 
 export { ErrorContent };

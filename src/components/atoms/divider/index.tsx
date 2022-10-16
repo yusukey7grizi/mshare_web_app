@@ -1,8 +1,9 @@
-import React, { FC } from 'react'
-import { Divider } from '@mui/material'
+import React, { FC, memo } from 'react';
+import { Divider } from '@mui/material';
 
-const MuiDivider: FC = () => {
-  return <Divider sx={{ mt: 5, mb: 5 }} />
-}
+// eslint-disable-next-line react/display-name
+const MuiDivider: FC<{ mt: number; mb: number }> = memo(({ mt, mb }) => {
+  return <Divider sx={{ mt: mt, mb: mb }} />;
+});
 
-export { MuiDivider }
+export { MuiDivider };

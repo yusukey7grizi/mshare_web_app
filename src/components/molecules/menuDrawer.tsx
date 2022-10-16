@@ -1,4 +1,4 @@
-import { FC, useEffect, useState } from 'react';
+import { FC, memo, useEffect, useState } from 'react';
 import {
   List,
   ListItem,
@@ -16,6 +16,7 @@ import LogoutIcon from '@mui/icons-material/Logout';
 import LoginIcon from '@mui/icons-material/Login';
 import MenuIcon from '@mui/icons-material/Menu';
 import { useRouter } from 'next/router';
+import { BasePixel, IconButtonStyle } from 'components/constants';
 
 type Props = {
   isLoggedIn: boolean;
@@ -23,7 +24,8 @@ type Props = {
   anchor: 'top' | 'left';
 };
 
-const MenuDrawer: FC<Props> = ({ isLoggedIn, authHandler, anchor }) => {
+// eslint-disable-next-line react/display-name
+const MenuDrawer: FC<Props> = memo(({ isLoggedIn, authHandler, anchor }) => {
   const [isOpen, setIsOpen] = useState(false);
   const router = useRouter();
 
@@ -35,13 +37,17 @@ const MenuDrawer: FC<Props> = ({ isLoggedIn, authHandler, anchor }) => {
     setIsOpen(false);
   }, [router]);
 
+  const styles = {
+    button: IconButtonStyle,
+    list: { width: anchor === 'left' ? BasePixel * 60 : '100%' },
+  } as const;
+
   return (
     <>
       <IconButton
-        size='large'
         color='inherit'
         aria-label='menu'
-        sx={{ width: '3rem', height: '3rem' }}
+        sx={styles.button}
         onClick={() => {
           setIsOpen(true);
         }}
@@ -58,7 +64,7 @@ const MenuDrawer: FC<Props> = ({ isLoggedIn, authHandler, anchor }) => {
           setIsOpen(true);
         }}
       >
-        <List sx={{ width: anchor === 'left' ? '15rem' : '100%' }}>
+        <List sx={styles.list}>
           <ListItem
             onClick={() => {
               router.push('/');
@@ -146,6 +152,6 @@ const MenuDrawer: FC<Props> = ({ isLoggedIn, authHandler, anchor }) => {
       </SwipeableDrawer>
     </>
   );
-};
+});
 
 export { MenuDrawer };

@@ -1,27 +1,28 @@
-import React, { FC } from 'react';
-import { Box } from '@mui/material';
+import React, { FC, memo } from 'react';
 import { MovieItem } from 'components/molecules';
 import { Movie } from 'types/dataTypes';
+import { BasePixel } from 'components/constants';
+import { FlexBox } from 'components/atoms/layoutElement';
 
 type Props = {
   movieList: Movie[];
 };
 
-const SearchedMovieList: FC<Props> = ({ movieList }) => {
+// eslint-disable-next-line react/display-name
+const SearchedMovieList: FC<Props> = memo(({ movieList }) => {
+  const styles = {
+    flexWrap: 'wrap',
+    justifyContent: 'center',
+    gap: BasePixel * 5,
+  } as const;
+
   return (
-    <Box
-      sx={{
-        display: 'flex',
-        flexDirection: 'row',
-        flexWrap: 'wrap',
-        justifyContent: 'space-evenly',
-      }}
-    >
+    <FlexBox sx={styles}>
       {movieList.map((movie) => {
         return <MovieItem key={movie.movieId} movie={movie} />;
       })}
-    </Box>
+    </FlexBox>
   );
-};
+});
 
 export { SearchedMovieList };

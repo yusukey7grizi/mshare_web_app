@@ -3,6 +3,7 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { orange, red } from '@mui/material/colors';
 
 const theme = createTheme({
+  spacing: 1,
   palette: {
     primary: {
       main: orange['A200'],
