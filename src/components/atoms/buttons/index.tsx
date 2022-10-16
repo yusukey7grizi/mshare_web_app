@@ -16,7 +16,7 @@ const ShowMoreButton: FC<ShowMoreButtonProps> = memo(
   ({ isDetailOpened, onClick }) => {
     const styles = {
       typography: {
-        fontSize: FontSize['xxs'],
+        fontSize: FontSize['s'],
       },
       link: {
         color: '#A9A9A9',
