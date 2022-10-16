@@ -1,4 +1,4 @@
-import React, { FC, useMemo } from 'react';
+import React, { FC, memo, useMemo } from 'react';
 import { Box, Typography, useMediaQuery } from '@mui/material';
 import { MuiDivider } from 'components/atoms/divider';
 import { MovieListTitle } from 'components/atoms/texts';
@@ -13,7 +13,8 @@ type Props = {
   movieList: Movie[];
 };
 
-const ProfileTemplate: FC<Props> = ({ username, email, movieList }) => {
+// eslint-disable-next-line react/display-name
+const ProfileTemplate: FC<Props> = memo(({ username, email, movieList }) => {
   const isLargerThanIphone = useMediaQuery(ScreenSize.largerThanIphone);
   const fontSize = isLargerThanIphone ? FontSize['m'] : FontSize['xs'];
 
@@ -69,6 +70,6 @@ const ProfileTemplate: FC<Props> = ({ username, email, movieList }) => {
       </Box>
     </>
   );
-};
+});
 
 export { ProfileTemplate };

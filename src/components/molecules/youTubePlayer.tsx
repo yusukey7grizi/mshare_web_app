@@ -3,7 +3,14 @@ import { ShowMoreButton } from 'components/atoms/buttons';
 import { BasePixel, FontSize, ScreenSize } from 'components/constants';
 import { AppContext } from 'contexts/appContext';
 import { CoreFunctionsContext } from 'contexts/coreFunctionsContext';
-import React, { FC, useContext, useMemo, useState } from 'react';
+import React, {
+  FC,
+  memo,
+  useCallback,
+  useContext,
+  useMemo,
+  useState,
+} from 'react';
 import YouTube, { Options } from 'react-youtube';
 import { Movie } from 'types/dataTypes';
 import { handleSendScore } from 'utils';
@@ -11,8 +18,8 @@ import { handleSendScore } from 'utils';
 type YouTubePlayerProps = {
   movie: Movie;
 };
-
-const YouTubePlayer: FC<YouTubePlayerProps> = ({ movie }) => {
+/* eslint-disable react/display-name */
+const YouTubePlayer: FC<YouTubePlayerProps> = memo(({ movie }) => {
   const { setMoviePlayerState } = useContext(CoreFunctionsContext);
   const { grinningScore } = useContext(AppContext);
 
@@ -22,6 +29,7 @@ const YouTubePlayer: FC<YouTubePlayerProps> = ({ movie }) => {
   const isLargerThanIpad = useMediaQuery(ScreenSize.largerThanIpad);
   const isLargerThanIphone = useMediaQuery(ScreenSize.largerThanIphone);
 
+  // styles
   const styles = {
     box: {
       margin: isLargerThanIpad ? 'auto' : 'unset',
@@ -47,6 +55,7 @@ const YouTubePlayer: FC<YouTubePlayerProps> = ({ movie }) => {
     },
   };
 
+  // memoized texts
   const createdDate = useMemo(() => {
     const today = new Date(createdAt);
     const date = String(today.getDate()).padStart(2, '0');
@@ -55,6 +64,50 @@ const YouTubePlayer: FC<YouTubePlayerProps> = ({ movie }) => {
 
     return `${year}年${month}月${date}日 `;
   }, [createdAt]);
+
+  const grinningScoreText = useMemo(() => {
+    if (grinningScore) {
+      return `あなたのニヤッと回数：${grinningScore} 回`;
+    }
+    return 'あなたのニヤッと回数：0回';
+  }, [grinningScore]);
+
+  const totalGrinningScoreText = useMemo(() => {
+    if (movie) {
+      return `合計ニヤッと回数：${+movie.grinningScore + +grinningScore} 回`;
+    }
+    return '合計ニヤッと回数：0回';
+  }, [grinningScore, movie]);
+
+  const overviewText = useMemo(() => {
+    return `概要： ${overview}`;
+  }, [overview]);
+
+  // memoized components
+  const Title = memo(() => {
+    return <Typography sx={styles.title}>{title}</Typography>;
+  });
+
+  const Username = memo(() => {
+    return <Typography sx={styles.username}>{username}</Typography>;
+  });
+
+  const CreatedDate = memo(() => {
+    return <Typography sx={styles.detail}>{createdDate}</Typography>;
+  });
+
+  const GrinningScore = memo(() => {
+    return <Typography sx={styles.detail}>{grinningScoreText}</Typography>;
+  });
+
+  const TotalGrinningScore = memo(() => {
+    return <Typography sx={styles.detail}>{totalGrinningScoreText}</Typography>;
+  });
+
+  const Overview = memo(() => {
+    return <Typography sx={styles.detail}>{overviewText}</Typography>;
+  });
+  /* eslint-enable react/display-name */
 
   // call back for state update
   const playerStateUpdateHandler = ({
@@ -68,33 +121,27 @@ const YouTubePlayer: FC<YouTubePlayerProps> = ({ movie }) => {
     });
   };
 
+  const handleSendScoreOnPause = useCallback(() => {
+    handleSendScore({
+      grinningScore: grinningScore,
+      movieId: movie.movieId,
+    });
+  }, [grinningScore, movie.movieId]);
+
   return (
     <Box sx={styles.box}>
       <YouTube
-        onPause={() => {
-          handleSendScore({
-            grinningScore: grinningScore,
-            movieId: movie.movieId,
-          });
-        }}
+        onPause={handleSendScoreOnPause}
         videoId={movie.movieId}
         opts={options}
         onStateChange={playerStateUpdateHandler}
       />
-      <Typography sx={styles.title}>{title}</Typography>
-      <Typography sx={styles.username}>{username}</Typography>
-      <Typography sx={styles.detail}>{createdDate}</Typography>
-      <Typography sx={styles.detail}>
-        あなたのニヤッと回数：
-        {grinningScore ? `${grinningScore} 回` : '0回'}
-      </Typography>
-      <Typography sx={styles.detail}>
-        合計ニヤッと回数：
-        {movie ? `${+movie.grinningScore + +grinningScore} 回` : '0回'}
-      </Typography>
-      {isOverviewOpened && (
-        <Typography sx={styles.detail}>{`概要： ${overview}`}</Typography>
-      )}
+      <Title />
+      <Username />
+      <CreatedDate />
+      <GrinningScore />
+      <TotalGrinningScore />
+      {isOverviewOpened && <Overview />}
       <ShowMoreButton
         onClick={() => {
           setIsOverviewOpened(!isOverviewOpened);
@@ -103,6 +150,6 @@ const YouTubePlayer: FC<YouTubePlayerProps> = ({ movie }) => {
       />
     </Box>
   );
-};
+});
 
 export { YouTubePlayer };

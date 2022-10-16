@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { FC, memo } from 'react';
 import { Box, Typography } from '@mui/material';
 import { BasePixel, FontSize } from 'components/constants';
 import SentimentVeryDissatisfiedIcon from '@mui/icons-material/SentimentVeryDissatisfied';
@@ -11,7 +11,8 @@ type Props = {
     | '該当する作品がありませんでした';
 };
 
-const ErrorContent: FC<Props> = ({ title, subtitle }) => {
+// eslint-disable-next-line react/display-name
+const ErrorContent: FC<Props> = memo(({ title, subtitle }) => {
   const styles = {
     box: {
       textAlign: 'center',
@@ -39,6 +40,6 @@ const ErrorContent: FC<Props> = ({ title, subtitle }) => {
       </Typography>
     </Box>
   );
-};
+});
 
 export { ErrorContent };

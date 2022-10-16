@@ -1,4 +1,4 @@
-import { FC, useState, useContext } from 'react';
+import { FC, useState, useContext, memo } from 'react';
 import { Toolbar, AppBar, IconButton, useMediaQuery } from '@mui/material';
 import { SearchField } from 'components/atoms/textFields';
 import { BarTitle } from 'components/atoms/titles';
@@ -12,7 +12,8 @@ import { AppContext } from 'contexts/appContext';
 import { FlexBox } from 'components/atoms/layoutElement';
 import { useAuth0 } from '@auth0/auth0-react';
 
-const Bar: FC = () => {
+// eslint-disable-next-line react/display-name
+const Bar: FC = memo(() => {
   const router = useRouter();
   const { setSearchInput, searchInput } = useContext(AppContext);
   const isLargerThanIpad = useMediaQuery(ScreenSize.largerThanIpad);
@@ -101,6 +102,6 @@ const Bar: FC = () => {
       </Toolbar>
     </AppBar>
   );
-};
+});
 
 export { Bar };

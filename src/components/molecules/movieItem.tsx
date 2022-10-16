@@ -8,14 +8,15 @@ import {
 } from '@mui/material';
 import { BasePixel, FontSize } from 'components/constants';
 import { useRouter } from 'next/router';
-import React, { FC, Fragment } from 'react';
+import React, { FC, Fragment, memo } from 'react';
 import { Movie } from 'types/dataTypes';
 
 type MovieItemProps = {
   movie: Movie;
 };
 
-const MovieItem: FC<MovieItemProps> = ({ movie }) => {
+/* eslint-disable react/display-name */
+const MovieItem: FC<MovieItemProps> = memo(({ movie }) => {
   const router = useRouter();
 
   const cardOnClickHandler = () => {
@@ -26,6 +27,7 @@ const MovieItem: FC<MovieItemProps> = ({ movie }) => {
     cardActionArea: {
       width: BasePixel * 80,
     },
+    cardContent: { padding: 0 },
     title: {
       fontSize: FontSize['m'],
       fontWeight: 'bold',
@@ -35,6 +37,23 @@ const MovieItem: FC<MovieItemProps> = ({ movie }) => {
       fontSize: FontSize['s'],
     },
   } as const;
+
+  const Title = memo(() => {
+    return (
+      <Typography noWrap sx={styles.title}>
+        {movie.title}
+      </Typography>
+    );
+  });
+
+  const Username = memo(() => {
+    return (
+      <Typography noWrap sx={styles.username}>
+        {movie.username}
+      </Typography>
+    );
+  });
+  /* eslint-enable react/display-name */
 
   return (
     <Box>
@@ -49,16 +68,14 @@ const MovieItem: FC<MovieItemProps> = ({ movie }) => {
             component='img'
             image={`https://i.ytimg.com/vi/${movie.movieId}/mqdefault.jpg`}
           />
-          <CardContent sx={{ padding: 0, paddingLeft: 1 }}>
-            <Typography noWrap sx={styles.title}>
-              {movie.title}
-            </Typography>
-            <Typography sx={styles.username}>{movie.username}</Typography>
+          <CardContent sx={styles.cardContent}>
+            <Title />
+            <Username />
           </CardContent>
         </CardActionArea>
       </Card>
     </Box>
   );
-};
+});
 
 export { MovieItem };

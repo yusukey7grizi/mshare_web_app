@@ -3,7 +3,7 @@ import { MuiDivider } from 'components/atoms/divider';
 import { BasePixel, FontSize } from 'components/constants';
 import { Bar } from 'components/organisms';
 import { MovieList } from 'components/organisms/movieList';
-import React, { FC } from 'react';
+import React, { FC, memo } from 'react';
 import { Genre, Movie } from 'types/dataTypes';
 import DoubleArrowIcon from '@mui/icons-material/DoubleArrow';
 import { useRouter } from 'next/router';
@@ -13,7 +13,8 @@ type Props = {
   movieList: Movie[];
 };
 
-const DashboardTemplate: FC<Props> = ({ movieList }) => {
+// eslint-disable-next-line react/display-name
+const DashboardTemplate: FC<Props> = memo(({ movieList }) => {
   const router = useRouter();
 
   const genre = {
@@ -27,7 +28,7 @@ const DashboardTemplate: FC<Props> = ({ movieList }) => {
   } as const;
   const genreList = Object.entries(genre);
 
-  const handleFilterMovieList = (genre: Genre) => {
+  const getFilteredMovieList = (genre: Genre) => {
     return movieList.filter((movie) => {
       return movie.genre === genre;
     });
@@ -64,7 +65,7 @@ const DashboardTemplate: FC<Props> = ({ movieList }) => {
                   もっと見る
                 </Button>
               </FlexBox>
-              <MovieList movieList={handleFilterMovieList(genre[1] as Genre)} />
+              <MovieList movieList={getFilteredMovieList(genre[1])} />
               {genreList.length.toString() !== genre[0] && (
                 <MuiDivider mb={BasePixel * 5} mt={BasePixel * 5} />
               )}
@@ -74,6 +75,6 @@ const DashboardTemplate: FC<Props> = ({ movieList }) => {
       </Box>
     </>
   );
-};
+});
 
 export { DashboardTemplate };
