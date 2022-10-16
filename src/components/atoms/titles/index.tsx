@@ -13,6 +13,11 @@ const Subtitle: FC<SubtitleProps> = ({ text }) => {
 
 const BarTitle: FC = () => {
   const router = useRouter();
+  const styles = {
+    fontWeight: 'bold',
+    fontSize: FontSize['l'],
+  } as const;
+
   return (
     <Link
       onClick={() => {
@@ -20,10 +25,8 @@ const BarTitle: FC = () => {
       }}
       underline='none'
       component={Button}
-      sx={{ fontWeight: 'bold' }}
+      sx={styles}
       align='center'
-      fontSize={FontSize['l']}
-      color='primary'
     >
       MShare
     </Link>
@@ -44,17 +47,13 @@ const AuthTitle: FC = () => {
 
 const RandomTitle: FC = () => {
   const isLargerThanIphone = useMediaQuery(ScreenSize.largerThanIphone);
+  const styles = {
+    fontWeight: 'bold',
+    fontSize: isLargerThanIphone ? FontSize['m'] : FontSize['xs'],
+  } as const;
 
   return (
-    <Typography
-      sx={{
-        pb: '7rem',
-        fontWeight: 'bold',
-        pt: '2rem',
-        fontSize: isLargerThanIphone ? FontSize.m : FontSize.xs,
-      }}
-      align='center'
-    >
+    <Typography sx={styles}>
       ランダムガチャ検索で新しい映画と出会おう！
     </Typography>
   );
@@ -65,12 +64,10 @@ const PostTitle: FC = () => {
 
   return (
     <Typography
-      fontFamily='monospace'
       sx={{
-        p: 5,
-        fontSize: isLargerThanIphone ? FontSize.m : FontSize.xs,
+        fontFamily: 'monospace',
+        fontSize: isLargerThanIphone ? FontSize['m'] : FontSize['xs'],
       }}
-      gutterBottom
       align='center'
     >
       自分だけのオリジナル映画を共有しよう　！

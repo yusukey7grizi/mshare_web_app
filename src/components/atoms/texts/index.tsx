@@ -5,11 +5,13 @@ import React, { FC } from 'react';
 type MovieListTitleProps = { username?: string };
 
 const MovieListTitle: FC<MovieListTitleProps> = ({ username }) => {
+  const styles = {
+    textAlign: 'center',
+    fontSize: FontSize['l'],
+  } as const;
+
   return (
-    <Typography
-      fontSize={FontSize['m']}
-      sx={{ textAlign: 'center', pt: '2rem', pb: '1rem' }}
-    >
+    <Typography sx={styles}>
       {username ? `${username} さんのその他の作品` : `投稿した映画一覧`}
     </Typography>
   );

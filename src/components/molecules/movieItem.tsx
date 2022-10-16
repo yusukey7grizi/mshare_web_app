@@ -6,7 +6,7 @@ import {
   CardMedia,
   Typography,
 } from '@mui/material';
-import { FontSize } from 'components/constants';
+import { BasePixel, FontSize } from 'components/constants';
 import { useRouter } from 'next/router';
 import React, { FC, Fragment } from 'react';
 import { Movie } from 'types/dataTypes';
@@ -22,11 +22,25 @@ const MovieItem: FC<MovieItemProps> = ({ movie }) => {
     router.push(`/movie/${movie.movieId}`);
   };
 
+  const styles = {
+    cardActionArea: {
+      width: BasePixel * 80,
+    },
+    title: {
+      fontSize: FontSize['m'],
+      fontWeight: 'bold',
+      textOverflow: 'ellipsis',
+    },
+    username: {
+      fontSize: FontSize['s'],
+    },
+  } as const;
+
   return (
-    <Box sx={{ p: 2 }}>
+    <Box>
       <Card component={Fragment}>
         <CardActionArea
-          sx={{ width: '16rem', height: '12.8rem' }}
+          sx={styles.cardActionArea}
           onClick={() => {
             setTimeout(cardOnClickHandler, 1500);
           }}
@@ -35,20 +49,11 @@ const MovieItem: FC<MovieItemProps> = ({ movie }) => {
             component='img'
             image={`https://i.ytimg.com/vi/${movie.movieId}/mqdefault.jpg`}
           />
-          <CardContent>
-            <Typography
-              noWrap
-              fontSize={FontSize['s']}
-              sx={{
-                fontWeight: 'bold',
-                textOverflow: 'ellipsis',
-              }}
-            >
+          <CardContent sx={{ padding: 0, paddingLeft: 1 }}>
+            <Typography noWrap sx={styles.title}>
               {movie.title}
             </Typography>
-            <Typography sx={{ fontSize: '0.8rem' }}>
-              {movie.username}
-            </Typography>
+            <Typography sx={styles.username}>{movie.username}</Typography>
           </CardContent>
         </CardActionArea>
       </Card>

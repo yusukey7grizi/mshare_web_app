@@ -54,14 +54,12 @@ const MovieForm: FC = () => {
 
   const moviePostHandler = async (event: FormEvent) => {
     event.preventDefault();
-    console.log(user);
 
     const movieId = new URLSearchParams(
       createMovieInput.youtubeLinkUrl.split('?')[1]
     ).get('v');
 
     if (!(user?.sub && user?.nickname && movieId)) {
-      console.log('aborting', user?.sub, user?.nickname, movieId);
       return;
     }
 
@@ -89,15 +87,16 @@ const MovieForm: FC = () => {
     }
   };
 
+  const styles = {
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+  } as const;
+
   return (
     <Box
       component='form'
-      sx={{
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        pb: '10rem',
-      }}
+      sx={styles}
       onSubmit={(e: FormEvent) => moviePostHandler(e)}
     >
       <TitleField onChange={createOnChangeHandler('title')} />

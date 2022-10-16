@@ -1,5 +1,5 @@
 import { FC, useState, useContext } from 'react';
-import { Box, Toolbar, AppBar, IconButton, useMediaQuery } from '@mui/material';
+import { Toolbar, AppBar, IconButton, useMediaQuery } from '@mui/material';
 import { SearchField } from 'components/atoms/textFields';
 import { BarTitle } from 'components/atoms/titles';
 import { useRouter } from 'next/router';
@@ -7,14 +7,12 @@ import { MuiKeyBoardEvent, MuiOnChangeEvent } from 'types';
 import { MenuDrawer } from 'components/molecules';
 import CloseIcon from '@mui/icons-material/Close';
 import SearchIcon from '@mui/icons-material/Search';
-import { ScreenSize } from 'components/constants';
+import { BasePixel, IconButtonStyle, ScreenSize } from 'components/constants';
 import { AppContext } from 'contexts/appContext';
 import { FlexBox } from 'components/atoms/layoutElement';
 import { useAuth0 } from '@auth0/auth0-react';
 
-const iconButtonStyle = { width: '3rem', height: '3rem' } as const;
-
-const TopBar: FC = () => {
+const Bar: FC = () => {
   const router = useRouter();
   const { setSearchInput, searchInput } = useContext(AppContext);
   const isLargerThanIpad = useMediaQuery(ScreenSize.largerThanIpad);
@@ -40,19 +38,24 @@ const TopBar: FC = () => {
     setSearchInput(value);
   };
 
+  const styles = {
+    appBar: { backgroundColor: '#ffff' },
+    toolBar: {
+      height: BasePixel * 20,
+      justifyContent: 'space-between',
+      marginLeft: BasePixel * 6,
+      marginRight: BasePixel * 6,
+    },
+    iconButton: IconButtonStyle,
+  } as const;
+
   return (
-    <AppBar position='fixed'>
-      <Toolbar
-        sx={{
-          backgroundColor: '#ffff',
-          height: '80px',
-          justifyContent: 'space-between',
-        }}
-      >
+    <AppBar position='fixed' sx={styles.appBar}>
+      <Toolbar sx={styles.toolBar}>
         {isSearchFieldOpen ? (
           <>
             <IconButton
-              sx={iconButtonStyle}
+              sx={styles.iconButton}
               onClick={() => {
                 setIsSearchFieldOpen(false);
               }}
@@ -60,6 +63,7 @@ const TopBar: FC = () => {
               <CloseIcon />
             </IconButton>
             <SearchField
+              width={BasePixel * 60}
               defaultValue={searchInput}
               onKeyPress={searchHandler}
               onChange={handleOnChange}
@@ -77,13 +81,14 @@ const TopBar: FC = () => {
             </FlexBox>
             {isLargerThanIpad ? (
               <SearchField
+                width={BasePixel * 120}
                 defaultValue={searchInput}
                 onKeyPress={searchHandler}
                 onChange={handleOnChange}
               />
             ) : (
               <IconButton
-                sx={iconButtonStyle}
+                sx={styles.iconButton}
                 onClick={() => {
                   setIsSearchFieldOpen(true);
                 }}
@@ -95,17 +100,6 @@ const TopBar: FC = () => {
         )}
       </Toolbar>
     </AppBar>
-  );
-};
-
-const Bar: FC = ({ children }) => {
-  return (
-    <>
-      <TopBar />
-      <Box component='div' sx={{ mt: '8rem' }}>
-        {children}
-      </Box>
-    </>
   );
 };
 

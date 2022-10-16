@@ -32,7 +32,7 @@ const Search: FC = () => {
   if (isTitle && input && searchedMovieList.length > 0) {
     return (
       <SearchTemplate
-        input={input as string}
+        input={typeof input === 'string' ? input : ''}
         searchedMovieList={searchedMovieList}
       />
     );
@@ -40,7 +40,7 @@ const Search: FC = () => {
   if (!isTitle && genre && searchedMovieList.length > 0) {
     return (
       <SearchTemplate
-        genre={genre as string}
+        genre={typeof genre === 'string' ? genre : ''}
         searchedMovieList={searchedMovieList}
       />
     );

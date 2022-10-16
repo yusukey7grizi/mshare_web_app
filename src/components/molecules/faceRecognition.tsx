@@ -9,7 +9,7 @@ import useInterval from 'use-interval';
 import { Movie } from 'types/dataTypes';
 import { useMediaQuery } from '@mui/material';
 import { motion } from 'framer-motion';
-import { ScreenSize } from 'components/constants';
+import { BasePixel, ScreenSize } from 'components/constants';
 import { CoreFunctionsContext } from 'contexts/coreFunctionsContext';
 import { AppContext } from 'contexts/appContext';
 import { handleSendScore } from 'utils';
@@ -97,7 +97,7 @@ const FaceRecognition: FC<FaceRecognitionProps> = ({
       const webcam = webcamRef.current;
       mediaStream = await navigator.mediaDevices.getUserMedia({
         audio: false,
-        video: { width: 100, height: 100 },
+        video: { width: BasePixel * 25, height: BasePixel * 25 },
       });
 
       webcam.srcObject = await mediaStream;
@@ -109,8 +109,8 @@ const FaceRecognition: FC<FaceRecognitionProps> = ({
     const currentX = webcamRef?.current?.getBoundingClientRect().x;
     const halfScreenWidth = window.innerWidth / 2;
     const newX = isLargerThanIpad
-      ? window.innerWidth - 100
-      : window.innerWidth - 65;
+      ? window.innerWidth - 165
+      : window.innerWidth - 115;
 
     if (currentX && currentX > halfScreenWidth) {
       return newX;
