@@ -1,4 +1,4 @@
-import React, { FC, useRef } from 'react';
+import React, { FC, memo, useRef } from 'react';
 import { MuiDivider } from 'components/atoms/divider';
 import { MovieListTitle } from 'components/atoms/texts';
 import { MovieList } from 'components/organisms/movieList';
@@ -14,9 +14,9 @@ type Props = {
   relatedMovieList: Movie[];
 };
 
-const MovieDetailTemplate: FC<Props> = ({ movie, relatedMovieList }) => {
+// eslint-disable-next-line react/display-name
+const MovieDetailTemplate: FC<Props> = memo(({ movie, relatedMovieList }) => {
   const movieDetailRef = useRef<HTMLDivElement>(null);
-  const isLargerThanIpad = useMediaQuery(ScreenSize.largerThanIpad);
   const styles = {
     box: { marginLeft: BasePixel * 6, marginRight: BasePixel * 6 },
     flexBox: {
@@ -44,6 +44,6 @@ const MovieDetailTemplate: FC<Props> = ({ movie, relatedMovieList }) => {
       </Box>
     )
   );
-};
+});
 
 export { MovieDetailTemplate };

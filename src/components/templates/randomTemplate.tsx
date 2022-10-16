@@ -2,7 +2,7 @@ import { Box, Button } from '@mui/material';
 import { MuiDivider } from 'components/atoms/divider';
 import { MovieListTitle } from 'components/atoms/texts';
 import { GenreField } from 'components/molecules';
-import React, { FC, useContext, useRef } from 'react';
+import React, { FC, memo, useContext, useRef } from 'react';
 import { MuiAutoCompleteOnChangeEvent, MuiOnClickEvent } from 'types';
 import { motion } from 'framer-motion';
 import { RandomTitle } from 'components/atoms/titles';
@@ -17,7 +17,8 @@ type Props = {
   onChange: (event: MuiAutoCompleteOnChangeEvent, value: string | null) => void;
 };
 
-const RandomTemplate: FC<Props> = ({ onSubmit, onChange }) => {
+// eslint-disable-next-line react/display-name
+const RandomTemplate: FC<Props> = memo(({ onSubmit, onChange }) => {
   const { randomMovie, relatedMovieList } = useContext(AppContext);
   const movieDetailRef = useRef<HTMLDivElement>(null);
 
@@ -82,6 +83,6 @@ const RandomTemplate: FC<Props> = ({ onSubmit, onChange }) => {
       </Box>
     </>
   );
-};
+});
 
 export { RandomTemplate };

@@ -7,16 +7,22 @@ import { BasePixel } from 'components/constants';
 
 const PostMovieTemplate: FC = () => {
   const styles = {
-    marginTop: BasePixel * 26,
-    marginLeft: BasePixel * 6,
-    marginRight: BasePixel * 6,
+    outermostBox: {
+      marginTop: BasePixel * 26,
+      marginLeft: BasePixel * 6,
+      marginRight: BasePixel * 6,
+    },
+    postTitleBox: {
+      paddingTop: BasePixel * 10,
+      paddingBottom: BasePixel * 10,
+    },
   } as const;
 
   return (
     <>
       <Bar />
-      <Box sx={styles}>
-        <Box sx={{ paddingTop: BasePixel * 10, paddingBottom: BasePixel * 10 }}>
+      <Box sx={styles.outermostBox}>
+        <Box sx={styles.postTitleBox}>
           <PostTitle />
         </Box>
         <MovieForm />

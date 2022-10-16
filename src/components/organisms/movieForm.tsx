@@ -5,7 +5,7 @@ import {
   GenreField,
   YoutubeUrlField,
 } from 'components/molecules';
-import { TitleField } from 'components/molecules/titleField';
+import { TitleField } from 'components/molecules';
 import { AppContext } from 'contexts/appContext';
 import { MuiAutoCompleteOnChangeEvent, MuiOnChangeEvent } from 'types';
 import { useRouter } from 'next/router';

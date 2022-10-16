@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { FC, memo } from 'react';
 import { MovieItem } from 'components/molecules';
 import { Movie } from 'types/dataTypes';
 import { BasePixel } from 'components/constants';
@@ -8,7 +8,8 @@ type Props = {
   movieList: Movie[];
 };
 
-const SearchedMovieList: FC<Props> = ({ movieList }) => {
+// eslint-disable-next-line react/display-name
+const SearchedMovieList: FC<Props> = memo(({ movieList }) => {
   const styles = {
     flexWrap: 'wrap',
     justifyContent: 'center',
@@ -22,6 +23,6 @@ const SearchedMovieList: FC<Props> = ({ movieList }) => {
       })}
     </FlexBox>
   );
-};
+});
 
 export { SearchedMovieList };

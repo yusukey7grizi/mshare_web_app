@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import { FC, memo } from 'react';
 import { InputAdornment, TextField, useMediaQuery } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 import { MuiKeyBoardEvent, MuiOnChangeEvent } from 'types';
@@ -18,84 +18,77 @@ type SearchFieldProps = {
   width: number;
 };
 
-const SearchField: FC<SearchFieldProps> = ({
-  onKeyPress,
-  onChange,
-  defaultValue,
-  width,
-}) => {
-  const styles = {
-    height: BasePixel * 12,
-    fontSize: FontSize['m'],
-    width: width,
-  } as const;
+/* eslint-disable react/display-name */
+const SearchField: FC<SearchFieldProps> = memo(
+  ({ onKeyPress, onChange, defaultValue, width }) => {
+    const styles = {
+      height: BasePixel * 12,
+      fontSize: FontSize['m'],
+      width: width,
+    } as const;
 
-  return (
-    <TextField
-      defaultValue={defaultValue}
-      autoComplete='off'
-      onChange={onChange}
-      onKeyPress={onKeyPress}
-      placeholder='映画を検索する'
-      variant='filled'
-      InputProps={{
-        style: styles,
-        disableUnderline: true,
-        startAdornment: (
-          <InputAdornment position='start'>
-            <SearchIcon />
-          </InputAdornment>
-        ),
-      }}
-    />
-  );
-};
+    return (
+      <TextField
+        defaultValue={defaultValue}
+        autoComplete='off'
+        onChange={onChange}
+        onKeyPress={onKeyPress}
+        placeholder='映画を検索する'
+        variant='filled'
+        InputProps={{
+          style: styles,
+          disableUnderline: true,
+          startAdornment: (
+            <InputAdornment position='start'>
+              <SearchIcon />
+            </InputAdornment>
+          ),
+        }}
+      />
+    );
+  }
+);
 
-const AuthFormTextField: FC<TextFieldProps> = ({
-  placeholder,
-  error,
-  type,
-  onChange,
-}) => {
-  return (
-    <TextField
-      fullWidth
-      autoComplete='off'
-      required
-      type={type}
-      error={error}
-      placeholder={placeholder}
-      InputLabelProps={{ shrink: true }}
-      variant='standard'
-      onChange={onChange}
-    />
-  );
-};
+const AuthFormTextField: FC<TextFieldProps> = memo(
+  ({ placeholder, error, type, onChange }) => {
+    return (
+      <TextField
+        fullWidth
+        autoComplete='off'
+        required
+        type={type}
+        error={error}
+        placeholder={placeholder}
+        InputLabelProps={{ shrink: true }}
+        variant='standard'
+        onChange={onChange}
+      />
+    );
+  }
+);
 
-const MovieFormTextField: FC<TextFieldProps> = ({
-  placeholder,
-  error,
-  type,
-  onChange,
-}) => {
-  const isLargerThanIpad = useMediaQuery(ScreenSize.largerThanIpad);
-  const styles = {
-    width: isLargerThanIpad ? BasePixel * 120 : '100%',
-  } as const;
+const MovieFormTextField: FC<TextFieldProps> = memo(
+  ({ placeholder, error, type, onChange }) => {
+    const isLargerThanIpad = useMediaQuery(ScreenSize.largerThanIpad);
+    const styles = {
+      width: isLargerThanIpad ? BasePixel * 120 : '100%',
+    } as const;
 
-  return (
-    <TextField
-      autoComplete='off'
-      sx={styles}
-      required
-      type={type}
-      error={error}
-      placeholder={placeholder}
-      InputLabelProps={{ shrink: true }}
-      variant='standard'
-      onChange={onChange}
-    />
-  );
-};
+    return (
+      <TextField
+        autoComplete='off'
+        sx={styles}
+        required
+        type={type}
+        error={error}
+        placeholder={placeholder}
+        InputLabelProps={{ shrink: true }}
+        variant='standard'
+        onChange={onChange}
+      />
+    );
+  }
+);
+/* eslint-enable react/display-name */
 
 export { SearchField, AuthFormTextField, MovieFormTextField };

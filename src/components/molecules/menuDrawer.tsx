@@ -1,4 +1,4 @@
-import { FC, useEffect, useState } from 'react';
+import { FC, memo, useEffect, useState } from 'react';
 import {
   List,
   ListItem,
@@ -24,7 +24,8 @@ type Props = {
   anchor: 'top' | 'left';
 };
 
-const MenuDrawer: FC<Props> = ({ isLoggedIn, authHandler, anchor }) => {
+// eslint-disable-next-line react/display-name
+const MenuDrawer: FC<Props> = memo(({ isLoggedIn, authHandler, anchor }) => {
   const [isOpen, setIsOpen] = useState(false);
   const router = useRouter();
 
@@ -151,6 +152,6 @@ const MenuDrawer: FC<Props> = ({ isLoggedIn, authHandler, anchor }) => {
       </SwipeableDrawer>
     </>
   );
-};
+});
 
 export { MenuDrawer };

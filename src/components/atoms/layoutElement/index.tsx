@@ -1,20 +1,15 @@
 import { Box, styled, useMediaQuery } from '@mui/material';
-import { ScreenSize } from 'components/constants';
+import { BasePixel, ScreenSize } from 'components/constants';
 import { FC } from 'react';
 
 const FieldContainer: FC = ({ children }) => {
   const isLargerThanIphone = useMediaQuery(ScreenSize.largerThanIpad);
+  const styles = {
+    width: isLargerThanIphone ? BasePixel * 120 : '100%',
+    paddingBottom: BasePixel * 8,
+  } as const;
 
-  return (
-    <Box
-      sx={{
-        width: isLargerThanIphone ? '30rem' : '100%',
-        paddingBottom: '2rem',
-      }}
-    >
-      {children}
-    </Box>
-  );
+  return <Box sx={styles}>{children}</Box>;
 };
 
 const FlexBox = styled('div')({

@@ -1,5 +1,5 @@
 import { Link, Typography, Button, useMediaQuery } from '@mui/material';
-import { FontSize, ScreenSize } from 'components/constants';
+import { BasePixel, FontSize, ScreenSize } from 'components/constants';
 import { useRouter } from 'next/router';
 import React, { FC } from 'react';
 
@@ -34,12 +34,13 @@ const BarTitle: FC = () => {
 };
 
 const AuthTitle: FC = () => {
+  const styles = {
+    marginTop: BasePixel * 13,
+    fontSize: FontSize['l'],
+  } as const;
+
   return (
-    <Typography
-      sx={{ marginTop: '50px' }}
-      align='center'
-      fontSize={FontSize['l']}
-    >
+    <Typography sx={styles} align='center'>
       MShare へようこそ！
     </Typography>
   );
@@ -61,16 +62,14 @@ const RandomTitle: FC = () => {
 
 const PostTitle: FC = () => {
   const isLargerThanIphone = useMediaQuery(ScreenSize.largerThanIphone);
+  const styles = {
+    fontFamily: 'monospace',
+    fontSize: isLargerThanIphone ? FontSize['m'] : FontSize['xs'],
+  } as const;
 
   return (
-    <Typography
-      sx={{
-        fontFamily: 'monospace',
-        fontSize: isLargerThanIphone ? FontSize['m'] : FontSize['xs'],
-      }}
-      align='center'
-    >
-      自分だけのオリジナル映画を共有しよう　！
+    <Typography sx={styles} align='center'>
+      自分だけのオリジナル映画を共有しよう！
     </Typography>
   );
 };
