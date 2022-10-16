@@ -16,7 +16,6 @@ type Props = {
 // eslint-disable-next-line react/display-name
 const ProfileTemplate: FC<Props> = memo(({ username, email, movieList }) => {
   const isLargerThanIphone = useMediaQuery(ScreenSize.largerThanIphone);
-  const fontSize = isLargerThanIphone ? FontSize['m'] : FontSize['xs'];
 
   const usernameText = useMemo(() => {
     return `ユーザーネーム: ${username}`;
@@ -45,7 +44,7 @@ const ProfileTemplate: FC<Props> = memo(({ username, email, movieList }) => {
       margin: 'auto',
     },
     userInfo: {
-      fontSize: fontSize,
+      fontSize: isLargerThanIphone ? FontSize['m'] : FontSize['s'],
     },
   } as const;
 
