@@ -15,6 +15,9 @@ type Props = {
 const SearchTemplate: FC<Props> = memo(
   ({ searchedMovieList, input, genre }) => {
     const resultTitle = useMemo(() => {
+      if (searchedMovieList.length === 0) {
+        return '該当する作品がありませんでした';
+      }
       if (input) {
         return `「${input}」の検索結果 ${searchedMovieList.length}作品`;
       }
@@ -41,7 +44,9 @@ const SearchTemplate: FC<Props> = memo(
           <Typography color='primary' sx={styles.resultTitle}>
             {resultTitle}
           </Typography>
-          <SearchedMovieList movieList={searchedMovieList} />
+          {searchedMovieList.length > 0 && (
+            <SearchedMovieList movieList={searchedMovieList} />
+          )}
         </Box>
       </>
     );
