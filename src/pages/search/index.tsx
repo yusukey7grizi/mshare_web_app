@@ -29,7 +29,7 @@ const Search: FC = () => {
   if (isError) {
     return <ErrorPage />;
   }
-  if (isTitle && input && searchedMovieList.length > 0) {
+  if (isTitle && input) {
     return (
       <SearchTemplate
         input={typeof input === 'string' ? input : ''}
@@ -37,7 +37,7 @@ const Search: FC = () => {
       />
     );
   }
-  if (!isTitle && genre && searchedMovieList.length > 0) {
+  if (!isTitle && genre) {
     return (
       <SearchTemplate
         genre={typeof genre === 'string' ? genre : ''}
