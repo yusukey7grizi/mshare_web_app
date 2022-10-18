@@ -40,7 +40,12 @@ const FaceRecognition: FC<FaceRecognitionProps> = memo(
   ({ movieDetailRef, movie }) => {
     const { moviePlayerState } = useContext(CoreFunctionsContext);
 
-    const { grinningScore, setGrinningScore } = useContext(AppContext);
+    const {
+      grinningScore,
+      setGrinningScore,
+      grinningScoreOnPause,
+      setGrinningScoreOnPause,
+    } = useContext(AppContext);
     const webcamRef = useRef<HTMLVideoElement>(null);
     const [isModelReady, setIsModelReady] = useState<boolean>(false);
     const [isWebcamReady, setIsWebcamReady] = useState<boolean>(false);
@@ -74,6 +79,7 @@ const FaceRecognition: FC<FaceRecognitionProps> = memo(
             if (value > THRESHOLD && key == 'happy') {
               setBatchScore(batchScore + 1);
               setGrinningScore(grinningScore + 1);
+              setGrinningScoreOnPause(grinningScoreOnPause + 1);
             }
           }
         }
@@ -83,6 +89,7 @@ const FaceRecognition: FC<FaceRecognitionProps> = memo(
             grinningScore: grinningScore,
             movieId: movie.movieId,
           });
+          setGrinningScoreOnPause(0);
           setBatchIter(0);
           setBatchScore(0);
           return;

@@ -21,7 +21,7 @@ type YouTubePlayerProps = {
 /* eslint-disable react/display-name */
 const YouTubePlayer: FC<YouTubePlayerProps> = memo(({ movie }) => {
   const { setMoviePlayerState } = useContext(CoreFunctionsContext);
-  const { grinningScore } = useContext(AppContext);
+  const { grinningScore, grinningScoreOnPause } = useContext(AppContext);
 
   const [isOverviewOpened, setIsOverviewOpened] = useState<boolean>(false);
   const { overview, title, createdAt, username } = movie;
@@ -123,10 +123,10 @@ const YouTubePlayer: FC<YouTubePlayerProps> = memo(({ movie }) => {
 
   const handleSendScoreOnPause = useCallback(() => {
     handleSendScore({
-      grinningScore: grinningScore,
+      grinningScore: grinningScoreOnPause,
       movieId: movie.movieId,
     });
-  }, [grinningScore, movie.movieId]);
+  }, [grinningScoreOnPause, movie.movieId]);
 
   return (
     <Box sx={styles.box}>

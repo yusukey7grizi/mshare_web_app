@@ -25,6 +25,8 @@ type AppState = {
   setSearchInput: (input: string) => void;
   grinningScore: number;
   setGrinningScore: (input: number) => void;
+  grinningScoreOnPause: number;
+  setGrinningScoreOnPause: (input: number) => void;
 };
 
 export const AppContext = createContext({} as AppState);
@@ -52,6 +54,8 @@ const AppProvider: FC = ({ children }) => {
   const [randomMovie, setRandomMovie] = useState<Maybe<Movie>>(null);
   const [searchInput, setSearchInput] = useState<string>('');
   const [grinningScore, setGrinningScore] = useState<number>(0);
+  // The score to send when paused
+  const [grinningScoreOnPause, setGrinningScoreOnPause] = useState<number>(0);
 
   return (
     <AppContext.Provider
@@ -76,6 +80,8 @@ const AppProvider: FC = ({ children }) => {
         searchInput: searchInput,
         grinningScore: grinningScore,
         setGrinningScore: setGrinningScore,
+        grinningScoreOnPause: grinningScoreOnPause,
+        setGrinningScoreOnPause: setGrinningScoreOnPause,
       }}
     >
       {children}
