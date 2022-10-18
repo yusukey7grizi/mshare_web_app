@@ -54,6 +54,7 @@ const AppProvider: FC = ({ children }) => {
   const [randomMovie, setRandomMovie] = useState<Maybe<Movie>>(null);
   const [searchInput, setSearchInput] = useState<string>('');
   const [grinningScore, setGrinningScore] = useState<number>(0);
+  // The score to send when paused
   const [grinningScoreOnPause, setGrinningScoreOnPause] = useState<number>(0);
 
   return (
